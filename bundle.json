@@ -1,0 +1,49 @@
+{
+  "name": "@ohos/request_cangjie_api",
+  "description": "Provide download and upload service for 3rd party app",
+  "version": "6.0",
+  "license": "Apache License 2.0",
+  "publishAs": "code-segment",
+  "segment": {
+    "destPath": "base/request/request_cangjie_api"
+  },
+  "dirs": {},
+  "scripts": {},
+  "component": {
+    "name": "request_cangjie_api",
+    "subsystem": "request",
+    "syscap": [
+      "SystemCapability.Request.FileTransferAgent"
+    ],
+    "features": [
+
+    ],
+    "adapted_system_type": [
+      "standard"
+    ],
+    "rom": "300KB",
+    "ram": "1024KB",
+    "hisysevent_config": [
+    ],
+    "deps": {
+      "components": [
+        "cangjie_api",
+        "arkui_cangjie_api",
+        "hiviewdfx_cangjie_api",
+        "ability_cangjie_api",
+        "request"
+      ]
+    },
+    "build": {
+      "sub_component": [
+          "//base/request/request_cangjie_api/ohos/request:ohos.request.agent"
+      ],
+      "inner_kits": [
+        {
+          "name": "//base/request/request_cangjie_api/ohos/request:ohos.request.agent"
+        }
+      ],
+      "test": []
+    }
+  }
+}
