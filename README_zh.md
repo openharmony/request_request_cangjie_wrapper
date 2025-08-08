@@ -19,13 +19,13 @@
 目录结构如下所示：
 
 ```
-base/request/request_cangjie_api
+base/request/request_cangjie_wrapper
 ├── ohos             # 仓颉上传下载子系统接口实现
 ├── figures          # 存放readme中的架构图
 ```
 
 ## 相关仓
 
-request_cangjie_api
+request_cangjie_wrapper
 
 [request_request](https://gitee.com/openharmony/request_request)

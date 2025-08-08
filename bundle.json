@@ -1,16 +1,16 @@
 {
-  "name": "@ohos/request_cangjie_api",
+  "name": "@ohos/request_cangjie_wrapper",
   "description": "Provide download and upload service for 3rd party app",
   "version": "6.0",
   "license": "Apache License 2.0",
   "publishAs": "code-segment",
   "segment": {
-    "destPath": "base/request/request_cangjie_api"
+    "destPath": "base/request/request_cangjie_wrapper"
   },
   "dirs": {},
   "scripts": {},
   "component": {
-    "name": "request_cangjie_api",
+    "name": "request_cangjie_wrapper",
     "subsystem": "request",
     "syscap": [
       "SystemCapability.Request.FileTransferAgent"
@@ -27,20 +27,20 @@
     ],
     "deps": {
       "components": [
-        "cangjie_api",
-        "arkui_cangjie_api",
-        "hiviewdfx_cangjie_api",
-        "ability_cangjie_api",
+        "cangjie_ark_interop",
+        "arkui_cangjie_wrapper",
+        "hiviewdfx_cangjie_wrapper",
+        "ability_cangjie_wrapper",
         "request"
       ]
     },
     "build": {
       "sub_component": [
-          "//base/request/request_cangjie_api/ohos/request:ohos.request.agent"
+          "//base/request/request_cangjie_wrapper/ohos/request:ohos.request.agent"
       ],
       "inner_kits": [
         {
-          "name": "//base/request/request_cangjie_api/ohos/request:ohos.request.agent"
+          "name": "//base/request/request_cangjie_wrapper/ohos/request:ohos.request.agent"
         }
       ],
       "test": []

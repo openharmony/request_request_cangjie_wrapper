@@ -19,13 +19,13 @@ The source code of the upload and download subsystem is stored in the **/base/re
 The directory structure is as follows:
 
 ```
-base/request/request_cangjie_api
+base/request/request_cangjie_wrapper
 ├── ohos             # Cangjie Upload and Download code
 ├── figures          # architecture pictures
 ```
 
 ## Repositories Involved
 
-request_cangjie_api
+request_cangjie_wrapper
 
 [request_request](https://gitee.com/openharmony/request_request)

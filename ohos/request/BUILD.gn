@@ -21,16 +21,16 @@ ohos_cj_library("ohos.request.agent") {
   ]
 
   cj_external_deps = [
-    "cangjie_api:ohos.ffi",
-    "cangjie_api:ohos.labels",
-    "arkui_cangjie_api:ohos.base",
-    "hiviewdfx_cangjie_api:ohos.hilog",
-    "ability_cangjie_api:ohos.ability"
+    "cangjie_ark_interop:ohos.ffi",
+    "cangjie_ark_interop:ohos.labels",
+    "arkui_cangjie_wrapper:ohos.base",
+    "hiviewdfx_cangjie_wrapper:ohos.hilog",
+    "ability_cangjie_wrapper:ohos.ability"
   ]
 
   external_deps = [ "request:cj_request_ffi" ]
 
   subsystem_name = "request"
-  part_name = "request_cangjie_api"
+  part_name = "request_cangjie_wrapper"
   lib_name = "request.agent"
 }
