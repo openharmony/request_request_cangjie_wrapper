@@ -1,4 +1,4 @@
-# 上传下载子系统
+# 上传下载仓颉
 
 ## 简介
 
@@ -7,20 +7,20 @@
 
 ## 系统架构
 
-**图 1**  上传下载子系统架构图
+**图 1**  上传下载仓颉架构图
 
 
-![](figures/上传下载子系统架构图.png "上传下载子系统架构图")
+![](figures/request_cangjie_wrapper_architecture.png "上传下载仓颉架构图")
 
 ## 目录
 
-上传下载子系统源代码在/base/request目录下。
+上传下载仓颉源代码在/base/request目录下。
 
 目录结构如下所示：
 
 ```
 base/request/request_cangjie_wrapper
-├── ohos             # 仓颉上传下载子系统接口实现
+├── ohos             # 仓颉上传下载仓颉接口实现
 ├── figures          # 存放readme中的架构图
 ```
 
