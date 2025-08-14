@@ -6,15 +6,8 @@
         <policylist>
         </policylist>
         <filefilterlist>
-            <filefilter name="licenseFileNamePolicyFilter" desc="Filters for LICENSE file policies">
-                <filteritem type="filepath" name="doc/.*" desc="doc目录过滤"/>
-            </filefilter>
-            <filefilter name="defaultFilter" desc="Files not to check">
-                <filteritem type="filename" name="*.png | *.jpg" desc="desc files"/>
-            </filefilter>
-            <filefilter name="binaryFileTypePolicyFilter" desc="Filters for binaryFile">
-                <filteritem type="filename" name="*.png" desc="png图片文件，完成检查"/>
-                <filteritem type="filename" name="*.jpg" desc="jpg图片文件，完成检查"/>
+            <filefilter name="defaultFilter" desc="File not to check">
+                <filteritem type="filename" name="*.png | *.jpg" desc="代码架构图片文件"/>
             </filefilter>
         </filefilterlist>
         <licensematcherlist>
