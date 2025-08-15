@@ -1,8 +1,8 @@
-# 上传下载仓颉
+# 上传下载仓颉接口
 
 ## 简介
 
-上传下载服务为应用提供上传/下载能力，包括创建、移除、暂停、启动任务上传/下载，以及订阅任务进度、成功、失败等，支撑开发者方便、高效地使用下载/上传业务的功能。
+上传下载仓颉接口是在 OpenHarmony 上基于上传下载子系统能力之上封装的仓颉API。上传下载服务为应用提供上传/下载能力，包括创建、移除、暂停、启动任务上传/下载，以及订阅任务进度、成功、失败等，支撑开发者方便、高效地使用下载/上传业务的功能。
 
 
 ## 系统架构
@@ -26,6 +26,4 @@ base/request/request_cangjie_wrapper
 
 ## 相关仓
 
-request_cangjie_wrapper
-
-[request_request](https://gitee.com/openharmony/request_request)
+[request_request](https://gitee.com/openharmony/request_request/blob/master/README.md)
