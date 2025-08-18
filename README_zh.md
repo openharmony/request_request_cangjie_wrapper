@@ -26,4 +26,4 @@ base/request/request_cangjie_wrapper
 
 ## 相关仓
 
-[request_request](https://gitee.com/openharmony/request_request/blob/master/README.md)
+[request_request](https://gitee.com/openharmony/request_request/blob/master)

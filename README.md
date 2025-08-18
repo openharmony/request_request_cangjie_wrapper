@@ -1,16 +1,16 @@
-# Upload and Download Subsystem
+# request_cangjie_wrapper
 
 ## Introduction
 
-The upload and download subsystem provides upload and download capabilities for applications, including creating, removing, suspending, and starting upload and download tasks, and subscribing to the task progress and result.
+The request_cangjie_wrapper is a Cangjie API encapsulated on OpenHarmony based on the capabilities of the upload and download subsystem. The upload and download subsystem provides upload and download capabilities for applications, including creating, removing, suspending, and starting upload and download tasks, and subscribing to the task progress and result.
 
 
 ## System Architecture
 
-**Figure 1** Architecture of the upload and download subsystem
+**Figure 1** Architecture of the request_cangjie_wrapper
 
 
-![](figures/architecture-of-the-upload-and-download-subsystem.png "Architecture of the upload and download subsystem")
+![](figures/request_cangjie_wrapper_architecture_en.png "Architecture of the request_cangjie_wrapper")
 
 ## Directory Structure
 
@@ -26,6 +26,4 @@ base/request/request_cangjie_wrapper
 
 ## Repositories Involved
 
-request_cangjie_wrapper
-
-[request_request](https://gitee.com/openharmony/request_request)
+[request_request](https://gitee.com/openharmony/request_request/blob/master/README.md)
