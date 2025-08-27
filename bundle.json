@@ -36,11 +36,11 @@
     },
     "build": {
       "sub_component": [
-          "//base/request/request_cangjie_wrapper/ohos/request:ohos.request.agent"
+          "//base/request/request_cangjie_wrapper/ohos/request:ohos.request"
       ],
       "inner_kits": [
         {
-          "name": "//base/request/request_cangjie_wrapper/ohos/request:ohos.request.agent"
+          "name": "//base/request/request_cangjie_wrapper/ohos/request:ohos.request"
         }
       ],
       "test": []
