@@ -13,10 +13,12 @@
  * limitations under the License.
  */
 
-package ohos.request.agent
+package ohos.request
 
 import std.collection.*
-import ohos.base.*
+import ohos.base
+import ohos.base.{NativeOptionCString, NativeOptionInt64, NativeOptionUInt32}
+import ohos.business_exception.BusinessException
 import ohos.ffi.*
 
 @C
@@ -120,8 +122,8 @@ struct CFileSpec {
                 this.path = LibC.mallocCString(f.path)
                 this.mimeType = LibC.mallocCString(f.mimeType ?? "")
                 this.filename = LibC.mallocCString(f.filename ?? "")
+                this.extras = CHashStrArr(f.extras)
             }
-            this.extras = CHashStrArr(f.extras ?? HashMap<String, String>())
         } catch (e: Exception) {
             unsafe {
                 LibC.free(path)
@@ -200,7 +202,7 @@ struct CFileSpecArr {
 }
 
 @C
-struct CFormItemValueTypeUion {
+struct CFormItemValueUion {
     var str: CString = CString(CPointer())
     var file: CFileSpec = CFileSpec()
     var files: CFileSpecArr = CFileSpecArr()
@@ -208,22 +210,22 @@ struct CFormItemValueTypeUion {
 
     init() {}
 
-    init(data: FormItemValueType) {
+    init(data: FormItemValue) {
         this.str = CString(CPointer())
         this.file = CFileSpec()
         this.files = CFileSpecArr()
 
         try {
             match (data) {
-                case STR(s) =>
+                case StringItem(s) =>
                     unsafe { this.str = LibC.mallocCString(s) }
                     this.file = CFileSpec()
                     this.files = CFileSpecArr()
-                case FILE(f) =>
+                case FileItem(f) =>
                     this.str = CString(CPointer())
                     this.file = CFileSpec(f)
                     this.files = CFileSpecArr()
-                case FILES(fs) =>
+                case FileItemArray(fs) =>
                     this.str = CString(CPointer())
                     this.file = CFileSpec()
                     this.files = CFileSpecArr(fs)
@@ -240,12 +242,12 @@ struct CFormItemValueTypeUion {
         this.valueType = data.valueType
     }
 
-    func toCJValue(): FormItemValueType {
+    func toCJValue(): FormItemValue {
         match (valueType) {
-            case 0 => FormItemValueType.STR(str.toString())
-            case 1 => FormItemValueType.FILE(FileSpec(file))
-            case 2 => FormItemValueType.FILES(files.toCJValue())
-            case _ => throw BusinessException(EXCEPTION_OTHERS, "Error FormItemValueType")
+            case 0 => FormItemValue.StringItem(str.toString())
+            case 1 => FormItemValue.FileItem(FileSpec(file))
+            case 2 => FormItemValue.FileItemArray(files.toCJValue())
+            case _ => throw BusinessException(EXCEPTION_OTHERS, "Error FormItemValue")
         }
     }
 
@@ -261,12 +263,12 @@ struct CFormItemValueTypeUion {
 @C
 struct CFormItem {
     var name: CString = CString(CPointer())
-    var value: CFormItemValueTypeUion = CFormItemValueTypeUion()
+    var value: CFormItemValueUion = CFormItemValueUion()
 
     init(form: FormItem) {
         try {
             this.name = unsafe { LibC.mallocCString(form.name) }
-            this.value = CFormItemValueTypeUion(form.value)
+            this.value = CFormItemValueUion(form.value)
         } catch (e: Exception) {
             unsafe { LibC.free(name) }
             this.value.free()
@@ -313,9 +315,9 @@ struct CFormItemArr {
         this.size = index
     }
 
-    func toCJValue(): ?Array<FormItem> {
+    func toCJValue(): Array<FormItem> {
         if (head.isNull() || size <= 0) {
-            return None
+            return Array<FormItem>()
         }
 
         Array<FormItem>(size) {
@@ -337,21 +339,21 @@ struct CFormItemArr {
 }
 
 @C
-struct CConfigDataTypeUion {
+struct CConfigDataUion {
     var str: CString = CString(CPointer())
     var formItems: CFormItemArr = CFormItemArr()
 
     init() {}
 
-    init(data: ConfigDataType) {
+    init(data: ConfigData) {
         this.str = CString(CPointer())
         this.formItems = CFormItemArr()
         try {
             match (data) {
-                case STR(s) =>
+                case StringValue(s) =>
                     unsafe { this.str = LibC.mallocCString(s) }
                     this.formItems = CFormItemArr()
-                case FORMITEMS(a) =>
+                case FormItems(a) =>
                     formItems = CFormItemArr(a)
                     this.str = CString(CPointer())
                 case _ => throw IllegalArgumentException("The type is not supported.")
@@ -365,23 +367,12 @@ struct CConfigDataTypeUion {
         }
     }
 
-    func toCJValue(action: Action): ?ConfigDataType {
+    func toCJValue(action: Action): ConfigData {
         match (action) {
-            case DOWNLOAD =>
-                if (str.isEmpty()) {
-                    return None
-                }
-                ConfigDataType.STR(str.toString())
-
-            case UPLOAD =>
-                if (formItems.size <= 0 || formItems.head.isNull()) {
-                    return None
-                }
-                if (let Some(cjFormItems) <- formItems.toCJValue()) {
-                    ConfigDataType.FORMITEMS(cjFormItems)
-                } else {
-                    None
-                }
+            case Download =>
+                ConfigData.StringValue(str.toString())
+            case Upload =>
+                ConfigData.FormItems(formItems.toCJValue())
             case _ => throw IllegalArgumentException("The type is not supported.")
         }
     }
@@ -404,7 +395,7 @@ struct CConfig {
     var overwrite: Bool = false
     var method: CString = CString(CPointer())
     var headers: CHashStrArr = CHashStrArr()
-    var data: CConfigDataTypeUion = CConfigDataTypeUion()
+    var data: CConfigDataUion = CConfigDataUion()
     var saveas: CString = CString(CPointer())
     var network: UInt32 = 0
     var metered: Bool = false
@@ -425,16 +416,16 @@ struct CConfig {
             unsafe {
                 this.url = LibC.mallocCString(config.url)
                 this.title = LibC.mallocCString(config.title ?? "")
-                this.description = LibC.mallocCString(config.description ?? "")
+                this.description = LibC.mallocCString(config.description)
                 this.method = LibC.mallocCString(config.method ?? "")
-                this.saveas = LibC.mallocCString(config.saveas ?? "")
+                this.saveas = LibC.mallocCString(config.saveas)
                 this.token = LibC.mallocCString(config.token ?? "")
             }
-            this.headers = CHashStrArr(config.headers ?? HashMap<String, String>())
-            this.extras = CHashStrArr(config.extras ?? HashMap<String, String>())
+            this.headers = CHashStrArr(config.headers)
+            this.extras = CHashStrArr(config.extras)
             this.data = match (config.data) {
-                case Some(v) => CConfigDataTypeUion(v)
-                case _ => CConfigDataTypeUion()
+                case Some(v) => CConfigDataUion(v)
+                case _ => CConfigDataUion()
             }
         } catch (e: Exception) {
             unsafe {
@@ -452,11 +443,7 @@ struct CConfig {
         }
 
         this.action = config.action.value
-        this.mode = match (config.mode) {
-            case Some(v) => v.value
-            case _ => Mode.BACKGROUND.value
-        }
-
+        this.mode = config.mode.value
         this.overwrite = config.overwrite
         this.network = config.network.value
         this.metered = config.metered
@@ -635,7 +622,7 @@ struct CTaskInfo {
     let bundle: CString = CString(CPointer())
     let saveas: CString = CString(CPointer())
     let url: CString = CString(CPointer())
-    let data: CConfigDataTypeUion = CConfigDataTypeUion()
+    let data: CConfigDataUion = CConfigDataUion()
     let tid: CString = CString(CPointer())
     let title: CString = CString(CPointer())
     let description: CString = CString(CPointer())
@@ -681,17 +668,6 @@ struct CFilter {
     var mode: NativeOptionUInt32 = NativeOptionUInt32(false, 0)
 
     init(filter: Filter) {
-        this.bundle = unsafe {
-            try {
-                match (filter.bundle) {
-                    case Some(v) => NativeOptionCString(true, LibC.mallocCString(v))
-                    case None => NativeOptionCString(false, CString(CPointer()))
-                }
-            } catch (e: Exception) {
-                throw BusinessException(EXCEPTION_OTHERS, e.toString())
-            }
-        }
-
         this.before = match (filter.before) {
             case Some(v) => NativeOptionInt64(true, v)
             case None => NativeOptionInt64(false, 0)
@@ -720,27 +696,6 @@ struct CFilter {
 
     func free() {
         this.bundle.free()
-    }
-}
-
-struct TokenResource <: Resource {
-    let value: RequestNativeOptionCString
-    let isFree: Box<Bool> = Box(false)
-
-    init(value: RequestNativeOptionCString) {
-        this.value = value
-    }
-
-    public func isClosed(): Bool {
-        return isFree.value
-    }
-
-    public func close(): Unit {
-        if (isFree.value) {
-            return
-        }
-        value.free()
-        isFree.value = true
     }
 }
 

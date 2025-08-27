@@ -13,14 +13,17 @@
  * limitations under the License.
  */
 
-package ohos.request.agent
+package ohos.request
 
 import std.collection.*
-import std.regex.*
 import std.sync.*
-import ohos.base.*
+import ohos.business_exception.*
+import ohos.callback_invoke.*
+import ohos.base
 import ohos.ffi.*
 import ohos.labels.*
+import std.deriving.Derive
+import ohos.app.ability.ui_ability.{UIAbilityContext, getStageContext}
 
 // ERRORCODE
 const EXCEPTION_FILEIO: Int32 = 13400001
@@ -28,120 +31,209 @@ const EXCEPTION_FILEPATH: Int32 = 13400002
 const EXCEPTION_SERVICE: Int32 = 13400003
 const EXCEPTION_OTHERS: Int32 = 13499999
 
+/**
+ * Event CallbackType.
+ */
+@Derive[ToString, Hashable, Equatable]
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
-public enum Action <: ToString {
+public enum EventCallbackType {
+    /**
+     * Progress
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    DOWNLOAD
-    | @!APILevel[
+    Progress
+    |
+    /**
+     * Completed
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    UPLOAD
+    Completed
+    |
+    /**
+     * Failed
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    Failed
+    |
+    /**
+     * Pause
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    Pause
+    |
+    /**
+     * Resume
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    Resume
+    |
+    /**
+     * Remove
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    Remove
+    |
+    /**
+     * Response
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    Response
+    | ...
+
+    prop value: String {
+        get() {
+            match (this) {
+                case Progress => "progress"
+                case Completed => "completed"
+                case Failed => "failed"
+                case Pause => "pause"
+                case Resume => "resume"
+                case Remove => "remove"
+                case Response => "response"
+                case _ => throw IllegalArgumentException("The type is not supported.")
+            }
+        }
+    }
+}
+/**
+ * The action options.
+ *
+ * @relation enum Action
+ */
+@Derive[ToString, Equatable]
+@!APILevel[
+    21,
+    stagemodelonly: true,
+    syscap: "SystemCapability.Request.FileTransferAgent"
+]
+public enum Action {
+    /**
+     * Indicates download task.
+     *
+     * @relation DOWNLOAD = 0
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    Download
+    |
+    /**
+     * Indicates upload task.
+     *
+     * @relation UPLOAD = 1
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    Upload
     | ...
 
     prop value: UInt32 {
         get() {
             match (this) {
-                case DOWNLOAD => 0
-                case UPLOAD => 1
+                case Download => 0
+                case Upload => 1
                 case _ => throw IllegalArgumentException("The type is not supported.")
             }
-        }
-    }
-
-    @!APILevel[
-        21,
-        atomicservice: true,
-        crossplatform: true,
-        stagemodelonly: true,
-        syscap: "SystemCapability.Request.FileTransferAgent"
-    ]
-    public func toString(): String {
-        match (this) {
-            case DOWNLOAD => "DOWNLOAD"
-            case UPLOAD => "UPLOAD"
-            case _ => throw IllegalArgumentException("The type is not supported.")
         }
     }
 
     static func parse(v: UInt32): Action {
         match (v) {
-            case 0 => DOWNLOAD
-            case 1 => UPLOAD
+            case 0 => Download
+            case 1 => Upload
             case _ => throw Exception("Never reach here!")
         }
     }
 }
 
+/**
+ * The mode options.
+ *
+ * @relation enum Mode
+ */
+@Derive[ToString, Equatable]
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
-public enum Mode <: ToString {
+public enum Mode {
+    /**
+     * Indicates background task.
+     *
+     * @relation BACKGROUND = 0
+     */
     @!APILevel[
         21,
-        atomicservice: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    BACKGROUND
-    | @!APILevel[
+    Background
+    |
+    /**
+     * Indicates foreground task.
+     *
+     * @relation FOREGROUND = 1
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    FOREGROUND
+    Foreground
     | ...
 
     prop value: UInt32 {
         get() {
             match (this) {
-                case BACKGROUND => 0
-                case FOREGROUND => 1
+                case Background => 0
+                case Foreground => 1
                 case _ => throw IllegalArgumentException("The type is not supported.")
             }
         }
     }
 
-    @!APILevel[
-        21,
-        atomicservice: true,
-        crossplatform: true,
-        stagemodelonly: true,
-        syscap: "SystemCapability.Request.FileTransferAgent"
-    ]
-    public func toString(): String {
-        match (this) {
-            case BACKGROUND => "BACKGROUND"
-            case FOREGROUND => "FOREGROUND"
-            case _ => throw IllegalArgumentException("The type is not supported.")
-        }
-    }
-
     static func toMode(v: UInt32): Mode {
         match (v) {
-            case 0 => BACKGROUND
-            case 1 => FOREGROUND
+            case 0 => Background
+            case 1 => Foreground
             case _ => throw Exception("Never reach here!")
         }
     }
@@ -155,46 +247,61 @@ public enum Mode <: ToString {
     }
 }
 
+/**
+ * The network options.
+ *
+ * @relation enum Network
+ */
+@Derive[ToString, Equatable]
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
-public enum Network <: ToString {
+public enum Network {
+    /**
+     * Indicates no restriction on network type.
+     *
+     * @relation ANY = 0
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    ANY
-    | @!APILevel[
+    AnyType
+    |
+    /**
+     * Indicates Wi-Fi only.
+     *
+     * @relation WIFI = 1
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    WIFI
-    | @!APILevel[
+    Wifi
+    |
+    /**
+     * Indicates cellular only.
+     *
+     * @relation CELLULAR = 2
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    CELLULAR
+    Cellular
     | ...
 
     prop value: UInt32 {
         get() {
             match (this) {
-                case ANY => 0
-                case WIFI => 1
-                case CELLULAR => 2
+                case AnyType => 0
+                case Wifi => 1
+                case Cellular => 2
                 case _ => throw IllegalArgumentException("The type is not supported.")
             }
         }
@@ -202,118 +309,138 @@ public enum Network <: ToString {
 
     static func parse(v: UInt32): Network {
         match (v) {
-            case 0 => ANY
-            case 1 => WIFI
-            case 2 => CELLULAR
+            case 0 => AnyType
+            case 1 => Wifi
+            case 2 => Cellular
             case _ => throw Exception("Invalid Network type!")
         }
     }
+}
 
+/**
+ * Broadcast events for the request.
+ *
+ * @relation enum BroadcastEvent
+ */
+@!APILevel[
+    21,
+    stagemodelonly: true,
+    syscap: "SystemCapability.Request.FileTransferAgent"
+]
+public enum BroadcastEvent <: ToString {
+    /**
+     * Completion event for the task.
+     *
+     * @relation COMPLETE = 'ohos.request.event.COMPLETE'
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    Complete 
+    | ...
+
+    /**
+     * Gets the corresponding mapping value.
+     */
+    @!APILevel[
+        21,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public func toString(): String {
         match (this) {
-            case ANY => "ANY"
-            case WIFI => "WIFI"
-            case CELLULAR => "CELLULAR"
+            case Complete => "ohos.request.event.COMPLETE"
             case _ => throw IllegalArgumentException("The type is not supported.")
         }
     }
 }
-
+/**
+ * The file information for a form item.
+ *
+ * @relation interface FileSpec
+ */
 @!APILevel[
     21,
-    stagemodelonly: true,
-    syscap: "SystemCapability.Request.FileTransferAgent"
-]
-public enum BroadcastEvent {
-    COMPLETE | ...
-
-    @!APILevel[
-        21,
-        stagemodelonly: true,
-        syscap: "SystemCapability.Request.FileTransferAgent"
-    ]
-    public prop value: String {
-        get() {
-            match (this) {
-                case COMPLETE => "ohos.request.event.COMPLETE"
-                case _ => throw IllegalArgumentException("The type is not supported.")
-            }
-        }
-    }
-}
-
-@!APILevel[
-    21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class FileSpec {
+    /**
+     * The path to save the uploaded file.
+     * Currently support:
+     * 1: relative path, like "./xxx/yyy/zzz.html", "xxx/yyy/zzz.html", under caller's cache folder.
+     * 2: internal protocol path, starting with "internal://", like "internal://cache/path/to/file.txt".
+     * 3: application storage path, only the base directory and its subdirectories are supported, like "/data/storage/el1/base/path/to/file.txt".
+     * 4: file protocol path with self bundle name, only the base directory and its subdirectories are supported, like "file://com.example.test/data/storage/el2/base/file.txt".
+     * 5: user file url, like "file://media/Photo/path/to/file.png".
+     *
+     * @relation path: string
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public FileSpec(
-        /*
-         * A relative path string, like "./xxx/yyy/zzz.html", "xxx/yyy/zzz.html", in the caller's cache directory.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var path!: String,
+    public var path: String
 
-        /*
-         * The MIME type of the file.
-         * The default is obtained by the suffix of the filename.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var mimeType!: ?String = None,
+    /*
+     * The MIME type of the file.
+     * The default is obtained by the suffix of the filename.
+     *
+     * @relation mimeType?: string
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var mimeType: ?String
 
-        /*
-         * The filename, the default is obtained by path.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var filename!: ?String = None,
+    /*
+     * The filename, the default is obtained by path.
+     *
+     * @relation filename?: string
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var filename: ?String
 
-        /*
-         * The extras for the file information.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var extras!: ?HashMap<String, String> = None
-    ) {}
+    /*
+     * The extras for the file information.
+     *
+     * @relation extras?: object
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var extras: HashMap<String, String>
+
+    /**
+     * FileSpec constructor.
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public init(
+        path: String,
+        mimeType!: ?String = None,
+        filename!: ?String = None,
+        extras!: HashMap<String, String> = HashMap<String, String>()
+    ) {
+        this.path = path
+        this.mimeType = mimeType
+        this.filename = filename
+        this.extras = extras
+    }
 
     init(v: CFileSpec) {
         this.path = v.path.toString()
@@ -330,101 +457,107 @@ public class FileSpec {
             this.filename = v.filename.toString()
         }
 
-        this.extras = v.extras.toHashMapOption()
+        this.extras = v.extras.toHashMap()
     }
 }
 
+/**
+ * FormItem value
+ */
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
-public enum FormItemValueType {
+public enum FormItemValue {
+    /**
+     * String type FormItem value
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    STR(String)
+    StringItem(String)
+    /**
+     * FileSpec type FormItem value
+     */
     | @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    FILE(FileSpec)
+    FileItem(FileSpec)
+    /**
+     * Array<FileSpec> type FormItem value
+     */
     | @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    FILES(Array<FileSpec>)
+    FileItemArray(Array<FileSpec>)
     | ...
 
     prop valueType: UInt32 {
         get() {
             match (this) {
-                case STR(_) => 0
-                case FILE(_) => 1
-                case FILES(_) => 2
+                case StringItem(_) => 0
+                case FileItem(_) => 1
+                case FileItemArray(_) => 2
                 case _ => throw IllegalArgumentException("The type is not supported.")
             }
         }
     }
 }
 
-/*
- * The extras for the file information.
+/**
+ * The form item information for a task.
+ *
+ * @relation interface FormItem
  */
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class FormItem {
+    /*
+     * The item's name.
+     *
+     * @relation name: string
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public FormItem(
-        /*
-         * The item's name.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var name!: String,
+    public var name: String
 
-        /*
-         * The item's value.
-         * @type { String  FileSpec  | Array<FileSpec>  |}
-         * @throws { BusinessError } 401 - Parameter error.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var value!: FormItemValueType
-    ) {}
+    /*
+     * The item's value.
+     *
+     * @relation value: string | FileSpec | Array<FileSpec>
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var value: FormItemValue
+
+    /**
+     * FormItem constructor.
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public init(name: String, value: FormItemValue) {
+        this.name = name
+        this.value = value
+    }
 
     init(v: CFormItem) {
         this.name = v.name.toString()
@@ -432,376 +565,431 @@ public class FormItem {
     }
 }
 
+/**
+ * Config data
+ */
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
-public enum ConfigDataType {
+public enum ConfigData {
+    /**
+     * String type Config data
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    STR(String)
-    | @!APILevel[
+    StringValue(String)
+    |
+    /**
+     * Array<FormItem> type Config data
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    FORMITEMS(Array<FormItem>)
+    FormItems(Array<FormItem>)
     | ...
 
     prop valueType: UInt32 {
         get() {
             match (this) {
-                case STR(_) => 0
-                case FORMITEMS(_) => 1
+                case StringValue(_) => 0
+                case FormItems(_) => 1
                 case _ => throw IllegalArgumentException("The type is not supported.")
             }
         }
     }
 }
 
-/*
+/**
  * The configurations for a task.
+ * Provides the configuration information of an upload or download task.
  * Using a flexible configuration for clear upload and download functions.
  * If without emphasis, an option is for any task.
+ *
+ * @relation interface Config
  */
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class Config {
+    /**
+     * The Universal Resource Locator for a task.
+     * The maximum length is 2048 characters.
+     * Using raw `url` option, even url parameters in it.
+     *
+     * @relation action: Action
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public Config(
-        /*
-         * The task action, upload or download.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var action!: Action,
-        /*
-         * The task action, upload or download.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var url!: String,
-        /*
-         * The title for a task, give a meaningful title please.
-         * The maximum length is 256 characters.
-         * The default is upload or download, consistent with its action.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var title!: ?String = None,
-        /*
-         * The details for a task.
-         * The maximum length is 1024 characters.
-         * The default is empty string.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var description!: ?String = None,
-        /*
-         * Indicates task's mode.
-         * The default is BACKGROUND.
-         * For frontend task, it has callbacks.
-         * For background task, it has notifications and fallback.
-         * The cross-platform default is FOREGROUND.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var mode!: ?Mode = None,
-        /*
-         * The solution choice when path already exists during download.
-         * Currently support:
-         * true, rewrite the existed file.
-         * false, go to fail.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var overwrite!: Bool = false,
-        /*
-         * The HTTP standard method for upload or download: GET/POST/PUT.
-         * Case insensitive.
-         * For upload, use PUT/POST, the default is PUT.
-         * For download, use GET/POST, the default is GET.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var method!: ?String = None,
-        /*
-         * The HTTP headers.
-         * For upload request, the `Content-Type` is forced to `multipart/form-data`.
-         * For download request, the default `Content-Type` is `application/json`.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var headers!: ?HashMap<String, String> = None,
-        /*
-         * The arguments, it can be any text, uses json usually.
-         * For download, it can be raw string, the default is empty string.
-         * For upload, it can be form items, the default is a empty form.
-         * there must be one `FileSpec` item at least or will be a parameter error.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var data!: ?ConfigDataType = None,
-        /*
-         * The path to save the downloaded file, the default is "./".
-         * Currently support:
-         * 1: relative path, like "./xxx/yyy/zzz.html", "xxx/yyy/zzz.html", under caller's cache folder.
-         * 2: uri path, like "datashare://bundle/xxx/yyy/zzz.html", the data provider must allow the caller's access.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var saveas!: ?String = None,
-        /*
-         * The network.
-         * The default is Network.ANY
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var network!: Network = Network.ANY,
-        /*
-         * Allows work in metered network or not.
-         * The default is false.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var metered!: Bool = false,
-        /*
-         * Allows work in roaming network or not.
-         * The default is true.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var roaming!: Bool = true,
-        /*
-         * Enable automatic retry or not for the background task.
-         * The frontend task is always fast-fail.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var retry!: Bool = true,
-        /*
-         * Allows redirect or not.
-         * The default is true.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var redirect!: Bool = true,
-        /*
-         * The index of paths for a task.
-         * Usually used for a continuous job.
-         * The default is 0.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var index!: UInt32 = 0,
-        /*
-         * The start point of a file.
-         * Usually used for a continuous job.
-         * It will set the "Range" header in download.
-         * It will start read at the point in upload.
-         * The default is 0.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var begins!: Int64 = 0,
-        /*
-         * The end point of a file.
-         * Usually used for a continuous job.
-         * It will set The "Range" header in download.
-         * It will end read at the point in upload.
-         * The default is -1 indicating the end of the data for upload or download.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var ends!: Int64 = -1,
-        /*
-         * The policy of the progress notification for background task.
-         * If false: only completed or failed notification, the default.
-         * If true, emits every progress, completed or failed notifications.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var gauge!: Bool = false,
-        /*
-         * Breaks when fail to fetch filesize before upload/download or not.
-         * Uses filesize for a precise gauge.
-         * The default is false, set size as -1 indicating the case.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var precise!: Bool = false,
-        /*
-         * For in-application layer isolation.
-         * If given:
-         *   the minimum is 8 bytes.
-         *   the maximum is 2048 bytes.
-         * Creates a task with token, then must provide it during normal query.
-         * So saves the token carefully, it can not be retrieved by query.
-         * Or leave it empty.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var token!: ?String = None,
-        /*
-         * The priority of this task.
-         * Front-end tasks have higher priority than back-end tasks.
-         * In tasks of the same mode, the smaller the number, the higher the priority.
-         * The default is 0.
-         */
-        @!APILevel[
-            21,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var priority!: UInt32 = 0,
-        /*
-         * The extras for the configuration.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var extras!: ?HashMap<String, String> = None
-    ) {}
+    public var action: Action
+    /**
+     * The Universal Resource Locator for a task.
+     * The maximum length is 2048 characters.
+     * Using raw `url` option, even url parameters in it.
+     *
+     * @relation url: string
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var url: String
+    /**
+     * The title for a task, give a meaningful title please.
+     * The maximum length is 256 characters.
+     * The default is upload or download, consistent with its action.
+     *
+     * @relation title?: string
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var title: ?String
+    /**
+     * The details for a task.
+     * The maximum length is 1024 characters.
+     * The default is empty string.
+     *
+     * @relation description?: string
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var description: String
+    /**
+     * Indicates task's mode.
+     * The default is Background.
+     * For frontend task, it has callbacks.
+     * For background task, it has notifications and fallback.
+     * The cross-platform default is Foreground.
+     *
+     * @relation mode?: Mode
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var mode: Mode
+    /**
+     * The solution choice when path already exists during download.
+     * The default is false.
+     * Currently support:
+     * true, rewrite the existed file;
+     * false, go to fail.
+     *
+     * @relation overwrite?: boolean
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var overwrite: Bool
+    /**
+     * The HTTP standard method for upload or download: GET/POST/PUT.
+     * Case insensitive.
+     * For upload, use PUT/POST, the default is PUT.
+     * For download, use GET/POST, the default is GET.
+      *
+     * @relation method?: string
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var method: ?String
+    /**
+     * The HTTP headers.
+     * For upload request, the `Content-Type` is forced to `multipart/form-data`.
+     * For download request, the default `Content-Type` is `application/json`.
+     *
+     * @relation headers?: object
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var headers: HashMap<String, String>
+    /**
+     * The arguments, it can be any text, uses json usually.
+     * For download, it can be raw string, the default is empty string.
+     * For upload, it can be form items, the default is a empty form.
+     * There must be one `FileSpec` item at least or will be a parameter error.
+     *
+     * @relation data?: string | Array<FormItem>
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var data: ?ConfigData
+    /**
+     * The path to save the downloaded file, the default is "./".
+     * Currently support:
+     * 1: relative path, like "./xxx/yyy/zzz.html", "xxx/yyy/zzz.html", under caller's cache folder.
+     * 2: internal protocol path, starting with "internal://", like "internal://cache/path/to/file.txt".
+     * 3: application storage path, only the base directory and its subdirectories are supported, like "/data/storage/el1/base/path/to/file.txt".
+     * 4: file protocol path with self bundle name, only the base directory and its subdirectories are supported, like "file://com.example.test/data/storage/el2/base/file.txt".
+     *
+     * @relation saveas?: string
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var saveas: String
+    /**
+     * Network used for the task.
+     * The default value is Any (Wi-Fi or cellular).
+     *
+     * @relation network?: Network
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var network: Network
+    /**
+     * Allows work in metered network or not.
+     * The default is false
+     *
+     * @relation metered?: boolean
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var metered: Bool
+    /**
+     * Allows work in roaming network or not.
+     * The default is true.
+     *
+     * @relation roaming?: boolean
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var roaming: Bool
+    /**
+     * Enable automatic retry or not for the background task.
+     * The frontend task is always fast-fail.
+     *
+     * @relation retry?: boolean
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var retry: Bool
+    /**
+     * Allows redirect or not.
+     * The default is true.
+     *
+     * @relation redirect?: boolean
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var redirect: Bool
+    /**
+     * The index of paths for a task.
+     * Usually used for a continuous job.
+     * The default is 0.
+     *
+     * @relation index?: number
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var index: UInt32
+    /**
+     * The start point of a file.
+     * Usually used for a continuous job.
+     * It will set the "Range" header in download.
+     * It will start read at the point in upload.
+     * The default is 0.
+     *
+     * @relation begins?: number
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var begins: Int64
+    /**
+     * The end point of a file.
+     * Usually used for a continuous job.
+     * It will set The "Range" header in download.
+     * It will end read at the point in upload.
+     * The default is -1 indicating the end of the data for upload or download.
+     *
+     * @relation ends?: number
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var ends: Int64
+    /**
+     * The policy of the progress notification for background task.
+     * If false: only completed or failed notification, the default.
+     * If true, emits every progress, completed or failed notifications.
+     *
+     * @relation gauge?: boolean
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var gauge: Bool
+    /**
+     * Breaks when fail to fetch filesize before upload/download or not.
+     * Uses filesize for a precise gauge.
+     * The default is false, set size as -1 indicating the case.
+     *
+     * @relation precise?: boolean
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var precise: Bool
+    /**
+     * For in-application layer isolation.
+     * If given:
+     *   the minimum is 8 bytes.
+     *   the maximum is 2048 bytes.
+     * Creates a task with token, then must provide it during normal query.
+     * So saves the token carefully, it can not be retrieved by query.
+     * Or leave it empty.
+     *
+     * @relation token?: string
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var token: ?String
+    /**
+     * The priority of this task.
+     * Front-end tasks have higher priority than back-end tasks.
+     * In tasks of the same mode, the smaller the number, the higher the priority.
+     * The default is 0.
+     *
+     * @relation priority?: number
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var priority: UInt32
+    /**
+     * The extras for the configuration.
+     * This parameter is left empty by default.
+     *
+     * @relation extras?: object
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var extras: HashMap<String, String>
+
+    /**
+     * Config constructor.
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public init(action: Action, url: String, title!: ?String = None, description!: String = "",
+        mode!: Mode = Mode.Background, overwrite!: Bool = false, method!: ?String = None,
+        headers!: HashMap<String, String> = HashMap<String, String>(), data!: ?ConfigData = None, saveas!: String = "./",
+        network!: Network = Network.AnyType, metered!: Bool = false, roaming!: Bool = true, retry!: Bool = true,
+        redirect!: Bool = true, index!: UInt32 = 0, begins!: Int64 = 0, ends!: Int64 = -1, gauge!: Bool = false,
+        precise!: Bool = false, token!: ?String = None, priority!: UInt32 = 0,extras!: HashMap<String, String> = HashMap<String, String>()
+    ) {
+        this.action = action
+        this.url = url
+        this.title = title
+        this.description = description
+        this.mode = mode
+        this.overwrite = overwrite
+        this.method = method
+        if (headers.contains("Content-Type") == false) {
+            if (action.value == 0) {
+                headers["Content-Type"] = "multipart/form"
+            } else {
+                headers["Content-Type"] = "application/octet-stream"
+            }
+        }
+        this.headers = headers
+        this.data = data
+        this.saveas = saveas
+        this.network = network
+        this.metered = metered
+        this.roaming = roaming
+        this.retry = retry
+        this.redirect = redirect
+        this.index = index
+        this.begins = begins
+        this.ends = ends
+        this.gauge = gauge
+        this.precise = precise
+        this.token = token
+        this.priority = priority
+        this.extras = extras
+    }
 
     init(v: CConfig) {
         this.action = Action.parse(v.action)
         this.url = v.url.toString()
         this.title = v.title.toStringOption()
-        this.description = v.description.toStringOption()
-        this.mode = Mode.toModeOption(v.mode)
+        this.description = v.description.toString()
+        this.mode = Mode.toMode(v.mode)
         this.overwrite = v.overwrite
         this.method = v.method.toStringOption()
-        this.headers = v.headers.toHashMapOption()
+        this.headers = v.headers.toHashMap()
         this.data = v.data.toCJValue(this.action)
-        this.saveas = v.saveas.toStringOption()
+        this.saveas = v.saveas.toString()
         this.network = Network.parse(v.network)
         this.metered = v.metered
         this.roaming = v.roaming
@@ -814,147 +1002,164 @@ public class Config {
         this.precise = v.precise
         this.token = v.token.toStringOption()
         this.priority = v.priority
-        this.extras = v.extras.toHashMapOption()
+        this.extras = v.extras.toHashMap()
     }
 }
 
+/**
+ * Indicate the current state of the task.
+ *
+ * @relation enum State
+ */
+@Derive[ToString]
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
-public enum State <: ToString {
+public enum State {
+    /**
+     * Indicates a task created by `new Task(Config)`.
+     *
+     * @relation INITIALIZED = 0x00
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    INITIALIZED
-    | @!APILevel[
+    Initialized
+    |
+    /**
+     * Indicates a task lack of resources or conditions to run or retry.
+     *
+     * @relation WAITING = 0x10
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    WAITING
-    | @!APILevel[
+    Waiting
+    |
+    /**
+     * Indicates a task in processing now.
+     *
+     * @relation RUNNING = 0x20
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    RUNNING
-    | @!APILevel[
+    Running
+    |
+    /**
+     * Indicates a task failed once at least and in processing again now.
+     *
+     * @relation RETRYING = 0x21
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    RETRYING
-    | @!APILevel[
+    Retrying
+    |
+    /**
+     * Indicates a paused task which tends to be resumed for continuous work.
+     *
+     * @relation PAUSED = 0x30
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    PAUSED
-    | @!APILevel[
+    Paused
+    |
+    /**
+     * Indicates a stopped task which must be started again.
+     *
+     * @relation STOPPED = 0x31
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    STOPPED
-    | @!APILevel[
+    Stopped
+    |
+    /**
+     * Indicates a completed task which finish its data transfer.
+     *
+     * @relation COMPLETED = 0x40
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    COMPLETED
-    | @!APILevel[
+    Completed
+    |
+    /**
+     * Indicates a failed task which interrupted by some error.
+     *
+     * @relation FAILED = 0x41
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    FAILED
-    | @!APILevel[
+    Failed
+    |
+    /**
+     * Indicates a removed task which can not be processed again.
+     *
+     * @relation REMOVED = 0x50
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    REMOVED
+    Removed
     | ...
 
     prop value: UInt32 {
         get() {
             match (this) {
-                case INITIALIZED => 0x00
-                case WAITING => 0x10
-                case RUNNING => 0x20
-                case RETRYING => 0x21
-                case PAUSED => 0x30
-                case STOPPED => 0x31
-                case COMPLETED => 0x40
-                case FAILED => 0x41
-                case REMOVED => 0x50
+                case Initialized => 0x00
+                case Waiting => 0x10
+                case Running => 0x20
+                case Retrying => 0x21
+                case Paused => 0x30
+                case Stopped => 0x31
+                case Completed => 0x40
+                case Failed => 0x41
+                case Removed => 0x50
                 case _ => throw IllegalArgumentException("The type is not supported.")
             }
         }
     }
 
-    @!APILevel[
-        21,
-        atomicservice: true,
-        crossplatform: true,
-        stagemodelonly: true,
-        syscap: "SystemCapability.Request.FileTransferAgent"
-    ]
-    public func toString(): String {
-        match (this) {
-            case INITIALIZED => "INITIALIZED"
-            case WAITING => "WAITING"
-            case RUNNING => "RUNNING"
-            case RETRYING => "RETRYING"
-            case PAUSED => "PAUSED"
-            case STOPPED => "STOPPED"
-            case COMPLETED => "COMPLETED"
-            case FAILED => "FAILED"
-            case REMOVED => "REMOVED"
-            case _ => throw IllegalArgumentException("The type is not supported.")
-        }
-    }
-
     static func parse(v: UInt32) {
         match (v) {
-            case 0x0 => INITIALIZED
-            case 0x10 => WAITING
-            case 0x20 => RUNNING
-            case 0x21 => RETRYING
-            case 0x30 => PAUSED
-            case 0x40 => COMPLETED
-            case 0x41 => FAILED
-            case 0x50 => REMOVED
-            case _ => INITIALIZED
+            case 0x0 => Initialized
+            case 0x10 => Waiting
+            case 0x20 => Running
+            case 0x21 => Retrying
+            case 0x30 => Paused
+            case 0x40 => Completed
+            case 0x41 => Failed
+            case 0x50 => Removed
+            case _ => Initialized
         }
     }
 }
 
-/*
+/**
  * The progress data structure.
  * Upload allows multiple files per upload task.
  * Only one file in a download task.
@@ -964,83 +1169,74 @@ public enum State <: ToString {
  * 2: float(processed)/sizes[counter] is the progress for the current processing file.
  * 3: float(sum(sizes[:index])+processed)/sum(sizes) is the summary progress for a task.
  * If fetch file size in failure, the size of the file in sizes will be set as -1.
+ *
+ * @relation interface Progress
  */
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class Progress {
+    /**
+     * The current state of the task.
+     *
+     * @relation readonly state: State
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public Progress(
-        /*
-         * The current state of the task.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public let state!: State,
-        /*
-         * The current processing file index in a task.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public let index!: UInt32,
-        /*
-         * The processed data size for the current file in a task.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public let processed!: Int64,
-        /*
-         * The sizes of files in a task.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public let sizes!: Array<Int64>,
-        /*
-         * The extras for an interaction.
-         * Such as headers and body of response from server.
-         * But when the Content-Disposition header responded, the body will be into the uri of its attachment only, the body here is empty.
-         * {"headers": {"key": v}, "body": "contents"}.
-         * The "body" field is not supported in cross-platform scenarios.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public let extras!: HashMap<String, String>
-    ) {}
+    public let state: State
+    /**
+     * The current processing file index in a task.
+     *
+     * @relation readonly index: number
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public let index: UInt32
+    /**
+     * The processed data size for the current file in a task.
+     *
+     * @relation readonly processed: number
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public let processed: Int64
+    /**
+     * The sizes of files in a task, in bytes.
+     *
+     * @relation readonly sizes: Array<number>
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public let sizes: Array<Int64>
+    /**
+     * The extras for an interaction.
+     * Such as headers and body of response from server.
+     * But when the Content-Disposition header responded, the body will be into the uri of its attachment only, the body here is empty.
+     * {"headers": {"key": v}, "body": "contents"}.
+     * The "body" field is not supported in cross-platform scenarios.
+     *
+     * @relation readonly extras?: object
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public let extras: HashMap<String, String>
 
     init(v: CProgress) {
         this.state = State.parse(v.state)
@@ -1053,85 +1249,67 @@ public class Progress {
 
 /**
  * The HTTP response.
+ * Describes the data structure of the task response header.
  *
- * @interface HttpResponseMessage
- * @syscap SystemCapability.Request.FileTransferAgent
- * @atomicservice
+ * @relation interface HttpResponse
  */
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
-public class HttpResponseMessage {
-    HttpResponseMessage(
-        /**
-         * The version of the HTTP response.
-         *
-         * @type { String }
-         * @readonly
-         * @syscap SystemCapability.Request.FileTransferAgent
-         * @atomicservice
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public let version: String,
-        /**
-         * The status code of the HTTP response.
-         *
-         * @type { Int32 }
-         * @readonly
-         * @syscap SystemCapability.Request.FileTransferAgent
-         * @atomicservice
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public let statusCode: Int32,
-        /**
-         * The reason of the HTTP response.
-         *
-         * @type { String }
-         * @readonly
-         * @syscap SystemCapability.Request.FileTransferAgent
-         * @atomicservice
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public let reason: String,
-        /**
-         * The headers of the HTTP response.
-         *
-         * @type { HashMap<String, Array<String>> }
-         * @readonly
-         * @syscap SystemCapability.Request.FileTransferAgent
-         * @atomicservice
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public let headers: HashMap<String, Array<String>>
-    ) {}
+public class HttpResponse {
+    /**
+     * The version of the HTTP response.
+     *
+     * @relation readonly version: string
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public let version: String
+    /**
+     * The status code of the HTTP response.
+     *
+     * @relation readonly statusCode: number
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public let statusCode: Int32
+    /**
+     * The reason of the HTTP response.
+     *
+     * @relation readonly reason: string
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public let reason: String
+    /**
+     * The headers of the HTTP response.
+     *
+     * @relation readonly headers: Map<string, Array<string>>
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public let headers: HashMap<String, Array<String>>
+
+    init(version: String, statusCode: Int32, reason: String, headers: HashMap<String, Array<String>>) {
+        this.version = version
+        this.statusCode = statusCode
+        this.reason = reason
+        this.headers = headers
+    }
 
     init(v: CHttpResponse) {
         this.version = v.version.toString()
@@ -1141,446 +1319,430 @@ public class HttpResponseMessage {
     }
 }
 
+/**
+ * Indicates the reason for the failure.
+ *
+ * @relation enum Faults
+ */
+@Derive[ToString]
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
-public enum Faults <: ToString {
+public enum Faults {
+    /**
+     * Indicates others failure.
+     *
+     * @relation OTHERS = 0xFF
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    OTHERS
-    | @!APILevel[
+    Others
+    |
+    /**
+     * Indicates network disconnection.
+     *
+     * @relation DISCONNECTED = 0x00
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    DISCONNECTED
-    | @!APILevel[
+    Disconnected
+    |
+    /**
+     * Indicates task timeout.
+     *
+     * @relation TIMEOUT = 0x10
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    TIMEOUT
-    | @!APILevel[
+    Timeout
+    |
+    /**
+     * Indicates protocol error, such as 5xx response from server.
+     *
+     * @relation PROTOCOL = 0x20
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    PROTOCOL
-    | @!APILevel[
+    Protocol
+    |
+    /**
+     * Indicates filesystem io error, such as open/seek/read/write/close.
+     *
+     * @relation FSIO = 0x40
+     */
+    @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    FSIO
+    Fsio
     | ...
 
     prop value: Int32 {
         get() {
             match (this) {
-                case OTHERS => 0xFF
-                case DISCONNECTED => 0x00
-                case TIMEOUT => 0x10
-                case PROTOCOL => 0x20
-                case FSIO => 0x40
+                case Others => 0xFF
+                case Disconnected => 0x00
+                case Timeout => 0x10
+                case Protocol => 0x20
+                case Fsio => 0x40
                 case _ => throw IllegalArgumentException("The type is not supported.")
             }
         }
     }
 
-    @!APILevel[
-        21,
-        atomicservice: true,
-        crossplatform: true,
-        stagemodelonly: true,
-        syscap: "SystemCapability.Request.FileTransferAgent"
-    ]
-    public func toString(): String {
-        match (this) {
-            case OTHERS => "OTHERS"
-            case DISCONNECTED => "DISCONNECTED"
-            case TIMEOUT => "TIMEOUT"
-            case PROTOCOL => "PROTOCOL"
-            case FSIO => "FSIO"
-            case _ => throw IllegalArgumentException("The type is not supported.")
-        }
-    }
-
     static func parse(v: UInt32): Faults {
         match (v) {
-            case 0xFF => OTHERS
-            case 0x00 => DISCONNECTED
-            case 0x10 => TIMEOUT
-            case 0x20 => PROTOCOL
-            case 0x40 => FSIO
+            case 0xFF => Others
+            case 0x00 => Disconnected
+            case 0x10 => Timeout
+            case 0x20 => Protocol
+            case 0x40 => Fsio
             case _ => throw Exception("Never reach here!")
         }
     }
 }
-/*
+
+/**
  * The filter data structure.
  * Used for search, given fields works as **LOGICAL AND**.
  * Invalid value may cause a parameter error.
+ *
+ * @relation interface Filter
  */
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class Filter {
+    /**
+     * Specify the end Unix timestamp.
+     * The default is the moment of calling.
+     *
+     * @relation before?: number
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public Filter(
-        /*
-         * Specify the package name of an application.
-         * Only for advanced search, common search will be fixed to the caller.
-         * A "*" means any bundle.
-         * Hide this for inner system use.
-         */
-        var bundle!: ?String = None,
-        /*
-         * Specify the end Unix timestamp.
-         * The default is the moment of calling.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var before!: ?Int64 = None,
-        /*
-         * Specify the start Unix timestamp.
-         * The default is "`before` - 24 hours".
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var after!: ?Int64 = None,
-        /*
-         * Specify the state of tasks.
-         * The default is any state.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var state!: ?State = None,
-        /*
-         * Specify the action of tasks, "upload" or "download", case insensitive.
-         * The default is upload and download.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var action!: ?Action = None,
-        /*
-         * Specify task's mode.
-         * The default is FOREGROUND and BACKGROUND.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public var mode!: ?Mode = None
-    ) {}
+    public var before: ?Int64
+    /**
+     * Specify the start Unix timestamp.
+     * The default is "`before` - 24 hours".
+     *
+     * @relation after?: number
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var after: ?Int64
+    /**
+     * Specify the state of tasks.
+     * The default is any state.
+     *
+     * @relation state?: State
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var state: ?State
+    /**
+     * Specify the action of tasks, "upload" or "download", case insensitive.
+     * The default is upload and download.
+     *
+     * @relation action?: Action
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var action: ?Action
+    /**
+     * Specify task's mode.
+     * The default is Foreground and Background.
+     *
+     * @relation mode?: Mode
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var mode: ?Mode
+
+    /**
+     * Filter constructor.
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public init(before!: ?Int64 = None, after!: ?Int64 = None, state!: ?State = None,
+        action!: ?Action = None, mode!: ?Mode = None
+    ) {
+        this.before = before
+        this.after = after
+        this.state = state
+        this.action = action
+        this.mode = mode
+    }
 }
 
-/*
+/**
  * The task information data structure for query results.
  * Provides common query and advanced query, visible range of fields is different.
+ *
+ * @relation interface TaskInfo
  */
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class TaskInfo {
+    /**
+     * The path to save the downloaded file.
+     *
+     * @relation readonly saveas?: string
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public let uid: ?String
-
+    public let saveas: String
+    /**
+     * The url of a task.
+     * For `${ show }` and `${ touch }`.
+     *
+     * @relation readonly url?: string
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public let bundle: ?String
-
+    public let url: String
+    /**
+     * The arguments.
+     * For `${ show }` and `${ touch }`.
+     *
+     * @relation readonly data?: string | Array<FormItem>
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public let saveas: ?String
-
+    public let data: ConfigData
+    /**
+     * The task id.
+     *
+     * @relation readonly tid: string
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
-        stagemodelonly: true,
-        syscap: "SystemCapability.Request.FileTransferAgent"
-    ]
-    public let url: ?String
-
-    @!APILevel[
-        21,
-        atomicservice: true,
-        crossplatform: true,
-        stagemodelonly: true,
-        syscap: "SystemCapability.Request.FileTransferAgent"
-    ]
-    public let data: ?ConfigDataType
-
-    @!APILevel[
-        21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let tid: String
-
+    /**
+     * The task title.
+     *
+     * @relation readonly title: string
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let title: String
-
+    /**
+     * The task details.
+     *
+     * @relation readonly description: string
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let description: String
-
+    /**
+     * The task action.
+     *
+     * @relation readonly action: Action
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let action: Action
-
+    /**
+     * Specify task mode.
+     * The default is frontend
+     *
+     * @relation readonly mode: Mode
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let mode: Mode
-
+    /**
+     * The priority of this task.
+     * Front-end tasks have higher priority than back-end tasks.
+     * In tasks of the same mode, the smaller the number, the higher the priority.
+     * The default is 0.
+     *
+     * @relation readonly priority: number
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let priority: UInt32
-
+    /**
+     * The MIME type in the configuration of the task.
+     *
+     * @relation readonly mimeType: string
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let mimeType: String
-
+    /**
+     * An instance of `Progress` for a task.
+     *
+     * @relation readonly progress: Progress
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let progress: Progress
-
+    /**
+     * The progress notification policy of a background task.
+     *
+     * @relation readonly gauge: boolean
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let gauge: Bool
-
+    /**
+     * The creating date and time of a task in Unix timestamp.
+     * It is generated by system of current device.
+     *
+     * @relation readonly ctime: number
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let ctime: UInt64
-
+    /**
+     * The modified date and time of a task in Unix timestamp.
+     * It is generated by system of current device.
+     *
+     * @relation readonly mtime: number
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let mtime: UInt64
-
+    /**
+     * The retry switch of a task.
+     * Just for background, frontend always disable
+     *
+     * @relation readonly retry: boolean
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let retry: Bool
-
+    /**
+     * The tried times of a task.
+     *
+     * @relation readonly tries: number
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let tries: UInt32
-
+    /**
+     * The faults case of a task.
+     *
+     * @relation readonly faults: Faults
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public let faults: ?Faults
-
+    public let faults: Faults
+    /**
+     * The reason of a waiting/failed/stopped/paused task.
+     *
+     * @relation readonly reason: string
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let reason: String
-
+    /**
+     * The extras of a task.
+     * For frontend, nothing now.
+     *
+     * @relation readonly extras?: object
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public let extras: ?HashMap<String, String>
-
-    @!APILevel[
-        21,
-        atomicservice: true,
-        crossplatform: true,
-        stagemodelonly: true,
-        syscap: "SystemCapability.Request.FileTransferAgent"
-    ]
-    public init(
-        uid!: ?String = None,
-        bundle!: ?String = None,
-        saveas!: ?String = None,
-        url!: ?String = None,
-        data!: ?ConfigDataType = None,
-        tid!: String,
-        title!: String,
-        description!: String,
-        action!: Action,
-        mode!: Mode,
-        priority!: UInt32,
-        mimeType!: String,
-        progress!: Progress,
-        gauge!: Bool,
-        ctime!: UInt64,
-        mtime!: UInt64,
-        retry!: Bool,
-        tries!: UInt32,
-        reason!: String,
-        faults!: ?Faults,
-        extras!: ?HashMap<String, String>
-    ) {
-        this.uid = uid
-        this.bundle = bundle
-        this.saveas = saveas
-        this.url = url
-        this.data = data
-        this.tid = tid
-        this.title = title
-        this.description = description
-        this.action = action
-        this.mode = mode
-        this.priority = priority
-        this.mimeType = mimeType
-        this.progress = progress
-        this.gauge = gauge
-        this.ctime = ctime
-        this.mtime = mtime
-        this.retry = retry
-        this.tries = tries
-        this.reason = reason
-        this.faults = faults
-        this.extras = extras
-    }
+    public let extras: HashMap<String, String>
 
     init(v: CTaskInfo) {
-        this.uid = v.uid.toString()
-        this.bundle = v.bundle.toString()
         this.saveas = v.saveas.toString()
         this.url = v.url.toString()
         this.tid = v.tid.toString()
@@ -1599,7 +1761,7 @@ public class TaskInfo {
         this.tries = v.tries
         this.faults = Faults.parse(v.faults)
         this.reason = v.reason.toString()
-        this.extras = v.extras.toHashMapOption()
+        this.extras = v.extras.toHashMap()
     }
 }
 
@@ -1654,15 +1816,15 @@ class RequestEvent {
 }
 
 class EventManage {
-    let eventMap: HashMap<String, RequestEvent>
+    let eventMap: HashMap<EventCallbackType, RequestEvent>
     let mutex: Mutex
 
     init() {
-        eventMap = HashMap<String, RequestEvent>()
+        eventMap = HashMap<EventCallbackType, RequestEvent>()
         mutex = Mutex()
     }
 
-    func getOrCreate(eventName: String): RequestEvent {
+    func getOrCreate(eventName: EventCallbackType): RequestEvent {
         synchronized(mutex) {
             if (let Some(v) <- eventMap.get(eventName)) {
                 return v
@@ -1673,61 +1835,65 @@ class EventManage {
         }
     }
 
-    func remove(eventName: String) {
+    func remove(eventName: EventCallbackType) {
         synchronized(mutex) {
             eventMap.remove(eventName)
         }
     }
 }
 
-/*
+/**
  * The task entry.
  * New task' status is "initialized" and enqueue.
  * Can `start` a initialized task.
  * Can `pause` a waiting/running/retrying background task.
  * Can `resume` a paused background task.
  * Can `stop` a running/waiting/retrying task and dequeue it.
+ *
+ * @relation interface Task
  */
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class Task {
+    /**
+     * The task id, unique on system.
+     * Generated automatically by system.
+     *
+     * @relation readonly tid: string
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public Task(
-        /*
-         * The task id, unique on system.
-         * Generated automatically by system.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public let tid: String,
-        /*
-         * The configurations for the task.
-         */
-        @!APILevel[
-            21,
-            atomicservice: true,
-            crossplatform: true,
-            stagemodelonly: true,
-            syscap: "SystemCapability.Request.FileTransferAgent"
-        ]
-        public let config: Config
-    ) {}
+    public let tid: String
+    /**
+     * The configurations for the task.
+     *
+     * @relation config: Config
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public var config: Config
+
+    /**
+     * Task constructor.
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public init(tid: String, config: Config) {
+        this.tid = tid
+        this.config = config
+    }
 
     private let eventMng_: EventManage = EventManage()
     ~init() {
@@ -1738,15 +1904,22 @@ public class Task {
         }
     }
 
+    /**
+     * Enables the response callback.
+     * Subscribes to task response headers.
+     *
+     * @param { String } event - event types.
+     * @param { Callback1Argument<HttpResponse> } callback - callback function with an `HttpResponse` argument.
+     * @throws { BusinessException } 401 - Parameter verification failed.
+     * @relation on(event: 'response', callback: Callback<HttpResponse>): void
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public func on(event: String, callback: Callback1Argument<HttpResponseMessage>): Unit {
-        if (event != "response") {
+    public func on(event: EventCallbackType, callback: Callback1Argument<HttpResponse>): Unit {
+        if (event != EventCallbackType.Response) {
             throw BusinessException(ERR_PARAMETER_ERROR, getErrorMsg(ERR_PARAMETER_ERROR))
         }
 
@@ -1756,13 +1929,13 @@ public class Task {
 
         let wrapper = {
             response: CHttpResponse =>
-            callback.invoke(HttpResponseMessage(response))
+            callback.invoke(None, HttpResponse(response))
             response.free()
         }
         unsafe {
             try (
                 cTid = LibC.mallocCString(tid).asResource(),
-                cType = LibC.mallocCString(event).asResource()
+                cType = LibC.mallocCString(event.value).asResource()
             ) {
                 let lambdaData = Callback1Param<CHttpResponse, Unit>(wrapper)
                 let ret = FfiOHOSRequestTaskProgressOn(cType.value, cTid.value, lambdaData.getID()).asCMallocResource()
@@ -1774,16 +1947,30 @@ public class Task {
         }
     }
 
+    /**
+     * Enables the specified callback.
+     * Subscribes to task progress changes, completion events, failure events, pause events, resume events or removal events.
+     *
+     * @param { String } event - event types.
+     * @param { Callback1Argument<Progress> } callback - callback function with a `Progress` argument.
+     * @throws { BusinessException } 401 - Parameter verification failed.
+     * @relation on(event: 'progress', callback: (progress: Progress) => void): void
+     * @relation on(event: 'completed', callback: (progress: Progress) => void): void
+     * @relation on(event: 'failed', callback: (progress: Progress) => void): void
+     * @relation on(event: 'pause', callback: (progress: Progress) => void): void
+     * @relation on(event: 'resume', callback: (progress: Progress) => void): void
+     * @relation on(event: 'remove', callback: (progress: Progress) => void): void
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public func on(event: String, callback: Callback1Argument<Progress>): Unit {
-        if (event != "progress" && event != "completed" && event != "failed" && event != "pause" && event != "resume" &&
-            event != "remove") {
+    public func on(event: EventCallbackType, callback: Callback1Argument<Progress>): Unit {
+        if (
+            event != EventCallbackType.Progress && event != EventCallbackType.Completed && event != EventCallbackType.Failed &&
+            event != EventCallbackType.Pause && event != EventCallbackType.Resume && event != EventCallbackType.Remove
+        ) {
             throw BusinessException(ERR_PARAMETER_ERROR, getErrorMsg(ERR_PARAMETER_ERROR))
         }
 
@@ -1793,14 +1980,14 @@ public class Task {
 
         let wrapper = {
             progress: CProgress =>
-            callback.invoke(Progress(progress))
+            callback.invoke(None, Progress(progress))
             progress.free()
         }
 
         unsafe {
             try (
                 cTid = LibC.mallocCString(tid).asResource(),
-                cType = LibC.mallocCString(event).asResource()
+                cType = LibC.mallocCString(event.value).asResource()
             ) {
                 let lambdaData = Callback1Param<CProgress, Unit>(wrapper)
                 let ret = FfiOHOSRequestTaskProgressOn(cType.value, cTid.value, lambdaData.getID()).asCMallocResource()
@@ -1812,19 +1999,25 @@ public class Task {
         }
     }
 
+    /**
+     * Disables the specified callback.
+     * Unsubscribes task progress changes, completion events, failure events, pause events, resume events or removal events.
+     *
+     * @param { String } event - event types.
+     * @param { CallbackObject } callback - callback function.
+     * @relation off(event: 'progress', callback?: (progress: Progress) => void): void
+     * @relation off(event: 'completed', callback?: (progress: Progress) => void): void
+     * @relation off(event: 'failed', callback?: (progress: Progress) => void): void
+     * @relation off(event: 'pause', callback?: (progress: Progress) => void): void
+     * @relation off(event: 'resume', callback?: (progress: Progress) => void): void
+     * @relation off(event: 'remove', callback?: (progress: Progress) => void): void
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public func off(event: String, callback!: ?CallbackObject = None): Unit {
-        if (event != "progress" && event != "completed" && event != "failed" && event != "pause" && event != "resume" &&
-            event != "remove") {
-            throw BusinessException(ERR_PARAMETER_ERROR, getErrorMsg(ERR_PARAMETER_ERROR))
-        }
-
+    public func off(event: EventCallbackType, callback!: ?CallbackObject = None): Unit {
         let id: Int64 = match (callback) {
             case Some(v) =>
                 if (let Some(v) <- eventMng_.getOrCreate(event).getId(v)) {
@@ -1837,7 +2030,7 @@ public class Task {
 
         unsafe {
             try (
-                cType = LibC.mallocCString(event).asResource(),
+                cType = LibC.mallocCString(event.value).asResource(),
                 cTid = LibC.mallocCString(tid).asResource()
             ) {
                 let ret = FfiOHOSRequestTaskProgressOff(cType.value, cTid.value, id).asCMallocResource()
@@ -1854,10 +2047,18 @@ public class Task {
         }
     }
 
+    /**
+     * Starts the task. The following tasks can be started:
+     * 1. Tasks just created.
+     * 2. Download tasks that are stopped or become FAILED.
+     *
+     * @throws { BusinessException } 201 - Permission denied.
+     * @throws { BusinessException } 13400003 - Task service ability error.
+     * @throws { BusinessException } 21900007 - Operation with wrong task state.
+     * @relation start(): Promise<void>
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         permission: "ohos.permission.INTERNET",
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
@@ -1873,6 +2074,14 @@ public class Task {
         }
     }
 
+    /**
+     * Pauses the background task.
+     *
+     * @throws { BusinessException } 13400003 - Task service ability error.
+     * @throws { BusinessException } 21900005 - Operation with wrong task mode.
+     * @throws { BusinessException } 21900007 - Operation with wrong task state.
+     * @relation pause(): Promise<void>
+     */
     @!APILevel[
         21,
         stagemodelonly: true,
@@ -1889,6 +2098,15 @@ public class Task {
         }
     }
 
+    /**
+     * Resumes the background task.
+     *
+     * @throws { BusinessException } 201 - Permission denied.
+     * @throws { BusinessException } 13400003 - Task service ability error.
+     * @throws { BusinessException } 21900005 - Operation with wrong task mode.
+     * @throws { BusinessException } 21900007 - Operation with wrong task state.
+     * @relation resume(): Promise<void>
+     */
     @!APILevel[
         21,
         permission: "ohos.permission.INTERNET",
@@ -1906,10 +2124,15 @@ public class Task {
         }
     }
 
+    /**
+     * Stop a running, waiting, or retrying task.
+     *
+     * @throws { BusinessException } 13400003 - Task service ability error.
+     * @throws { BusinessException } 21900007 - Operation with wrong task state.
+     * @relation stop(): Promise<void>
+     */
     @!APILevel[
         21,
-        atomicservice: true,
-        crossplatform: true,
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
@@ -1939,18 +2162,42 @@ func checkPara(config: Config): Unit {
     }
 }
 
+/**
+ * Creates a task for upload or download and enqueue it.
+ * Only foreground application can create the frontend task.
+ * It can deal only one frontend task at a time.
+ * A in processing frontend task will be forced to stop when its application had switched to background.
+ * A new frontend task will interrupt a existed in processing frontend task.
+ * The background task is highly recommended.
+ *
+ * @param { UIAbilityContext } context - context of the caller.
+ * @param { Config } config - configurations for a task.
+ * @returns { Task } the upload or download task.
+ * @throws { BusinessException } 201 - Permission denied.
+ * @throws { BusinessException } 401 - Parameter error. Possible causes: 1. Missing mandatory parameters.
+ * 2. Incorrect parameter type. 3. Parameter verification failed.
+ * @throws { BusinessException } 13400001 - Invalid file or file system error.
+ * @throws { BusinessException } 13400003 - Task service ability error.
+ * @throws { BusinessException } 21900004 - the application task queue is full.
+ * @throws { BusinessException } 21900005 - Operation with wrong task mode.
+ * @throws { IllegalArgumentException } - The context is invalid.
+ *
+ * @relation function create(context: BaseContext, config: Config): Promise<Task>
+ */
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     permission: "ohos.permission.INTERNET",
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
-public func create(context: StageContext, config: Config): Task {
+public func create(context: UIAbilityContext, config: Config): Task {
+    let stageContext = getStageContext(context)
+    if (stageContext.isNull()) {
+        throw IllegalArgumentException("The context is invalid.")
+    }
     checkPara(config)
     try (ffiConfig = CConfig(config).asResource()) {
-        let ret = unsafe { FfiOHOSRequestCreateTask(context, ffiConfig.value).asCMallocResource() }
+        let ret = unsafe { FfiOHOSRequestCreateTask(stageContext, ffiConfig.value).asCMallocResource() }
         if (ret.value.err.errCode != 0) {
             throw BusinessException(ret.value.err.errCode, getErrorMsg(ret.value.err))
         }
@@ -1960,10 +2207,19 @@ public func create(context: StageContext, config: Config): Task {
     throw BusinessException(EXCEPTION_OTHERS, "Never reach here!")
 }
 
+/**
+ * Removes specified task belongs to the caller.
+ * The task will be forced to stop if in processing.
+ *
+ * @param { String } id - the task id.
+ * @throws { BusinessException } 401 - Parameter error. Possible causes: 1. Missing mandatory parameters.
+ * 2. Incorrect parameter type.
+ * @throws { BusinessException } 13400003 - Task service ability error.
+ * @throws { BusinessException } 21900006 - Task removed or not found.
+ * @relation function remove(id: string): Promise<void>
+ */
 @!APILevel[
     21,
-    atomicservice: true,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
@@ -1978,17 +2234,36 @@ public func remove(id: String): Unit {
     }
 }
 
+/**
+ * Gets the task with the specified id.
+ * Obtains task information based on the task ID.
+ *
+ * @param { UIAbilityContext } context - context of the caller.
+ * @param { String } id - the id of the task.
+ * @param { String } token - the token of the task, length between 8 and 2048 bytes.
+ * @throws { BusinessException } 401 - Parameter error. Possible causes: 1. Missing mandatory parameters.
+ * 2. Incorrect parameter type. 3. Parameter verification failed.
+ * @throws { BusinessException } 13400003 - Task service ability error.
+ * @throws { BusinessException } 21900006 - Task removed or not found.
+ * @throws { IllegalArgumentException } - The context is invalid.
+ *
+ * @relation function getTask(context: BaseContext, id: string, token?: string): Promise<Task>
+ */
 @!APILevel[
     21,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
-public func getTask(context: StageContext, id: String, token!: ?String = None): Task {
+public func getTask(context: UIAbilityContext, id: String, token!: ?String = None): Task {
+    let stageContext = getStageContext(context)
+    if (stageContext.isNull()) {
+        throw IllegalArgumentException("The context is invalid.")
+    }
     try (
         cToken = RequestNativeOptionCString(token).asResource(),
         cTid = unsafe { LibC.mallocCString(id).asResource() }
     ) {
-        let ret = unsafe { FfiOHOSRequestGetTask(context, cTid.value, cToken.value).asCMallocResource() }
+        let ret = unsafe { FfiOHOSRequestGetTask(stageContext, cTid.value, cToken.value).asCMallocResource() }
         if (ret.value.err.errCode != 0) {
             throw BusinessException(ret.value.err.errCode, getErrorMsg(ret.value.err))
         }
@@ -1999,9 +2274,20 @@ public func getTask(context: StageContext, id: String, token!: ?String = None): 
     throw BusinessException(EXCEPTION_OTHERS, "Never reach here!")
 }
 
+/**
+ * Shows specified task details belongs to the caller.
+ * Queries a task details based on the task ID.
+ *
+ * @param { String } id - the task id.
+ * @returns { TaskInfo } a task info base on the task ID
+ * @throws { BusinessException } 401 - Parameter error. Possible causes: 1. Missing mandatory parameters.
+ * 2. Incorrect parameter type.
+ * @throws { BusinessException } 13400003 - Task service ability error.
+ * @throws { BusinessException } 21900006 - Task removed or not found.
+ * @relation function show(id: string): Promise<TaskInfo>
+ */
 @!APILevel[
     21,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
@@ -2017,9 +2303,21 @@ public func show(id: String): TaskInfo {
     throw BusinessException(EXCEPTION_OTHERS, "Never reach here!")
 }
 
+/**
+ * Touches specified task with token.
+ * Queries the task details based on the task ID and token.
+ *
+ * @param { String } id - the task id.
+ * @param { String } token - the in-application isolation key.
+ * @returns { TaskInfo } a task info base on the task ID and token
+ * @throws { BusinessException } 401 - Parameter error. Possible causes: 1. Missing mandatory parameters.
+ * 2. Incorrect parameter type.
+ * @throws { BusinessException } 13400003 - Task service ability error.
+ * @throws { BusinessException } 21900006 - Task removed or not found.
+ * @relation function touch(id: string, token: string): Promise<TaskInfo>
+ */
 @!APILevel[
     21,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
@@ -2040,23 +2338,24 @@ public func touch(id: String, token: String): TaskInfo {
     throw BusinessException(err.errCode, getErrorMsg(err))
 }
 
+/**
+ * Searches tasks, for system.
+ * Searches for task IDs based on Filter.
+ *
+ * @param { Filter } filter - an instance of `Filter`.
+ * @returns { Array<String> } task ids which matches filter
+ * @throws { BusinessException } 401 - Parameter error. Possible causes: 1. Missing mandatory parameters.
+ * 2. Incorrect parameter type.
+ * @throws { BusinessException } 13400003 - Task service ability error.
+ *
+ * @relation function search(filter?: Filter): Promise<Array<string>>
+ */
 @!APILevel[
     21,
-    crossplatform: true,
     stagemodelonly: true,
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
-public func search(): Array<String> {
-    search(Filter())
-}
-
-@!APILevel[
-    21,
-    crossplatform: true,
-    stagemodelonly: true,
-    syscap: "SystemCapability.Request.FileTransferAgent"
-]
-public func search(filter: Filter): Array<String> {
+public func search(filter!: Filter = Filter()): Array<String> {
     let ret = unsafe { FfiOHOSRequestSearchTask(CFilter(filter)).asCMallocResource() }
     if (ret.value.err.errCode != 0) {
         throw BusinessException(ret.value.err.errCode, getErrorMsg(ret.value.err))

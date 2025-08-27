@@ -13,11 +13,10 @@
  * limitations under the License.
  */
 
-package ohos.request.agent
+package ohos.request
 
 import std.collection.*
-import ohos.base.*
-import ohos.ffi.*
+import ohos.business_exception.*
 
 let ERROR_CODE_MAP = HashMap<Int32, String>(
     [
