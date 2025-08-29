@@ -2,7 +2,7 @@
 
 ## 简介
 
-上传下载仓颉接口是在 OpenHarmony 上基于上传下载子系统能力之上封装的仓颉API。上传下载服务为应用提供上传/下载能力，包括创建、移除、暂停、启动任务上传/下载，以及订阅任务进度、成功、失败等，支撑开发者方便、高效地使用下载/上传业务的功能。
+上传下载仓颉接口是在 OpenHarmony 上基于上传下载子系统能力之上封装的仓颉API。上传下载服务为应用提供上传/下载能力，包括创建、移除、暂停、启动任务上传/下载，以及订阅任务进度、成功、失败等，支撑开发者方便、高效地使用下载/上传业务的功能，当前开放的上传下载仓颉接口仅支持standard设备。
 
 ## 系统架构
 
@@ -19,12 +19,10 @@
 ```
 base/request/request_cangjie_wrapper
 ├── ohos             # 仓颉上传下载仓颉接口实现
-├── figures          # 存放readme中的架构图
+├── figures          # 存放README中的架构图
 ```
 
 ## 约束
-
-- 当前开放的上传下载仓颉接口仅支持standard设备。
 
 - 如需使用request服务，需要申请如下权限：
     ohos.permission.INTERNET
@@ -69,6 +67,8 @@ request相关API请参见[ohos.request](https://gitcode.com/openharmony-sig/arkc
 
 ## 相关仓
 
-[request_request](https://gitee.com/openharmony/request_request/blob/master)
-
-
+[request_request](https://gitee.com/openharmony/request_request/tree/master)
+[arkcompiler_cangjie_ark_interop](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/tree/master)
+[arkui_arkui_cangjie_wrapper](https://gitcode.com/openharmony-sig/arkui_arkui_cangjie_wrapper/tree/master)
+[hiviewdfx_hiviewdfx_cangjie_wrapper](https://gitcode.com/openharmony-sig/hiviewdfx_hiviewdfx_cangjie_wrapper/tree/master)
+[ability_ability_cangjie_wrapper](https://gitcode.com/openharmony-sig/ability_ability_cangjie_wrapper/tree/master)

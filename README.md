@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The request_cangjie_wrapper is a Cangjie API encapsulated on OpenHarmony based on the capabilities of the upload and download subsystem. The upload and download subsystem provides upload and download capabilities for applications, including creating, removing, suspending, and starting upload and download tasks, and subscribing to the task progress and result.
+The request_cangjie_wrapper is a Cangjie API encapsulated on OpenHarmony based on the capabilities of the upload and download subsystem. The upload and download subsystem provides upload and download capabilities for applications, including creating, removing, suspending, and starting upload and download tasks, and subscribing to the task progress and result，the currently Cangjie open interface for uploading and downloading only supports standard devices.
 
 ## System Architecture
 
@@ -23,8 +23,6 @@ base/request/request_cangjie_wrapper
 ```
 
 ## Constraint
-
-- The currently Cangjie open interface for uploading and downloading only supports standard devices.
 
 - If you need to use the request service, you need to apply for the following permissions: 
      ohos.permission.INTERNET
@@ -70,5 +68,9 @@ Developers are welcome to contribute code, documentation, etc. For specific cont
 ## Repositories Involved
 
 [request_request](https://gitee.com/openharmony/request_request/blob/master/README.md)
+[arkcompiler_cangjie_ark_interop](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/tree/master/README.md)
+[arkui_arkui_cangjie_wrapper](https://gitcode.com/openharmony-sig/arkui_arkui_cangjie_wrapper/tree/master/README.md)
+[hiviewdfx_hiviewdfx_cangjie_wrapper](https://gitcode.com/openharmony-sig/hiviewdfx_hiviewdfx_cangjie_wrapper/tree/master/README.md)
+[ability_ability_cangjie_wrapper](https://gitcode.com/openharmony-sig/ability_ability_cangjie_wrapper/tree/master/README.md)
 
 
