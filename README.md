@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The request_cangjie_wrapper is a Cangjie API encapsulated on OpenHarmony based on the capabilities of the upload and download subsystem,Cangjie open interface for uploading and downloading supports standard devices. The upload and download subsystem provides upload and download capabilities for applications, including creating, removing, suspending, and starting upload and download tasks, and subscribing to the task progress and result，.
+The request_cangjie_wrapper is a Cangjie API encapsulated on OpenHarmony based on the capabilities of the upload and download subsystem,Cangjie open interface for uploading and downloading supports standard devices. The upload and download subsystem provides upload and download capabilities for applications, including creating, removing, suspending, and starting upload and download tasks, and subscribing to the task progress and result.
 
 ## System Architecture
 
@@ -32,14 +32,34 @@ base/request/request_cangjie_wrapper
 ## Constraint
 
 - If you need to use the request service, you need to apply for the following permissions: 
+  
   - ohos.permission.INTERNET
+
 - The data unit is in file form, and the rest of the data forms need to be encapsulated by the caller into file paths by themselves. 
+
 - The request service does not provide a complete HTTP/HTTPS SDK interface. It is only for users of the HTTP/HTTPS SDK. If you need this interface, it is recommended to use [netmanager](https://gitcode.com/openharmony-sig/netmanager_netmanager_cangjie_wrapper). 
+
 - The download server must support the head method of the HTTP protocol and be able to obtain the size of the download data through Content-length; otherwise, the download task will fail. 
+
+- When downloading, if the user specifies that the file already exists, it will be verified when creating the task and an exception will be thrown, resulting in the failure of task creation.
+  =======
+
+- The currently Cangjie open interface for uploading and downloading only supports standard devices.
+
+- If you need to use the request service, you need to apply for the following permissions: 
+     ohos.permission.INTERNET
+
+- The data unit is in file form, and the rest of the data forms need to be encapsulated by the caller into file paths by themselves. 
+
+- The request service does not provide a complete HTTP/HTTPS SDK interface. It is only for users of the HTTP/HTTPS SDK. If you need this interface, it is recommended to use [netmanager](https://gitcode.com/openharmony-sig/netmanager_netmanager_cangjie_wrapper). 
+
+- The download server must support the head method of the HTTP protocol and be able to obtain the size of the download data through Content-length; otherwise, the download task will fail. 
+
 - When downloading, if the user specifies that the file already exists, it will be verified when creating the task and an exception will be thrown, resulting in the failure of task creation. 
-- Allow users to specify a successful multi-file upload strategy: When multiple files are uploaded in the same task, the task dimension is used as the judgment criterion. All files must be uploaded successfully to be considered successful.
 
 ## Instructions For Use
+
+
 
 - The following upload and download functions are provided
   
