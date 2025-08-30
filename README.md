@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The request_cangjie_wrapper is a Cangjie API encapsulated on OpenHarmony based on the capabilities of the upload and download subsystem. The upload and download subsystem provides upload and download capabilities for applications, including creating, removing, suspending, and starting upload and download tasks, and subscribing to the task progress and result，the currently Cangjie open interface for uploading and downloading only supports standard devices.
+The request_cangjie_wrapper is a Cangjie API encapsulated on OpenHarmony based on the capabilities of the upload and download subsystem,Cangjie open interface for uploading and downloading supports standard devices. The upload and download subsystem provides upload and download capabilities for applications, including creating, removing, suspending, and starting upload and download tasks, and subscribing to the task progress and result，.
 
 ## System Architecture
 
@@ -10,16 +10,23 @@ The request_cangjie_wrapper is a Cangjie API encapsulated on OpenHarmony based o
 
 ![](figures/request_cangjie_wrapper_architecture_en.png "Architecture of the request_cangjie_wrapper")
 
+As depicted in the architecture diagram:
+
+- task create/remove: Offer interfaces for the creation and removal of upload and download tasks.
+- task start/stop: Provide interfaces to initiate and terminate the already created upload and download tasks.
+- task pause/resume: Furnish interfaces for interrupting an executing upload or download task and resuming an interrupted one.
+- query task information : Present an interface for querying information regarding upload and download tasks.
+- subscribe task status : Provide an interface for subscribing to task status. A callback will be triggered when the task status undergoes a change.
+- Cangjie upload download FFI interface definition: Be responsible for defining the Cangjie interface for C interoperability, which is employed to realize Cangjie's upload and download capabilities.
+- upload and download request management module: Assume the responsibility of providing fundamental upload and download functions. It encapsulates the C interface for interoperability with Cangjie.
+
 ## Directory Structure
-
-The source code of the upload and download subsystem is stored in the **/base/request** directory.
-
-The directory structure is as follows:
 
 ```
 base/request/request_cangjie_wrapper
-├── ohos             # Cangjie Upload and Download code
-├── figures          # architecture pictures
+├── ohos             
+      └── request    # Cangjie Upload and Download code
+└── figures          # architecture pictures
 ```
 
 ## Constraint
@@ -67,3 +74,5 @@ Developers are welcome to contribute code, documentation, etc. For specific cont
 [arkui_arkui_cangjie_wrapper](https://gitcode.com/openharmony-sig/arkui_arkui_cangjie_wrapper/tree/master/README.md)  
 [hiviewdfx_hiviewdfx_cangjie_wrapper](https://gitcode.com/openharmony-sig/hiviewdfx_hiviewdfx_cangjie_wrapper/tree/master/README.md)  
 [ability_ability_cangjie_wrapper](https://gitcode.com/openharmony-sig/ability_ability_cangjie_wrapper/tree/master/README.md)
+
+
