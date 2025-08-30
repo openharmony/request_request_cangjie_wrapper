@@ -2,7 +2,7 @@
 
 ## 简介
 
-上传下载仓颉接口是在 OpenHarmony 上基于上传下载子系统能力之上封装的仓颉API。上传下载服务为应用提供上传/下载能力，包括创建、移除、暂停、启动任务上传/下载，以及订阅任务进度、成功、失败等，支撑开发者方便、高效地使用下载/上传业务的功能。
+上传下载仓颉接口是在 OpenHarmony 上基于上传下载子系统能力之上封装的仓颉API，当前上传下载仓颉接口支持standard设备。上传下载仓颉接口为应用提供上传/下载能力，包括创建、移除、暂停、启动任务上传/下载，以及订阅任务进度、成功、失败等，支撑开发者方便、高效地使用下载/上传业务的功能。
 
 ## 系统架构
 
@@ -10,24 +10,30 @@
 
 ![](figures/request_cangjie_wrapper_architecture.png "上传下载仓颉架构图")
 
+如架构图所示：
+
+- 任务创建/移除：提供创建和移除上传下载任务的接口。
+- 任务启动/停止：提供启动和停止已经创建的上传下载任务的接口。
+- 任务中断/继续：提供中断一个正在执行的上传下载任务和继续一个被中断的上传下载任务的接口。
+- 查询任务信息：提供查询上传下载任务信息的接口。
+- 订阅任务状态：提供订阅任务状态的接口，当任务状态发生变化时候触发回调。
+- 仓颉上传下载FFI接口定义：负责定义C互操作仓颉接口，用于实现仓颉上传下载能力。
+- 上传下载请求管理模块：负责提供上传下载基础功能，封装C接口提供给仓颉进行互操作。
+
 ## 目录
-
-上传下载仓颉源代码在/base/request目录下。
-
-目录结构如下所示：
 
 ```
 base/request/request_cangjie_wrapper
-├── ohos             # 仓颉上传下载仓颉接口实现
-├── figures          # 存放readme中的架构图
+├── ohos             
+      └── request    # 仓颉上传下载接口实现
+└── figures          # 存放README中的架构图
 ```
 
 ## 约束
 
-- 当前开放的上传下载仓颉接口仅支持standard设备。
-
 - 如需使用request服务，需要申请如下权限：
-    ohos.permission.INTERNET
+  
+  - ohos.permission.INTERNET
 
 - request数据单元为文件形式，其余数据形式需要调用者自行封装为文件路径。
 
@@ -41,27 +47,27 @@ base/request/request_cangjie_wrapper
 
 ## 使用说明
 
-提供以下上传下载功能：
+- 提供以下上传下载功能
+  
+  - 创建要上传或下载的任务
+  - 根据任务id查询任务
+  - 移除属于调用方的指定任务
+  - 根据默认Filter过滤条件查找任务id
+  - 根据Filter过滤条件查找任务id
+  - 根据任务id查询任务的详细信息。
+  - 根据任务id和token查询任务的详细信息。
+  - 订阅/取消订阅任务的事件
+  - 启动/停止/暂停/重启任务
 
-- 创建要上传或下载的任务
-- 根据任务id查询任务
-- 移除属于调用方的指定任务
-- 根据默认Filter过滤条件查找任务id
-- 根据Filter过滤条件查找任务id
-- 根据任务id查询任务的详细信息。
-- 根据任务id和token查询任务的详细信息。
-- 订阅/取消订阅任务的事件
-- 启动/停止/暂停/重启任务
+- 与ArkTS相比，暂不支持以下功能：
+  
+  - 创建并启动一个上传任务
+  - 创建并启动一个下载任务
+  - 设置任务每秒能传输的字节数上限
+  - 订阅/取消订阅任务失败原因
+  - 订阅/取消订阅任务等待原因
 
-与ArkTS相比，暂不支持以下功能：
-
-- 创建并启动一个上传任务
-- 创建并启动一个下载任务
-- 设置任务每秒能传输的字节数上限
-- 订阅/取消订阅任务失败原因
-- 订阅/取消订阅任务等待原因
-
-request相关API请参见[ohos.request](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/blob/master/doc/API_Reference/source_zh_cn/apis/BasicServicesKit/cj-apis-request-agent.md)，相关指导请参见[应用文件上传下载开发指南](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/blob/master/doc/Dev_Guide/source_zh_cn/basic-services/request/cj-app-file-upload-download.md)。
+- request相关API请参见[ohos.request](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/blob/master/doc/API_Reference/source_zh_cn/apis/BasicServicesKit/cj-apis-request-agent.md)，相关指导请参见[应用文件上传下载开发指南](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/blob/master/doc/Dev_Guide/source_zh_cn/basic-services/request/cj-app-file-upload-download.md)。
 
 ## 参与贡献
 
@@ -69,6 +75,10 @@ request相关API请参见[ohos.request](https://gitcode.com/openharmony-sig/arkc
 
 ## 相关仓
 
-[request_request](https://gitee.com/openharmony/request_request/blob/master)
+[request_request](https://gitee.com/openharmony/request_request/tree/master)  
+[arkcompiler_cangjie_ark_interop](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/tree/master)  
+[arkui_arkui_cangjie_wrapper](https://gitcode.com/openharmony-sig/arkui_arkui_cangjie_wrapper/tree/master)  
+[hiviewdfx_hiviewdfx_cangjie_wrapper](https://gitcode.com/openharmony-sig/hiviewdfx_hiviewdfx_cangjie_wrapper/tree/master)  
+[ability_ability_cangjie_wrapper](https://gitcode.com/openharmony-sig/ability_ability_cangjie_wrapper/tree/master)
 
 
