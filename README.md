@@ -8,7 +8,7 @@ The request_cangjie_wrapper is a Cangjie API encapsulated on OpenHarmony based o
 
 **Figure 1** Architecture of the request_cangjie_wrapper
 
-![](figures/request_cangjie_wrapper_architecture_en.png "Architecture of the request_cangjie_wrapper")
+!["Architecture of the request_cangjie_wrapper"](figures/request_cangjie_wrapper_architecture_en.png )
 
 As depicted in the architecture diagram:
 
@@ -26,6 +26,7 @@ As depicted in the architecture diagram:
 base/request/request_cangjie_wrapper
 ├── ohos             
       └── request    # Cangjie Upload and Download code
+├── test             # test code
 └── figures          # architecture pictures
 ```
 
