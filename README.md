@@ -24,16 +24,15 @@ As depicted in the architecture diagram:
 
 ```
 base/request/request_cangjie_wrapper
-├── ohos             
-      └── request    # Cangjie Upload and Download code
-├── test             # test code
-└── figures          # architecture pictures
+├── figures          # architecture pictures             
+├── ohos
+    └── request      # Cangjie Upload and Download code
+└── test             # test code
 ```
 
 ## Constraint
 
-- If you need to use the request service, you need to apply for the following permissions: 
-  - ohos.permission.INTERNET
+- If you need to use the request service, you need to apply for the ohos.permission.INTERNET permissions.
 - The data unit is in file form, and the rest of the data forms need to be encapsulated by the caller into file paths by themselves. 
 - The request service does not provide a complete HTTP/HTTPS SDK interface. It is only for users of the HTTP/HTTPS SDK. If you need this interface, it is recommended to use [netmanager](https://gitcode.com/openharmony-sig/netmanager_netmanager_cangjie_wrapper). 
 - The download server must support the head method of the HTTP protocol and be able to obtain the size of the download data through Content-length; otherwise, the download task will fail. 
