@@ -8,7 +8,7 @@
 
 **图 1**  上传下载仓颉架构图
 
-![](figures/request_cangjie_wrapper_architecture.png "上传下载仓颉架构图")
+!["上传下载仓颉架构图"](figures/request_cangjie_wrapper_architecture.png)
 
 如架构图所示：
 
@@ -26,6 +26,7 @@
 base/request/request_cangjie_wrapper
 ├── ohos             
       └── request    # 仓颉上传下载接口实现
+├── test             # 测试代码
 └── figures          # 存放README中的架构图
 ```
 
