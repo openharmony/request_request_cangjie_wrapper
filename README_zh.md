@@ -53,8 +53,8 @@ base/request/request_cangjie_wrapper
   - 移除属于调用方的指定任务
   - 根据默认Filter过滤条件查找任务id
   - 根据Filter过滤条件查找任务id
-  - 根据任务id查询任务的详细信息。
-  - 根据任务id和token查询任务的详细信息。
+  - 根据任务id查询任务的详细信息
+  - 根据任务id和token查询任务的详细信息
   - 订阅/取消订阅任务的事件
   - 启动/停止/暂停/重启任务
 
