@@ -24,17 +24,15 @@
 
 ```
 base/request/request_cangjie_wrapper
-├── ohos             
-      └── request    # 仓颉上传下载接口实现
-├── test             # 测试代码
-└── figures          # 存放README中的架构图
+├── figures          # 存放README中的架构图             
+├── ohos
+    └── request      # 仓颉上传下载接口实现
+└── test             # 测试代码
 ```
 
 ## 约束
 
-- 如需使用request服务，需要申请如下权限：
-  
-  - ohos.permission.INTERNET
+- 如需使用request服务，需要申请ohos.permission.INTERNET权限。
 
 - request数据单元为文件形式，其余数据形式需要调用者自行封装为文件路径。
 
