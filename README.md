@@ -24,16 +24,15 @@ As depicted in the architecture diagram:
 
 ```
 base/request/request_cangjie_wrapper
-├── ohos             
-      └── request    # Cangjie Upload and Download code
-├── test             # test code
-└── figures          # architecture pictures
+├── figures          # architecture pictures             
+├── ohos
+    └── request      # Cangjie Upload and Download code
+└── test             # test code
 ```
 
 ## Constraint
 
-- If you need to use the request service, you need to apply for the following permissions: 
-  - ohos.permission.INTERNET
+- If you need to use the request service, you need to apply for the ohos.permission.INTERNET permissions.
 - The data unit is in file form, and the rest of the data forms need to be encapsulated by the caller into file paths by themselves. 
 - The request service does not provide a complete HTTP/HTTPS SDK interface. It is only for users of the HTTP/HTTPS SDK. If you need this interface, it is recommended to use [netmanager](https://gitcode.com/openharmony-sig/netmanager_netmanager_cangjie_wrapper). 
 - The download server must support the head method of the HTTP protocol and be able to obtain the size of the download data through Content-length; otherwise, the download task will fail. 
@@ -73,7 +72,3 @@ Developers are welcome to contribute code, documentation, etc. For specific cont
 ## Repositories Involved
 
 [request_request](https://gitee.com/openharmony/request_request/blob/master/README.md)  
-[arkcompiler_cangjie_ark_interop](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/tree/master/README.md)  
-[arkui_arkui_cangjie_wrapper](https://gitcode.com/openharmony-sig/arkui_arkui_cangjie_wrapper/tree/master/README.md)  
-[hiviewdfx_hiviewdfx_cangjie_wrapper](https://gitcode.com/openharmony-sig/hiviewdfx_hiviewdfx_cangjie_wrapper/tree/master/README.md)  
-[ability_ability_cangjie_wrapper](https://gitcode.com/openharmony-sig/ability_ability_cangjie_wrapper/tree/master/README.md)
