@@ -324,7 +324,6 @@ public class OpenHarmonyTestRunner <: TestRunner {
                 try {
                     abilityDelegator
                         .startAbility(want)
-                        .get()
                     if (FileFs.access(classFilePath)) {
                         let text = String.fromUtf8(fs
                             .File
