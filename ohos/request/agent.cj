@@ -1151,6 +1151,7 @@ public enum State {
             case 0x20 => Running
             case 0x21 => Retrying
             case 0x30 => Paused
+            case 0x31 => Stopped
             case 0x40 => Completed
             case 0x41 => Failed
             case 0x50 => Removed
