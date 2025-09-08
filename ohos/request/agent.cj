@@ -1909,9 +1909,8 @@ public class Task {
      * Enables the response callback.
      * Subscribes to task response headers.
      *
-     * @param { String } event - event types.
      * @param { Callback1Argument<HttpResponse> } callback - callback function with an `HttpResponse` argument.
-     * @throws { BusinessException } 401 - Parameter verification failed.
+     *
      * @relation on(event: 'response', callback: Callback<HttpResponse>): void
      */
     @!APILevel[
@@ -1919,10 +1918,8 @@ public class Task {
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public func on(event: EventCallbackType, callback: Callback1Argument<HttpResponse>): Unit {
-        if (event != EventCallbackType.Response) {
-            throw BusinessException(ERR_PARAMETER_ERROR, getErrorMsg(ERR_PARAMETER_ERROR))
-        }
+    public func onResponse(callback: Callback1Argument<HttpResponse>): Unit {
+        let event = EventCallbackType.Response
 
         if (eventMng_.getOrCreate(event).contains(callback)) {
             return
@@ -1950,16 +1947,97 @@ public class Task {
 
     /**
      * Enables the specified callback.
-     * Subscribes to task progress changes, completion events, failure events, pause events, resume events or removal events.
+     * Subscribes to task progress changes.
      *
      * @param { String } event - event types.
      * @param { Callback1Argument<Progress> } callback - callback function with a `Progress` argument.
-     * @throws { BusinessException } 401 - Parameter verification failed.
+     *
      * @relation on(event: 'progress', callback: (progress: Progress) => void): void
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public func onProgress(callback: Callback1Argument<Progress>): Unit {
+        on(EventCallbackType.Progress, callback)
+    }
+
+    /**
+     * Enables the specified callback.
+     * Subscribes to task completion events.
+     *
+     * @param { Callback1Argument<Progress> } callback - callback function with a `Progress` argument.
+     *
      * @relation on(event: 'completed', callback: (progress: Progress) => void): void
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public func onCompleted(callback: Callback1Argument<Progress>): Unit {
+        on(EventCallbackType.Completed, callback)
+    }
+
+    /**
+     * Enables the specified callback.
+     * Subscribes to task failure events.
+     *
+     * @param { Callback1Argument<Progress> } callback - callback function with a `Progress` argument.
+     *
      * @relation on(event: 'failed', callback: (progress: Progress) => void): void
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public func onFailed(callback: Callback1Argument<Progress>): Unit {
+        on(EventCallbackType.Failed, callback)
+    }
+
+    /**
+     * Enables the specified callback.
+     * Subscribes to task pause events.
+     *
+     * @param { Callback1Argument<Progress> } callback - callback function with a `Progress` argument.
+     *
      * @relation on(event: 'pause', callback: (progress: Progress) => void): void
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public func onPause(callback: Callback1Argument<Progress>): Unit {
+        on(EventCallbackType.Pause, callback)
+    }
+
+    /**
+     * Enables the specified callback.
+     * Subscribes to task resume events.
+     *
+     * @param { Callback1Argument<Progress> } callback - callback function with a `Progress` argument.
+     *
      * @relation on(event: 'resume', callback: (progress: Progress) => void): void
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public func onResume(callback: Callback1Argument<Progress>): Unit {
+        on(EventCallbackType.Resume, callback)
+    }
+
+
+    /**
+     * Enables the specified callback.
+     * Subscribes to task removal events.
+     *
+     * @param { Callback1Argument<Progress> } callback - callback function with a `Progress` argument.
+     *
      * @relation on(event: 'remove', callback: (progress: Progress) => void): void
      */
     @!APILevel[
@@ -1967,14 +2045,11 @@ public class Task {
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public func on(event: EventCallbackType, callback: Callback1Argument<Progress>): Unit {
-        if (
-            event != EventCallbackType.Progress && event != EventCallbackType.Completed && event != EventCallbackType.Failed &&
-            event != EventCallbackType.Pause && event != EventCallbackType.Resume && event != EventCallbackType.Remove
-        ) {
-            throw BusinessException(ERR_PARAMETER_ERROR, getErrorMsg(ERR_PARAMETER_ERROR))
-        }
+    public func onRemove(callback: Callback1Argument<Progress>): Unit {
+        on(EventCallbackType.Remove, callback)
+    }
 
+    func on(event: EventCallbackType, callback: Callback1Argument<Progress>): Unit {
         if (eventMng_.getOrCreate(event).contains(callback)) {
             return
         }
@@ -2002,15 +2077,95 @@ public class Task {
 
     /**
      * Disables the specified callback.
-     * Unsubscribes task progress changes, completion events, failure events, pause events, resume events or removal events.
+     * Unsubscribes task progress changes.
      *
-     * @param { String } event - event types.
      * @param { CallbackObject } callback - callback function.
+     *
      * @relation off(event: 'progress', callback?: (progress: Progress) => void): void
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public func offProgress(callback!: ?CallbackObject = None): Unit {
+        off(EventCallbackType.Progress, callback)
+    }
+
+    /**
+     * Disables the specified callback.
+     * Unsubscribes task completion events.
+     *
+     * @param { CallbackObject } callback - callback function.
+     *
      * @relation off(event: 'completed', callback?: (progress: Progress) => void): void
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public func offCompleted(callback!: ?CallbackObject = None): Unit {
+        off(EventCallbackType.Completed, callback)
+    }
+
+    /**
+     * Disables the specified callback.
+     * Unsubscribes task failure events.
+     *
+     * @param { CallbackObject } callback - callback function.
+     *
      * @relation off(event: 'failed', callback?: (progress: Progress) => void): void
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public func offFailed(callback!: ?CallbackObject = None): Unit {
+        off(EventCallbackType.Failed, callback)
+    }
+
+    /**
+     * Disables the specified callback.
+     * Unsubscribes task pause events.
+     *
+     * @param { CallbackObject } callback - callback function.
+     *
      * @relation off(event: 'pause', callback?: (progress: Progress) => void): void
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public func offPause(callback!: ?CallbackObject = None): Unit {
+        off(EventCallbackType.Pause, callback)
+    }
+
+    /**
+     * Disables the specified callback.
+     * Unsubscribes task resume events.
+     *
+     * @param { CallbackObject } callback - callback function.
+     *
      * @relation off(event: 'resume', callback?: (progress: Progress) => void): void
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public func offResume(callback!: ?CallbackObject = None): Unit {
+        off(EventCallbackType.Resume, callback)
+    }
+
+    /**
+     * Disables the specified callback.
+     * Unsubscribes task removal events.
+     *
+     * @param { CallbackObject } callback - callback function.
+     *
      * @relation off(event: 'remove', callback?: (progress: Progress) => void): void
      */
     @!APILevel[
@@ -2018,11 +2173,15 @@ public class Task {
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public func off(event: EventCallbackType, callback!: ?CallbackObject = None): Unit {
+    public func offRemove(callback!: ?CallbackObject = None): Unit {
+        off(EventCallbackType.Remove, callback)
+    }
+
+    func off(event: EventCallbackType, callback: ?CallbackObject): Unit {
         let id: Int64 = match (callback) {
             case Some(v) =>
-                if (let Some(v) <- eventMng_.getOrCreate(event).getId(v)) {
-                    v
+                if (let Some(data) <- eventMng_.getOrCreate(event).getId(v)) {
+                    data
                 } else {
                     return
                 }
