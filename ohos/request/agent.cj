@@ -2079,7 +2079,28 @@ public class Task {
      * Disables the specified callback.
      * Unsubscribes task progress changes.
      *
-     * @param { CallbackObject } callback - callback function.
+     * @param { Callback1Argument<HttpResponse> } callback - callback function.
+     *
+     * @relation off(event: 'response', callback?: (response: HttpResponse) => void): void
+     */
+    @!APILevel[
+        21,
+        stagemodelonly: true,
+        syscap: "SystemCapability.Request.FileTransferAgent"
+    ]
+    public func offResponse(callback!: ?Callback1Argument<HttpResponse> = None): Unit {
+        if (let Some(cb) <- callback) {
+            off(EventCallbackType.Response, callback: cb)
+        } else {
+            off(EventCallbackType.Response)
+        }
+    }
+
+    /**
+     * Disables the specified callback.
+     * Unsubscribes task progress changes.
+     *
+     * @param { Callback1Argument<Progress> } callback - callback function.
      *
      * @relation off(event: 'progress', callback?: (progress: Progress) => void): void
      */
@@ -2088,15 +2109,19 @@ public class Task {
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public func offProgress(callback!: ?CallbackObject = None): Unit {
-        off(EventCallbackType.Progress, callback)
+    public func offProgress(callback!: ?Callback1Argument<Progress> = None): Unit {
+        if (let Some(cb) <- callback) {
+            off(EventCallbackType.Progress, callback: cb)
+        } else {
+            off(EventCallbackType.Progress)
+        }
     }
 
     /**
      * Disables the specified callback.
      * Unsubscribes task completion events.
      *
-     * @param { CallbackObject } callback - callback function.
+     * @param { Callback1Argument<Progress> } callback - callback function.
      *
      * @relation off(event: 'completed', callback?: (progress: Progress) => void): void
      */
@@ -2105,15 +2130,19 @@ public class Task {
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public func offCompleted(callback!: ?CallbackObject = None): Unit {
-        off(EventCallbackType.Completed, callback)
+    public func offCompleted(callback!: ?Callback1Argument<Progress> = None): Unit {
+        if (let Some(cb) <- callback) {
+            off(EventCallbackType.Completed, callback: cb)
+        } else {
+            off(EventCallbackType.Completed)
+        }
     }
 
     /**
      * Disables the specified callback.
      * Unsubscribes task failure events.
      *
-     * @param { CallbackObject } callback - callback function.
+     * @param { Callback1Argument<Progress> } callback - callback function.
      *
      * @relation off(event: 'failed', callback?: (progress: Progress) => void): void
      */
@@ -2122,15 +2151,19 @@ public class Task {
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public func offFailed(callback!: ?CallbackObject = None): Unit {
-        off(EventCallbackType.Failed, callback)
+    public func offFailed(callback!: ?Callback1Argument<Progress> = None): Unit {
+        if (let Some(cb) <- callback) {
+            off(EventCallbackType.Failed, callback: cb)
+        } else {
+            off(EventCallbackType.Failed)
+        }
     }
 
     /**
      * Disables the specified callback.
      * Unsubscribes task pause events.
      *
-     * @param { CallbackObject } callback - callback function.
+     * @param { Callback1Argument<Progress> } callback - callback function.
      *
      * @relation off(event: 'pause', callback?: (progress: Progress) => void): void
      */
@@ -2139,15 +2172,19 @@ public class Task {
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public func offPause(callback!: ?CallbackObject = None): Unit {
-        off(EventCallbackType.Pause, callback)
+    public func offPause(callback!: ?Callback1Argument<Progress> = None): Unit {
+        if (let Some(cb) <- callback) {
+            off(EventCallbackType.Pause, callback: cb)
+        } else {
+            off(EventCallbackType.Pause)
+        }
     }
 
     /**
      * Disables the specified callback.
      * Unsubscribes task resume events.
      *
-     * @param { CallbackObject } callback - callback function.
+     * @param { Callback1Argument<Progress> } callback - callback function.
      *
      * @relation off(event: 'resume', callback?: (progress: Progress) => void): void
      */
@@ -2156,15 +2193,19 @@ public class Task {
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public func offResume(callback!: ?CallbackObject = None): Unit {
-        off(EventCallbackType.Resume, callback)
+    public func offResume(callback!: ?Callback1Argument<Progress> = None): Unit {
+        if (let Some(cb) <- callback) {
+            off(EventCallbackType.Resume, callback: cb)
+        } else {
+            off(EventCallbackType.Resume)
+        }
     }
 
     /**
      * Disables the specified callback.
      * Unsubscribes task removal events.
      *
-     * @param { CallbackObject } callback - callback function.
+     * @param { Callback1Argument<Progress> } callback - callback function.
      *
      * @relation off(event: 'remove', callback?: (progress: Progress) => void): void
      */
@@ -2173,11 +2214,15 @@ public class Task {
         stagemodelonly: true,
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    public func offRemove(callback!: ?CallbackObject = None): Unit {
-        off(EventCallbackType.Remove, callback)
+    public func offRemove(callback!: ?Callback1Argument<Progress> = None): Unit {
+        if (let Some(cb) <- callback) {
+            off(EventCallbackType.Remove, callback: cb)
+        } else {
+            off(EventCallbackType.Remove)
+        }
     }
 
-    func off(event: EventCallbackType, callback: ?CallbackObject): Unit {
+    func off(event: EventCallbackType, callback!: ?CallbackObject = None): Unit {
         let id: Int64 = match (callback) {
             case Some(v) =>
                 if (let Some(data) <- eventMng_.getOrCreate(event).getId(v)) {
