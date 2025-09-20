@@ -17,14 +17,14 @@
 - 任务中断/继续：提供中断一个正在执行的上传下载任务和继续一个被中断的上传下载任务的接口。
 - 查询任务信息：提供查询上传下载任务信息的接口。
 - 订阅任务状态：提供订阅任务状态的接口，当任务状态发生变化时候触发回调。
-- 仓颉上传下载FFI接口定义：负责定义C互操作仓颉接口，用于实现仓颉上传下载能力。
-- 上传下载请求管理模块：负责提供上传下载基础功能，封装C接口提供给仓颉进行互操作。
+- 仓颉上传下载FFI接口定义：负责定义C语言互操作仓颉接口，用于实现仓颉上传下载能力。
+- 上传下载请求管理模块：负责提供上传下载基础功能，封装C语言接口提供给仓颉进行互操作。
 
 ## 目录
 
 ```
 base/request/request_cangjie_wrapper
-├── figures          # 存放README中的架构图             
+├── figures          # 存放README中的架构图         
 ├── ohos
     └── request      # 仓颉上传下载接口实现
 └── test             # 测试代码
@@ -33,21 +33,16 @@ base/request/request_cangjie_wrapper
 ## 约束
 
 - 如需使用request服务，需要申请ohos.permission.INTERNET权限。
-
 - request数据单元为文件形式，其余数据形式需要调用者自行封装为文件路径。
-
 - request服务不提供完整的HTTP/HTTPS SDK接口，只是HTTP/HTTPS SDK 的用户，如需此接口推荐使用[netmanager](https://gitcode.com/openharmony-sig/netmanager_netmanager_cangjie_wrapper)。
-
 - 下载服务器需要支持HTTP协议的head方法，能够通过Content-length获取下载数据大小，否则下载任务失败。
-
 - 下载时用户指定文件已存在，会在创建任务时校验并抛出异常，创建任务失败。
-
 - 允许用户指定多文件上传成功策略：多文件在同一个任务中上传，以任务维度为判断标准，必须所有文件上传成功判定为成功。
 
 ## 使用说明
 
 - 提供以下上传下载功能
-  
+
   - 创建要上传或下载的任务
   - 根据任务id查询任务
   - 移除属于调用方的指定任务
@@ -57,15 +52,13 @@ base/request/request_cangjie_wrapper
   - 根据任务id和token查询任务的详细信息
   - 订阅/取消订阅任务的事件
   - 启动/停止/暂停/重启任务
-
 - 与ArkTS相比，暂不支持以下功能：
-  
+
   - 创建并启动一个上传任务
   - 创建并启动一个下载任务
   - 设置任务每秒能传输的字节数上限
   - 订阅/取消订阅任务失败原因
   - 订阅/取消订阅任务等待原因
-
 - request相关API请参见[ohos.request](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/blob/master/doc/API_Reference/source_zh_cn/apis/BasicServicesKit/cj-apis-request-agent.md)，相关指导请参见[应用文件上传下载开发指南](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/blob/master/doc/Dev_Guide/source_zh_cn/basic-services/request/cj-app-file-upload-download.md)。
 
 ## 参与贡献
@@ -74,6 +67,12 @@ base/request/request_cangjie_wrapper
 
 ## 相关仓
 
-[request_request](https://gitee.com/openharmony/request_request/tree/master)  
+[request_request](https://gitee.com/openharmony/request_request/tree/master)
 
+[cangjie_ark_interop](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/blob/master/README_zh.md)
 
+[ability_cangjie_wrapper](https://gitcode.com/openharmony-sig/ability_ability_cangjie_wrapper/blob/master/README_zh.md)
+
+[arkui_cangjie_wrapper](https://gitcode.com/openharmony-sig/arkui_arkui_cangjie_wrapper/blob/master/README_zh.md)
+
+[hiviewdfx_cangjie_wrapper](https://gitcode.com/openharmony-sig/hiviewdfx_hiviewdfx_cangjie_wrapper/blob/master/README_zh.md)
