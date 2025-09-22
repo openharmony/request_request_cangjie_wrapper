@@ -15,8 +15,8 @@
 
 package ohos_app_cangjie_entry
 
-import kit.AbilityKit.*
-import kit.TestKit.*
+import AbilityKit.*
+import TestKit.*
 import ohos.hilog.Hilog
 import ohos.app.ability.ability_delegator_registry.*
 import std.unittest.XmlReporter
@@ -33,7 +33,7 @@ import std.unittest.TestClass
 import std.collection.HashSet
 import std.collection.ArrayList
 import std.unittest.TestSuite
-import kit.AbilityKit.Want
+import AbilityKit.Want
 import std.process.Process
 import ohos.arkui.component.Line
 import std.unittest.common.Configuration
@@ -50,20 +50,20 @@ import ohos.file.fs.FileIo as  FileFs
 import std.unittest.testmacro.*
 import std.unittest.*
 import std.unittest.common.*
-import kit.AbilityKit.AbilityStageContext
+import AbilityKit.AbilityStageContext
 import ohos.bundle.bundle_manager.BundleInfo
-import kit.AbilityKit.UIAbilityContext
-import kit.AbilityKit.Permissions
-import kit.AbilityKit.AbilityAccessCtrl
-import kit.AbilityKit.GrantStatus
+import AbilityKit.UIAbilityContext
+import AbilityKit.Permissions
+import AbilityKit.AbilityAccessCtrl
+import AbilityKit.GrantStatus
 import std.collection.collectArray
 import ohos.resource_manager.ResourceManager
-import kit.AbilityKit.ApplicationContext
+import AbilityKit.ApplicationContext
 import std.collection.enumerate
 import std.io.ByteBuffer
 import stdx.encoding.json.stream.JsonWriter
 import std.collection.filterMap
-import kit.PerformanceAnalysisKit.Hilog
+import PerformanceAnalysisKit.Hilog
 
 foreign func __gcov_dump(): Unit
 

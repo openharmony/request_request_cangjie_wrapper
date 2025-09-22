@@ -15,8 +15,8 @@
 
 package ohos_app_cangjie_entry
 
-import kit.AbilityKit.{AbilityStage, AbilityStageContext}
-import kit.PerformanceAnalysisKit.Hilog
+import AbilityKit.{AbilityStage, AbilityStageContext}
+import PerformanceAnalysisKit.Hilog
 import ohos.arkui.state_management.AppStorage
 
 class MyAbilityStage <: AbilityStage {
