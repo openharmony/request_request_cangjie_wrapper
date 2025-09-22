@@ -17,17 +17,19 @@
 - 任务中断/继续：提供中断一个正在执行的上传下载任务和继续一个被中断的上传下载任务的接口。
 - 查询任务信息：提供查询上传下载任务信息的接口。
 - 订阅任务状态：提供订阅任务状态的接口，当任务状态发生变化时候触发回调。
-- 仓颉上传下载FFI接口定义：负责定义C语言互操作仓颉接口，用于实现仓颉上传下载能力。
+- 仓颉上传下载FFI接口定义：负责定义被仓颉语言调用的C语言互操作接口，用于实现仓颉上传下载能力。
 - 上传下载请求管理模块：负责提供上传下载基础功能，封装C语言接口提供给仓颉进行互操作。
 
 ## 目录
 
 ```
 base/request/request_cangjie_wrapper
-├── figures          # 存放README中的架构图         
+├── figures            # 存放README中的架构图         
 ├── ohos
-    └── request      # 仓颉上传下载接口实现
-└── test             # 测试代码
+│   └── request        # 仓颉上传下载接口实现
+└── test
+    └── APILevel22
+        └── request    # 仓颉上传下载接口测试代码
 ```
 
 ## 约束
@@ -42,7 +44,7 @@ base/request/request_cangjie_wrapper
 ## 使用说明
 
 - 提供以下上传下载功能
-
+  
   - 创建要上传或下载的任务
   - 根据任务id查询任务
   - 移除属于调用方的指定任务
@@ -52,14 +54,16 @@ base/request/request_cangjie_wrapper
   - 根据任务id和token查询任务的详细信息
   - 订阅/取消订阅任务的事件
   - 启动/停止/暂停/重启任务
-- 与ArkTS相比，暂不支持以下功能：
 
+- 与ArkTS提供的API能力相比，暂不支持以下功能：
+  
   - 创建并启动一个上传任务
   - 创建并启动一个下载任务
   - 设置任务每秒能传输的字节数上限
   - 订阅/取消订阅任务失败原因
   - 订阅/取消订阅任务等待原因
-- request相关API请参见[ohos.request](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/blob/master/doc/API_Reference/source_zh_cn/apis/BasicServicesKit/cj-apis-request-agent.md)，相关指导请参见[应用文件上传下载开发指南](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/blob/master/doc/Dev_Guide/source_zh_cn/basic-services/request/cj-app-file-upload-download.md)。
+
+- request相关API请参见[上传下载 API参考](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/blob/master/doc/API_Reference/source_zh_cn/apis/BasicServicesKit/cj-apis-request-agent.md)，相关指导请参见[上传下载开发指南](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/blob/master/doc/Dev_Guide/source_zh_cn/basic-services/request/cj-app-file-upload-download.md)。
 
 ## 参与贡献
 
