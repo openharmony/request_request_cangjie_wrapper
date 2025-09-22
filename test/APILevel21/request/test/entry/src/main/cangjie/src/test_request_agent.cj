@@ -18,11 +18,11 @@ package ohos_app_cangjie_entry
 import std.convert.*
 import std.unittest.*
 import std.unittest.testmacro.*
-import kit.CoreFileKit.{FileIo, OpenMode}
-import kit.AbilityKit.{AbilityStageContext, UIAbilityContext, Want}
-import kit.BasicServicesKit.{State as RState, Filter as RFilter, Action as RAction, Progress as RProgress, remove as rRemove
+import CoreFileKit.{FileIo, OpenMode}
+import AbilityKit.{AbilityStageContext, UIAbilityContext, Want}
+import BasicServicesKit.{State as RState, Filter as RFilter, Action as RAction, Progress as RProgress, remove as rRemove
     }
-import kit.BasicServicesKit.*
+import BasicServicesKit.*
 import std.collection.*
 import std.runtime.*
 import std.sync.*
@@ -33,7 +33,7 @@ import std.unittest.testmacro.*
 import ohos.base.*
 import ohos.callback_invoke.*
 import ohos.business_exception.*
-import kit.PerformanceAnalysisKit.Hilog
+import PerformanceAnalysisKit.Hilog
 
 public func requestWaitFor(timeout: Duration, condition: () -> Bool) {
     let monitor = Monitor()
