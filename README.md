@@ -17,17 +17,19 @@ As depicted in the architecture diagram:
 - task pause/resume: Furnish interfaces for interrupting an executing upload or download task and resuming an interrupted one.
 - query task information : Present an interface for querying information regarding upload and download tasks.
 - subscribe task status : Provide an interface for subscribing to task status. A callback will be triggered when the task status undergoes a change.
-- Cangjie upload download FFI interface definition: Be responsible for defining the Cangjie interface for C language interoperability, which is employed to realize Cangjie's upload and download capabilities.
+- Cangjie upload download FFI interface definition: Responsible for defining the C language interoperability interface called by the Cangjie language, which is employed to realize Cangjie's upload and download capabilities.
 - upload and download request management module: Assume the responsibility of providing fundamental upload and download functions. It encapsulates the C language interface for interoperability with Cangjie.
 
 ## Directory Structure
 
 ```
 base/request/request_cangjie_wrapper
-├── figures          # architecture pictures           
+├── figures            # architecture pictures           
 ├── ohos
-    └── request      # Cangjie Upload and Download code
-└── test             # test code
+│   └── request        # Cangjie Upload and Download code          
+└── test
+    └── APILevel22
+        └── request    # Cangjie Upload and Download test code
 ```
 
 ## Constraint
@@ -42,7 +44,7 @@ base/request/request_cangjie_wrapper
 ## Instructions For Use
 
 - The following upload and download functions are provided
-
+  
   - Create a task to upload or download.
   - Query the task based on the task id.
   - Remove the specified task belonging to the caller.
@@ -52,14 +54,16 @@ base/request/request_cangjie_wrapper
   - Query the detailed information of the task based on the task id and token.
   - Events for subscribing to/unsubscribing tasks.
   - Start/Stop/Pause/restart tasks.
-- Compared with ArkTS, the following functions are temporarily not supported
 
+- Compared with the API capabilities provided by ArkTS, the following functions are temporarily not supported
+  
   - Create and start an upload task.
   - Create and start a download task.
   - Set the upper limit of bytes that the task can transfer per second.
   - Reasons for the failure of the subscription/unsubscription task.
   - Reasons for waiting for the subscription/unsubscription task.
-- For the request APIs, please refer to [ohos.request](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/blob/master/doc/API_Reference/source_en/apis/BasicServicesKit/cj-apis-request-agent.md). For relevant guidance, please refer to [Application File Upload and Download Guide](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/blob/master/doc/Dev_Guide/source_en/basic-services/request/cj-app-file-upload-download.md).
+
+- For the request APIs, please refer to [Upload and Download API reference](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/blob/master/doc/API_Reference/source_en/apis/BasicServicesKit/cj-apis-request-agent.md). For relevant guidance, please refer to [Upload and Download Guide](https://gitcode.com/openharmony-sig/arkcompiler_cangjie_ark_interop/blob/master/doc/Dev_Guide/source_en/basic-services/request/cj-app-file-upload-download.md).
 
 ## Code Contribution
 
