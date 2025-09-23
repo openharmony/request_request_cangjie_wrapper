@@ -90,7 +90,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func CreateTask_BaseFunction_Success(): Unit {
         let now = DateTime.now()
         let fileName = "test_${now.month}_${now.dayOfMonth}_${now.hour}_${now.minute}_${now.second}_${now.nanosecond}.txt"
@@ -127,7 +127,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func CreateTask_NoFilePermission_ThrowExcept(): Unit {
         let task: Task
         try {
@@ -146,7 +146,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func CreateTask_DuplicatefilePath_ThrowExcept(): Unit {
         try {
             let config = Config(
@@ -164,7 +164,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func InvalidConfig_URLExceedMaxLength_ThrowExcept(): Unit {
         try {
             const MAX_URL_SIZE = 2048
@@ -182,7 +182,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func InvalidConfig_URLFormatError_ThrowExcept(): Unit {
         try {
             // url must be "^http(s)?:\\/\\/.+"
@@ -199,7 +199,7 @@ class TestRequestAgent {
         }
     }
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func ShowTask_BaseFunction_Success(): Unit {
         let config = Config(
             RAction.Download,
@@ -222,7 +222,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func ShowTask_NotFoundTask_ThrowExecption(): Unit {
         try {
             let task = show("22222")
@@ -234,7 +234,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TouchTask_BaseFunction_Success(): Unit {
         let config = Config(
             RAction.Download,
@@ -257,7 +257,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TouchTask_TokenError_ThrowExecption(): Unit {
         let config = Config(
             RAction.Download,
@@ -280,7 +280,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TouchTask_NotFoundTask_ThrowExecption(): Unit {
         try {
             touch("22222", "null2222222")
@@ -317,7 +317,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func SearchTask_GetAllTask_Success(): Unit {
         let (notStartTask, uploadTask) = createTasks()
         let (notStartTid, uploadTid) = (notStartTask.tid, uploadTask.tid)
@@ -336,7 +336,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TaskStartthenPause_TestSizeTwice_SizeEqual(): Unit {
         let config = Config(
             RAction.Download,
@@ -361,7 +361,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TaskStartthenResume_TaskFinished_ThrowExcption(): Unit {
         let config = Config(
             RAction.Download,
@@ -386,7 +386,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TaskResume_WithoutStart_ThrowExcption() {
         let config = Config(
             RAction.Download,
@@ -407,7 +407,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TaskStop_WithoutStart_ThrowExcption(): Unit {
         let config = Config(
             RAction.Download,
@@ -427,7 +427,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TaskStratthenStop_TestSizeTwice_SizeEqual(): Unit {
         let config = Config(
             RAction.Download,
@@ -475,7 +475,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TaskStartthenPausethenResume_TestSizeTwice_SizeEqual(): Unit {
         let config = Config(
             RAction.Download,
@@ -509,7 +509,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TaskStart_DuplicateStart_ThrowExcption(): Unit {
         let config = Config(
             RAction.Download,
@@ -534,7 +534,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TaskStartthenPausethenResumethenStop_BaseFunc_Success(): Unit {
         let config = Config(
             RAction.Download,
@@ -554,7 +554,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func CreateTask_SizeLessThan8_ThrowExcption(): Unit {
         let config = Config(
             RAction.Download,
@@ -571,7 +571,7 @@ class TestRequestAgent {
         }
     }
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func CreateTask_SizeMoreThan2048_ThrowExcption(): Unit {
         let str = StringBuilder(r'a', 2049)
         let token = str.toString()
@@ -589,7 +589,7 @@ class TestRequestAgent {
         }
     }
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TaskOn_Pause_Success() {
         let config = Config(
             RAction.Download,
@@ -612,7 +612,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TaskOn_Remove_Success() {
         let config = Config(
             RAction.Download,
@@ -631,7 +631,7 @@ class TestRequestAgent {
         }
     }
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TaskOff_Pause_Success() {
         let config = Config(
             RAction.Download,
@@ -655,7 +655,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TaskOff_Remove_Success() {
         let config = Config(
             RAction.Download,
@@ -676,7 +676,7 @@ class TestRequestAgent {
         }
     }
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func CreateFaults_toString_Success(): Unit {
         let faults1: Faults = Others
         @Expect(faults1.toString(),"Faults.Others")
@@ -690,7 +690,7 @@ class TestRequestAgent {
         @Expect(faults5.toString(),"Faults.Fsio")
     }
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func CreateState_toString_Success(): Unit {
         let state1: State = Initialized
         @Expect(state1.toString(),"State.Initialized")
@@ -712,7 +712,7 @@ class TestRequestAgent {
         @Expect(state9.toString(),"State.Removed")
     }
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func CreateNetwork_toString_Success(): Unit {
         let network1: Network = Wifi
         @Expect(network1.toString(),"Network.Wifi")
@@ -722,7 +722,7 @@ class TestRequestAgent {
         @Expect(network3.toString(),"Network.Cellular")
     }
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func CreateMode_toString_Success(): Unit {
         let mode1: Mode = Mode.Background
         @Expect(mode1.toString(),"Mode.Background")
@@ -730,7 +730,7 @@ class TestRequestAgent {
         @Expect(mode2.toString(),"Mode.Foreground")
     }
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func CreateAction_toString_Success(): Unit {
         let action1: RAction = Download
         @Expect(action1.toString(),"Action.Download")
@@ -739,7 +739,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func CreateFilter_toString_Success(): Unit {
         let filter = RFilter(
             state: RState.Completed,
@@ -756,7 +756,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func CreateFileSpec_toString_Success(): Unit {
         let filespec = FileSpec("mypath")
         @Expect(filespec.path,"mypath")
@@ -765,7 +765,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func CreateFormItem_toString_Success(): Unit {
         let formitem = FormItem(
             "name",
@@ -775,13 +775,13 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func enumBroadcastEvent() {
         @Expect(BroadcastEvent.Complete.toString(), "ohos.request.event.COMPLETE")
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TaskCreate_CreateUpload_ExpectSuccess(): Unit {
         let fileSpec = FileSpec("./test.txt")
         let item1 = FormItem("test1", FormItemValue.FileItem(fileSpec))
@@ -805,7 +805,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func GetTask_CompareWithCreated_ExpectSame() {
         try {
             getTask(getAbilityContext(), "123")
@@ -840,7 +840,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func test_EventCallbackType() {
         let enumArray: Array<EventCallbackType> = [EventCallbackType.Progress, Completed, Failed, Pause, Resume, Remove, Response]
         let enumArray2: Array<EventCallbackType> = [EventCallbackType.Progress, Completed, Failed, Pause, Resume, Remove, Response]
@@ -862,7 +862,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func test_EnumAction() {
         let enumArray: Array<Action> = [Download, Upload]
         let enumArray2: Array<Action> = [Download, Upload]
@@ -878,7 +878,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func test_EnumMode() {
         let enumArray: Array<Mode> = [Background, Foreground]
         let enumArray2: Array<Mode> = [Background, Foreground]
@@ -894,7 +894,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel21, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func test_Network() {
         let enumArray: Array<Network> = [AnyType, Wifi, Cellular]
         let enumArray2: Array<Network> = [AnyType, Wifi, Cellular]
