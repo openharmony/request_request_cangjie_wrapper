@@ -18,7 +18,11 @@ As depicted in the architecture diagram:
 - query task information : Present an interface for querying information regarding upload and download tasks.
 - subscribe task status : Provide an interface for subscribing to task status. A callback will be triggered when the task status undergoes a change.
 - Cangjie upload download FFI interface definition: Responsible for defining the C language interoperability interface called by the Cangjie language, which is employed to realize Cangjie's upload and download capabilities.
-- upload and download request management module: Assume the responsibility of providing fundamental upload and download functions. It encapsulates the C language interface for interoperability with Cangjie.
+- request: Assume the responsibility of providing fundamental upload and download functions. It encapsulates the C language interface for interoperability with Cangjie.
+- cangjie_ark_interop: Responsible for providing Cangjie annotation class definitions for labeling APIs, and providing the BusinessException class definition thrown to users.
+- ability_cangjie_wrapper: Responsible for providing the basic capabilities of Ability or Application contexts, including accessing resources of specific applications, etc.
+- arkui_cangjie_wrapper: Responsible for providing basic type definitions and the capability to convert CString type to String type.
+- hiviewdfx_cangjie_wrapper: Responsible for providing log interfaces for printing logs at key paths.
 
 ## Directory Structure
 
@@ -28,8 +32,7 @@ base/request/request_cangjie_wrapper
 ├── ohos
 │   └── request        # Cangjie Upload and Download code          
 └── test
-    └── APILevel22
-        └── request    # Cangjie Upload and Download test code
+    └── request        # Cangjie Upload and Download test code
 ```
 
 ## Constraint
