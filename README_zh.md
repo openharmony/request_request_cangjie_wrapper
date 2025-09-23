@@ -18,7 +18,11 @@
 - 查询任务信息：提供查询上传下载任务信息的接口。
 - 订阅任务状态：提供订阅任务状态的接口，当任务状态发生变化时候触发回调。
 - 仓颉上传下载FFI接口定义：负责定义被仓颉语言调用的C语言互操作接口，用于实现仓颉上传下载能力。
-- 上传下载请求管理模块：负责提供上传下载基础功能，封装C语言接口提供给仓颉进行互操作。
+- request：负责提供上传下载基础功能，封装C语言接口提供给仓颉进行互操作。
+- cangjie_ark_interop：负责提供仓颉注解类定义，用于对API进行标注，以及提供抛向用户的BusinessException异常类定义。
+- ability_cangjie_wrapper：负责提供Ability或Application的上下文的基础能力，包括访问特定应用程序的资源等。
+- arkui_cangjie_wrapper：负责提供基础类型定义，提供CString类型转换为String类型的能力。
+- hiviewdfx_cangjie_wrapper：负责提供日志接口，用于在关键路径处打印日志。
 
 ## 目录
 
@@ -28,8 +32,7 @@ base/request/request_cangjie_wrapper
 ├── ohos
 │   └── request        # 仓颉上传下载接口实现
 └── test
-    └── APILevel22
-        └── request    # 仓颉上传下载接口测试代码
+    └── request        # 仓颉上传下载接口测试代码
 ```
 
 ## 约束
