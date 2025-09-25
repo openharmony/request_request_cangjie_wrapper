@@ -14,25 +14,25 @@ As depicted in the architecture diagram:
 
 Interface Layer
 
-* Task Creation/Removal: Provides interfaces for creating and removing upload/download tasks.
-* Query Task Information: Provides interfaces for querying upload/download task information.
-* Task Start/Stop: Provides interfaces for starting and stopping already created upload/download tasks.
-* Subscribe to Task Status: Provides interfaces for subscribing to task status, triggering callbacks when task status changes.
-* Task Pause/Resume: Provides interfaces for pausing an executing upload/download task and resuming a paused upload/download task.
+- Task Creation/Removal: Provides interfaces for creating and removing upload/download tasks.
+- Query Task Information: Provides interfaces for querying upload/download task information.
+- Task Start/Stop: Provides interfaces for starting and stopping already created upload/download tasks.
+- Subscribe to Task Status: Provides interfaces for subscribing to task status, triggering callbacks when task status changes.
+- Task Pause/Resume: Provides interfaces for pausing an executing upload/download task and resuming a paused upload/download task.
 
 Framework Layer
 
-* Encapsulates the underlying task capabilities to provide standardized functional support for the interface layer, including:
-  * Task Creation/Removal Function Encapsulation
-  * Query Task Information Function Encapsulation
-  * Task Start/Stop Function Encapsulation
-  * Subscribe to Task Status Function Encapsulation
-  * Task Pause/Resume Function Encapsulation
-* Cangjie Upload/Download FFI Interface Definition: Responsible for defining C language interoperability interfaces called by the Cangjie language to implement Cangjie upload/download capabilities.
-* request: Responsible for providing upload/download basic functionality, encapsulating C language interfaces for Cangjie interoperability.
-* cangjie_ark_interop: Responsible for providing Cangjie annotation class definitions for API annotation, and providing BusinessException exception class definition thrown to users.
-* ability_cangjie_wrapper: Responsible for providing basic capabilities of Ability or Application context, including accessing specific application resources.
-* arkui_cangjie_wrapper: Responsible for providing basic type definitions and the ability to convert CString type to String type.
+- Encapsulates the underlying task capabilities to provide standardized functional support for the interface layer, including:
+  - Task Creation/Removal Function Encapsulation
+  - Query Task Information Function Encapsulation
+  - Task Start/Stop Function Encapsulation
+  - Subscribe to Task Status Function Encapsulation
+  - Task Pause/Resume Function Encapsulation
+- Cangjie Upload/Download FFI Interface Definition: Responsible for defining C language interoperability interfaces called by the Cangjie language to implement Cangjie upload/download capabilities.
+- request: Responsible for providing upload/download basic functionality, encapsulating C language interfaces for Cangjie interoperability.
+- cangjie_ark_interop: Responsible for providing Cangjie annotation class definitions for API annotation, and providing BusinessException exception class definition thrown to users.
+- ability_cangjie_wrapper: Responsible for providing basic capabilities of Ability or Application context, including accessing specific application resources.
+- arkui_cangjie_wrapper: Responsible for providing basic type definitions and the ability to convert CString type to String type.
 * hiviewdfx_cangjie_wrapper: Responsible for providing logging interfaces for printing logs at critical paths.
 
 ## Directory Structure
@@ -55,11 +55,11 @@ base/request/request_cangjie_wrapper
 - When downloading, if the user specifies that the file already exists, it will be verified when creating the task and an exception will be thrown, resulting in the failure of task creation.
 - Allow users to specify a successful multi-file upload strategy: When multiple files are uploaded in the same task, the task dimension is used as the judgment criterion. All files must be uploaded successfully to be considered successful.
 - Compared with the API capabilities provided by ArkTS, the following functions are temporarily not supported
-  * Create and start an upload task.
-  * Create and start a download task.
-  * Set the upper limit of bytes that the task can transfer per second.
-  * Reasons for the failure of the subscription/unsubscription task.
-  * Reasons for waiting for the subscription/unsubscription task.
+  - Create and start an upload task.
+  - Create and start a download task.
+  - Set the upper limit of bytes that the task can transfer per second.
+  - Reasons for the failure of the subscription/unsubscription task.
+  - Reasons for waiting for the subscription/unsubscription task.
 
 ## Instructions For Use
 
@@ -92,5 +92,3 @@ Developers are welcome to contribute code, documentation, etc. For specific cont
 [arkui_cangjie_wrapper](https://gitcode.com/openharmony-sig/arkui_arkui_cangjie_wrapper/blob/master/README.md)
 
 [hiviewdfx_cangjie_wrapper](https://gitcode.com/openharmony-sig/hiviewdfx_hiviewdfx_cangjie_wrapper/blob/master/README.md)
-
-
