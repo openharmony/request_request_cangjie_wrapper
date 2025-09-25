@@ -63,7 +63,7 @@ base/request/request_cangjie_wrapper
 
 ## Instructions For Use
 
-The following upload and download functions are provided
+The following upload and download functions are provided：
 
 - Create a task to upload or download.
 - Query the task based on the task id.
