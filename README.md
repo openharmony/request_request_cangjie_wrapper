@@ -27,9 +27,8 @@ Framework Layer
 - Task Start/Stop Function Encapsulation: Based on the task start and stop capabilities provided by the underlying request service, implements the function of starting and stopping created upload/download tasks in Cangjie.
 - Subscribe to Task Status Function Encapsulation: Based on the task subscription capabilities provided by the underlying request service, implements the function of subscribing to task status interfaces in Cangjie.
 - Task Interrupt/Resume Function Encapsulation: Based on the task interrupt and resume capabilities provided by the underlying request service, implements the function of task interruption and resumption in Cangjie.
-- 
 
-Dependency Component Introduction in Architecture Diagram:
+Dependency Component Introduction in Architecture Diagram
 
 - request: Responsible for providing basic upload/download functionality, encapsulating C language interfaces for interoperability with Cangjie.
 - cangjie_ark_interop: Responsible for providing Cangjie annotation class definitions for API annotation, and providing BusinessException exception class definitions thrown to users.
