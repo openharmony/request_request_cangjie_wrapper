@@ -72,6 +72,7 @@ For request-related APIs, please refer to [Upload/Download API Reference](https:
 - The download server must support the HTTP protocol's head method and be able to obtain the download data size through Content-length, otherwise the download task will fail.
 - If the user-specified file already exists during download, it will be verified during task creation and an exception will be thrown, causing task creation to fail.
 - Allows users to specify multi-file upload success policies: multiple files are uploaded in the same task, with the task dimension as the judgment standard. All files must be successfully uploaded to determine success.
+- Each application supports creating up to 10 unfinished tasks at most.
 - Compared to APIs provided by ArkTS, the following functions are not currently supported:
   - Create and start an upload task
   - Create and start a download task
