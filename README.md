@@ -12,23 +12,18 @@ The Upload/Download Cangjie Wrapper provides upload/download capabilities for de
 
 As shown in the architecture diagram:
 
-Interface Layer
+Interface Layer:
 
-- Task Creation/Removal: Provides developers with the ability to create and remove upload/download tasks.
-- Query Task Information: Provides developers with the ability to query upload/download task information.
-- Task Start/Stop: Provides developers with the ability to start and stop created upload/download tasks.
-- Subscribe to Task Status: Provides developers with the ability to subscribe to task status interfaces, triggering callbacks when task status changes.
-- Task Interrupt/Resume: Provides developers with the ability to interrupt an executing upload/download task and resume an interrupted upload/download task.
+- Upload and download module: It provides external file download/upload capabilities to support application developers in conveniently and efficiently using download/upload services.
+- Download Service: Responsible for the specific process of downloading, the client initiates a download request, creates a download task internally, processes the download request, and completes the download task.
+- Upload task: Every time the client initiates an upload request, an upload task is created internally to process the upload request and forward the server's upload response.
+- The specific functions are: Provide functions such as task creation/removal, querying task information, task start/stop, subscribing to task status, task interruption/continuation, breakpoint continuation, and persistence.
 
-Framework Layer
+Framework Layer:
 
-- Task Creation/Removal Function Encapsulation: Based on the task creation and removal capabilities provided by the underlying request service, implements the function of creating and removing upload/download tasks in Cangjie.
-- Query Task Information Function Encapsulation: Based on the task information query capabilities provided by the underlying request service, implements the function of querying upload/download task information in Cangjie.
-- Task Start/Stop Function Encapsulation: Based on the task start and stop capabilities provided by the underlying request service, implements the function of starting and stopping created upload/download tasks in Cangjie.
-- Subscribe to Task Status Function Encapsulation: Based on the task subscription capabilities provided by the underlying request service, implements the function of subscribing to task status interfaces in Cangjie.
-- Task Interrupt/Resume Function Encapsulation: Based on the task interrupt and resume capabilities provided by the underlying request service, implements the function of task interruption and resumption in Cangjie.
+- Upload and download module encapsulation: It includes task creation/removal function encapsulation, task information query function encapsulation, task start/stop function encapsulation, subscription task status function encapsulation, task interruption/continuation function encapsulation, breakpoint continuation function encapsulation, and persistence function encapsulation.
 
-Dependency Component Introduction in Architecture Diagram
+Dependency Component Introduction in Architecture Diagram:
 
 - request: Responsible for providing basic upload/download functionality, encapsulating C language interfaces for interoperability with Cangjie.
 - cangjie_ark_interop: Responsible for providing Cangjie annotation class definitions for API annotation, and providing BusinessException exception class definitions thrown to users.
@@ -65,16 +60,16 @@ For request-related APIs, please refer to [Upload/Download API Reference](https:
 
 ## Constraints
 
-- To use the request service, the ohos.permission.INTERNET permission must be requested.
+- To use the request service, you need to apply for the following permissions:
+    -   ohos.permission.INTERNET
+    -   ohos.permission.WRITE_MEDIA
+    -   ohos.permission.READ_MEDIA
 - Request data units are in file form. Other data forms need to be encapsulated as file paths by the caller.
 - The request service does not provide complete HTTP/HTTPS interfaces. If complete HTTP/HTTPS interfaces are needed, it is recommended to use [netmanager](https://gitcode.com/openharmony-sig/netmanager_netmanager_cangjie_wrapper/blob/master/README.md).
 - The download server must support the HTTP protocol's head method and be able to obtain the download data size through Content-length, otherwise the download task will fail.
 - If the user-specified file already exists during download, it will be verified during task creation and an exception will be thrown, causing task creation to fail.
 - Allows users to specify multi-file upload success policies: multiple files are uploaded in the same task, with the task dimension as the judgment standard. All files must be successfully uploaded to determine success.
-- Each application supports creating up to 10 unfinished tasks at most.
 - Compared to APIs provided by ArkTS, the following functions are not currently supported:
-  - Create and start an upload task
-  - Create and start a download task
   - Set the upper limit of bytes that can be transmitted per second for tasks
   - Subscribe/unsubscribe to task failure reasons
   - Subscribe/unsubscribe to task waiting reasons
