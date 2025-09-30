@@ -18,7 +18,7 @@
  */
 package ohos_app_cangjie_entry
 
-import BasicServicesKit.*
+import kit.BasicServicesKit.*
 
 extend Config {
     public operator func ==(other: Config): Bool {
