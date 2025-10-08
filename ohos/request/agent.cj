@@ -123,8 +123,6 @@ public enum EventCallbackType {
 }
 /**
  * The action options.
- *
- * @relation enum Action
  */
 @Derive[ToString, Equatable]
 @!APILevel[
@@ -134,8 +132,6 @@ public enum EventCallbackType {
 public enum Action {
     /**
      * Indicates download task.
-     *
-     * @relation DOWNLOAD = 0
      */
     @!APILevel[
         22,
@@ -145,8 +141,6 @@ public enum Action {
     |
     /**
      * Indicates upload task.
-     *
-     * @relation UPLOAD = 1
      */
     @!APILevel[
         22,
@@ -176,8 +170,6 @@ public enum Action {
 
 /**
  * The mode options.
- *
- * @relation enum Mode
  */
 @Derive[ToString, Equatable]
 @!APILevel[
@@ -187,8 +179,6 @@ public enum Action {
 public enum Mode {
     /**
      * Indicates background task.
-     *
-     * @relation BACKGROUND = 0
      */
     @!APILevel[
         22,
@@ -198,8 +188,6 @@ public enum Mode {
     |
     /**
      * Indicates foreground task.
-     *
-     * @relation FOREGROUND = 1
      */
     @!APILevel[
         22,
@@ -237,8 +225,6 @@ public enum Mode {
 
 /**
  * The network options.
- *
- * @relation enum Network
  */
 @Derive[ToString, Equatable]
 @!APILevel[
@@ -248,8 +234,6 @@ public enum Mode {
 public enum Network {
     /**
      * Indicates no restriction on network type.
-     *
-     * @relation ANY = 0
      */
     @!APILevel[
         22,
@@ -259,8 +243,6 @@ public enum Network {
     |
     /**
      * Indicates Wi-Fi only.
-     *
-     * @relation WIFI = 1
      */
     @!APILevel[
         22,
@@ -270,8 +252,6 @@ public enum Network {
     |
     /**
      * Indicates cellular only.
-     *
-     * @relation CELLULAR = 2
      */
     @!APILevel[
         22,
@@ -303,8 +283,6 @@ public enum Network {
 
 /**
  * Broadcast events for the request.
- *
- * @relation enum BroadcastEvent
  */
 @!APILevel[
     22,
@@ -313,8 +291,6 @@ public enum Network {
 public enum BroadcastEvent <: ToString {
     /**
      * Completion event for the task.
-     *
-     * @relation COMPLETE = 'ohos.request.event.COMPLETE'
      */
     @!APILevel[
         22,
@@ -339,8 +315,6 @@ public enum BroadcastEvent <: ToString {
 }
 /**
  * The file information for a form item.
- *
- * @relation interface FileSpec
  */
 @!APILevel[
     22,
@@ -355,8 +329,6 @@ public class FileSpec {
      * 3: application storage path, only the base directory and its subdirectories are supported, like "/data/storage/el1/base/path/to/file.txt".
      * 4: file protocol path with self bundle name, only the base directory and its subdirectories are supported, like "file://com.example.test/data/storage/el2/base/file.txt".
      * 5: user file url, like "file://media/Photo/path/to/file.png".
-     *
-     * @relation path: string
      */
     @!APILevel[
         22,
@@ -367,8 +339,6 @@ public class FileSpec {
     /*
      * The MIME type of the file.
      * The default is obtained by the suffix of the filename.
-     *
-     * @relation mimeType?: string
      */
     @!APILevel[
         22,
@@ -378,8 +348,6 @@ public class FileSpec {
 
     /*
      * The filename, the default is obtained by path.
-     *
-     * @relation filename?: string
      */
     @!APILevel[
         22,
@@ -389,8 +357,6 @@ public class FileSpec {
 
     /*
      * The extras for the file information.
-     *
-     * @relation extras?: object
      */
     @!APILevel[
         22,
@@ -484,8 +450,6 @@ public enum FormItemValue {
 
 /**
  * The form item information for a task.
- *
- * @relation interface FormItem
  */
 @!APILevel[
     22,
@@ -494,8 +458,6 @@ public enum FormItemValue {
 public class FormItem {
     /*
      * The item's name.
-     *
-     * @relation name: string
      */
     @!APILevel[
         22,
@@ -505,8 +467,6 @@ public class FormItem {
 
     /*
      * The item's value.
-     *
-     * @relation value: string | FileSpec | Array<FileSpec>
      */
     @!APILevel[
         22,
@@ -575,8 +535,6 @@ public enum ConfigData {
  * Provides the configuration information of an upload or download task.
  * Using a flexible configuration for clear upload and download functions.
  * If without emphasis, an option is for any task.
- *
- * @relation interface Config
  */
 @!APILevel[
     22,
@@ -587,8 +545,6 @@ public class Config {
      * The Universal Resource Locator for a task.
      * The maximum length is 2048 characters.
      * Using raw `url` option, even url parameters in it.
-     *
-     * @relation action: Action
      */
     @!APILevel[
         22,
@@ -599,8 +555,6 @@ public class Config {
      * The Universal Resource Locator for a task.
      * The maximum length is 2048 characters.
      * Using raw `url` option, even url parameters in it.
-     *
-     * @relation url: string
      */
     @!APILevel[
         22,
@@ -611,8 +565,6 @@ public class Config {
      * The title for a task, give a meaningful title please.
      * The maximum length is 256 characters.
      * The default is upload or download, consistent with its action.
-     *
-     * @relation title?: string
      */
     @!APILevel[
         22,
@@ -623,8 +575,6 @@ public class Config {
      * The details for a task.
      * The maximum length is 1024 characters.
      * The default is empty string.
-     *
-     * @relation description?: string
      */
     @!APILevel[
         22,
@@ -637,8 +587,6 @@ public class Config {
      * For frontend task, it has callbacks.
      * For background task, it has notifications and fallback.
      * The cross-platform default is Foreground.
-     *
-     * @relation mode?: Mode
      */
     @!APILevel[
         22,
@@ -651,8 +599,6 @@ public class Config {
      * Currently support:
      * true, rewrite the existed file;
      * false, go to fail.
-     *
-     * @relation overwrite?: boolean
      */
     @!APILevel[
         22,
@@ -664,8 +610,6 @@ public class Config {
      * Case insensitive.
      * For upload, use PUT/POST, the default is PUT.
      * For download, use GET/POST, the default is GET.
-      *
-     * @relation method?: string
      */
     @!APILevel[
         22,
@@ -676,8 +620,6 @@ public class Config {
      * The HTTP headers.
      * For upload request, the `Content-Type` is forced to `multipart/form-data`.
      * For download request, the default `Content-Type` is `application/json`.
-     *
-     * @relation headers?: object
      */
     @!APILevel[
         22,
@@ -689,8 +631,6 @@ public class Config {
      * For download, it can be raw string, the default is empty string.
      * For upload, it can be form items, the default is a empty form.
      * There must be one `FileSpec` item at least or will be a parameter error.
-     *
-     * @relation data?: string | Array<FormItem>
      */
     @!APILevel[
         22,
@@ -704,8 +644,6 @@ public class Config {
      * 2: internal protocol path, starting with "internal://", like "internal://cache/path/to/file.txt".
      * 3: application storage path, only the base directory and its subdirectories are supported, like "/data/storage/el1/base/path/to/file.txt".
      * 4: file protocol path with self bundle name, only the base directory and its subdirectories are supported, like "file://com.example.test/data/storage/el2/base/file.txt".
-     *
-     * @relation saveas?: string
      */
     @!APILevel[
         22,
@@ -715,8 +653,6 @@ public class Config {
     /**
      * Network used for the task.
      * The default value is Any (Wi-Fi or cellular).
-     *
-     * @relation network?: Network
      */
     @!APILevel[
         22,
@@ -726,8 +662,6 @@ public class Config {
     /**
      * Allows work in metered network or not.
      * The default is false
-     *
-     * @relation metered?: boolean
      */
     @!APILevel[
         22,
@@ -737,8 +671,6 @@ public class Config {
     /**
      * Allows work in roaming network or not.
      * The default is true.
-     *
-     * @relation roaming?: boolean
      */
     @!APILevel[
         22,
@@ -748,8 +680,6 @@ public class Config {
     /**
      * Enable automatic retry or not for the background task.
      * The frontend task is always fast-fail.
-     *
-     * @relation retry?: boolean
      */
     @!APILevel[
         22,
@@ -759,8 +689,6 @@ public class Config {
     /**
      * Allows redirect or not.
      * The default is true.
-     *
-     * @relation redirect?: boolean
      */
     @!APILevel[
         22,
@@ -771,8 +699,6 @@ public class Config {
      * The index of paths for a task.
      * Usually used for a continuous job.
      * The default is 0.
-     *
-     * @relation index?: number
      */
     @!APILevel[
         22,
@@ -785,8 +711,6 @@ public class Config {
      * It will set the "Range" header in download.
      * It will start read at the point in upload.
      * The default is 0.
-     *
-     * @relation begins?: number
      */
     @!APILevel[
         22,
@@ -799,8 +723,6 @@ public class Config {
      * It will set The "Range" header in download.
      * It will end read at the point in upload.
      * The default is -1 indicating the end of the data for upload or download.
-     *
-     * @relation ends?: number
      */
     @!APILevel[
         22,
@@ -811,8 +733,6 @@ public class Config {
      * The policy of the progress notification for background task.
      * If false: only completed or failed notification, the default.
      * If true, emits every progress, completed or failed notifications.
-     *
-     * @relation gauge?: boolean
      */
     @!APILevel[
         22,
@@ -823,8 +743,6 @@ public class Config {
      * Breaks when fail to fetch filesize before upload/download or not.
      * Uses filesize for a precise gauge.
      * The default is false, set size as -1 indicating the case.
-     *
-     * @relation precise?: boolean
      */
     @!APILevel[
         22,
@@ -839,8 +757,6 @@ public class Config {
      * Creates a task with token, then must provide it during normal query.
      * So saves the token carefully, it can not be retrieved by query.
      * Or leave it empty.
-     *
-     * @relation token?: string
      */
     @!APILevel[
         22,
@@ -852,8 +768,6 @@ public class Config {
      * Front-end tasks have higher priority than back-end tasks.
      * In tasks of the same mode, the smaller the number, the higher the priority.
      * The default is 0.
-     *
-     * @relation priority?: number
      */
     @!APILevel[
         22,
@@ -863,8 +777,6 @@ public class Config {
     /**
      * The extras for the configuration.
      * This parameter is left empty by default.
-     *
-     * @relation extras?: object
      */
     @!APILevel[
         22,
@@ -947,8 +859,6 @@ public class Config {
 
 /**
  * Indicate the current state of the task.
- *
- * @relation enum State
  */
 @Derive[ToString]
 @!APILevel[
@@ -958,8 +868,6 @@ public class Config {
 public enum State {
     /**
      * Indicates a task created by `new Task(Config)`.
-     *
-     * @relation INITIALIZED = 0x00
      */
     @!APILevel[
         22,
@@ -969,8 +877,6 @@ public enum State {
     |
     /**
      * Indicates a task lack of resources or conditions to run or retry.
-     *
-     * @relation WAITING = 0x10
      */
     @!APILevel[
         22,
@@ -980,8 +886,6 @@ public enum State {
     |
     /**
      * Indicates a task in processing now.
-     *
-     * @relation RUNNING = 0x20
      */
     @!APILevel[
         22,
@@ -991,8 +895,6 @@ public enum State {
     |
     /**
      * Indicates a task failed once at least and in processing again now.
-     *
-     * @relation RETRYING = 0x21
      */
     @!APILevel[
         22,
@@ -1002,8 +904,6 @@ public enum State {
     |
     /**
      * Indicates a paused task which tends to be resumed for continuous work.
-     *
-     * @relation PAUSED = 0x30
      */
     @!APILevel[
         22,
@@ -1013,8 +913,6 @@ public enum State {
     |
     /**
      * Indicates a stopped task which must be started again.
-     *
-     * @relation STOPPED = 0x31
      */
     @!APILevel[
         22,
@@ -1024,8 +922,6 @@ public enum State {
     |
     /**
      * Indicates a completed task which finish its data transfer.
-     *
-     * @relation COMPLETED = 0x40
      */
     @!APILevel[
         22,
@@ -1035,8 +931,6 @@ public enum State {
     |
     /**
      * Indicates a failed task which interrupted by some error.
-     *
-     * @relation FAILED = 0x41
      */
     @!APILevel[
         22,
@@ -1046,8 +940,6 @@ public enum State {
     |
     /**
      * Indicates a removed task which can not be processed again.
-     *
-     * @relation REMOVED = 0x50
      */
     @!APILevel[
         22,
@@ -1099,8 +991,6 @@ public enum State {
  * 2: float(processed)/sizes[counter] is the progress for the current processing file.
  * 3: float(sum(sizes[:index])+processed)/sum(sizes) is the summary progress for a task.
  * If fetch file size in failure, the size of the file in sizes will be set as -1.
- *
- * @relation interface Progress
  */
 @!APILevel[
     22,
@@ -1109,8 +999,6 @@ public enum State {
 public class Progress {
     /**
      * The current state of the task.
-     *
-     * @relation readonly state: State
      */
     @!APILevel[
         22,
@@ -1119,8 +1007,6 @@ public class Progress {
     public let state: State
     /**
      * The current processing file index in a task.
-     *
-     * @relation readonly index: number
      */
     @!APILevel[
         22,
@@ -1129,8 +1015,6 @@ public class Progress {
     public let index: UInt32
     /**
      * The processed data size for the current file in a task.
-     *
-     * @relation readonly processed: number
      */
     @!APILevel[
         22,
@@ -1139,8 +1023,6 @@ public class Progress {
     public let processed: Int64
     /**
      * The sizes of files in a task, in bytes.
-     *
-     * @relation readonly sizes: Array<number>
      */
     @!APILevel[
         22,
@@ -1153,8 +1035,6 @@ public class Progress {
      * But when the Content-Disposition header responded, the body will be into the uri of its attachment only, the body here is empty.
      * {"headers": {"key": v}, "body": "contents"}.
      * The "body" field is not supported in cross-platform scenarios.
-     *
-     * @relation readonly extras?: object
      */
     @!APILevel[
         22,
@@ -1174,8 +1054,6 @@ public class Progress {
 /**
  * The HTTP response.
  * Describes the data structure of the task response header.
- *
- * @relation interface HttpResponse
  */
 @!APILevel[
     22,
@@ -1184,8 +1062,6 @@ public class Progress {
 public class HttpResponse {
     /**
      * The version of the HTTP response.
-     *
-     * @relation readonly version: string
      */
     @!APILevel[
         22,
@@ -1194,8 +1070,6 @@ public class HttpResponse {
     public let version: String
     /**
      * The status code of the HTTP response.
-     *
-     * @relation readonly statusCode: number
      */
     @!APILevel[
         22,
@@ -1204,8 +1078,6 @@ public class HttpResponse {
     public let statusCode: Int32
     /**
      * The reason of the HTTP response.
-     *
-     * @relation readonly reason: string
      */
     @!APILevel[
         22,
@@ -1214,8 +1086,6 @@ public class HttpResponse {
     public let reason: String
     /**
      * The headers of the HTTP response.
-     *
-     * @relation readonly headers: Map<string, Array<string>>
      */
     @!APILevel[
         22,
@@ -1240,8 +1110,6 @@ public class HttpResponse {
 
 /**
  * Indicates the reason for the failure.
- *
- * @relation enum Faults
  */
 @Derive[ToString]
 @!APILevel[
@@ -1251,8 +1119,6 @@ public class HttpResponse {
 public enum Faults {
     /**
      * Indicates others failure.
-     *
-     * @relation OTHERS = 0xFF
      */
     @!APILevel[
         22,
@@ -1262,8 +1128,6 @@ public enum Faults {
     |
     /**
      * Indicates network disconnection.
-     *
-     * @relation DISCONNECTED = 0x00
      */
     @!APILevel[
         22,
@@ -1273,8 +1137,6 @@ public enum Faults {
     |
     /**
      * Indicates task timeout.
-     *
-     * @relation TIMEOUT = 0x10
      */
     @!APILevel[
         22,
@@ -1284,8 +1146,6 @@ public enum Faults {
     |
     /**
      * Indicates protocol error, such as 5xx response from server.
-     *
-     * @relation PROTOCOL = 0x20
      */
     @!APILevel[
         22,
@@ -1295,8 +1155,6 @@ public enum Faults {
     |
     /**
      * Indicates filesystem io error, such as open/seek/read/write/close.
-     *
-     * @relation FSIO = 0x40
      */
     @!APILevel[
         22,
@@ -1334,8 +1192,6 @@ public enum Faults {
  * The filter data structure.
  * Used for search, given fields works as **LOGICAL AND**.
  * Invalid value may cause a parameter error.
- *
- * @relation interface Filter
  */
 @!APILevel[
     22,
@@ -1345,8 +1201,6 @@ public class Filter {
     /**
      * Specify the end Unix timestamp.
      * The default is the moment of calling.
-     *
-     * @relation before?: number
      */
     @!APILevel[
         22,
@@ -1356,8 +1210,6 @@ public class Filter {
     /**
      * Specify the start Unix timestamp.
      * The default is "`before` - 24 hours".
-     *
-     * @relation after?: number
      */
     @!APILevel[
         22,
@@ -1367,8 +1219,6 @@ public class Filter {
     /**
      * Specify the state of tasks.
      * The default is any state.
-     *
-     * @relation state?: State
      */
     @!APILevel[
         22,
@@ -1378,8 +1228,6 @@ public class Filter {
     /**
      * Specify the action of tasks, "upload" or "download", case insensitive.
      * The default is upload and download.
-     *
-     * @relation action?: Action
      */
     @!APILevel[
         22,
@@ -1389,8 +1237,6 @@ public class Filter {
     /**
      * Specify task's mode.
      * The default is Foreground and Background.
-     *
-     * @relation mode?: Mode
      */
     @!APILevel[
         22,
@@ -1419,8 +1265,6 @@ public class Filter {
 /**
  * The task information data structure for query results.
  * Provides common query and advanced query, visible range of fields is different.
- *
- * @relation interface TaskInfo
  */
 @!APILevel[
     22,
@@ -1429,8 +1273,6 @@ public class Filter {
 public class TaskInfo {
     /**
      * The path to save the downloaded file.
-     *
-     * @relation readonly saveas?: string
      */
     @!APILevel[
         22,
@@ -1440,8 +1282,6 @@ public class TaskInfo {
     /**
      * The url of a task.
      * For `${ show }` and `${ touch }`.
-     *
-     * @relation readonly url?: string
      */
     @!APILevel[
         22,
@@ -1451,8 +1291,6 @@ public class TaskInfo {
     /**
      * The arguments.
      * For `${ show }` and `${ touch }`.
-     *
-     * @relation readonly data?: string | Array<FormItem>
      */
     @!APILevel[
         22,
@@ -1461,8 +1299,6 @@ public class TaskInfo {
     public let data: ConfigData
     /**
      * The task id.
-     *
-     * @relation readonly tid: string
      */
     @!APILevel[
         22,
@@ -1471,8 +1307,6 @@ public class TaskInfo {
     public let tid: String
     /**
      * The task title.
-     *
-     * @relation readonly title: string
      */
     @!APILevel[
         22,
@@ -1481,8 +1315,6 @@ public class TaskInfo {
     public let title: String
     /**
      * The task details.
-     *
-     * @relation readonly description: string
      */
     @!APILevel[
         22,
@@ -1491,8 +1323,6 @@ public class TaskInfo {
     public let description: String
     /**
      * The task action.
-     *
-     * @relation readonly action: Action
      */
     @!APILevel[
         22,
@@ -1502,8 +1332,6 @@ public class TaskInfo {
     /**
      * Specify task mode.
      * The default is frontend
-     *
-     * @relation readonly mode: Mode
      */
     @!APILevel[
         22,
@@ -1515,8 +1343,6 @@ public class TaskInfo {
      * Front-end tasks have higher priority than back-end tasks.
      * In tasks of the same mode, the smaller the number, the higher the priority.
      * The default is 0.
-     *
-     * @relation readonly priority: number
      */
     @!APILevel[
         22,
@@ -1525,8 +1351,6 @@ public class TaskInfo {
     public let priority: UInt32
     /**
      * The MIME type in the configuration of the task.
-     *
-     * @relation readonly mimeType: string
      */
     @!APILevel[
         22,
@@ -1535,8 +1359,6 @@ public class TaskInfo {
     public let mimeType: String
     /**
      * An instance of `Progress` for a task.
-     *
-     * @relation readonly progress: Progress
      */
     @!APILevel[
         22,
@@ -1545,8 +1367,6 @@ public class TaskInfo {
     public let progress: Progress
     /**
      * The progress notification policy of a background task.
-     *
-     * @relation readonly gauge: boolean
      */
     @!APILevel[
         22,
@@ -1556,8 +1376,6 @@ public class TaskInfo {
     /**
      * The creating date and time of a task in Unix timestamp.
      * It is generated by system of current device.
-     *
-     * @relation readonly ctime: number
      */
     @!APILevel[
         22,
@@ -1567,8 +1385,6 @@ public class TaskInfo {
     /**
      * The modified date and time of a task in Unix timestamp.
      * It is generated by system of current device.
-     *
-     * @relation readonly mtime: number
      */
     @!APILevel[
         22,
@@ -1578,8 +1394,6 @@ public class TaskInfo {
     /**
      * The retry switch of a task.
      * Just for background, frontend always disable
-     *
-     * @relation readonly retry: boolean
      */
     @!APILevel[
         22,
@@ -1588,8 +1402,6 @@ public class TaskInfo {
     public let retry: Bool
     /**
      * The tried times of a task.
-     *
-     * @relation readonly tries: number
      */
     @!APILevel[
         22,
@@ -1598,8 +1410,6 @@ public class TaskInfo {
     public let tries: UInt32
     /**
      * The faults case of a task.
-     *
-     * @relation readonly faults: Faults
      */
     @!APILevel[
         22,
@@ -1608,8 +1418,6 @@ public class TaskInfo {
     public let faults: Faults
     /**
      * The reason of a waiting/failed/stopped/paused task.
-     *
-     * @relation readonly reason: string
      */
     @!APILevel[
         22,
@@ -1619,8 +1427,6 @@ public class TaskInfo {
     /**
      * The extras of a task.
      * For frontend, nothing now.
-     *
-     * @relation readonly extras?: object
      */
     @!APILevel[
         22,
@@ -1735,8 +1541,6 @@ class EventManage {
  * Can `pause` a waiting/running/retrying background task.
  * Can `resume` a paused background task.
  * Can `stop` a running/waiting/retrying task and dequeue it.
- *
- * @relation interface Task
  */
 @!APILevel[
     22,
@@ -1746,8 +1550,6 @@ public class Task {
     /**
      * The task id, unique on system.
      * Generated automatically by system.
-     *
-     * @relation readonly tid: string
      */
     @!APILevel[
         22,
@@ -1756,8 +1558,6 @@ public class Task {
     public let tid: String
     /**
      * The configurations for the task.
-     *
-     * @relation config: Config
      */
     @!APILevel[
         22,
@@ -1793,7 +1593,6 @@ public class Task {
      * @param { String } event - event types.
      * @param { Callback1Argument<HttpResponse> } callback - callback function with an `HttpResponse` argument.
      * @throws { BusinessException } 401 - Parameter verification failed.
-     * @relation on(event: 'response', callback: Callback<HttpResponse>): void
      */
     @!APILevel[
         22,
@@ -1835,12 +1634,6 @@ public class Task {
      * @param { String } event - event types.
      * @param { Callback1Argument<Progress> } callback - callback function with a `Progress` argument.
      * @throws { BusinessException } 401 - Parameter verification failed.
-     * @relation on(event: 'progress', callback: (progress: Progress) => void): void
-     * @relation on(event: 'completed', callback: (progress: Progress) => void): void
-     * @relation on(event: 'failed', callback: (progress: Progress) => void): void
-     * @relation on(event: 'pause', callback: (progress: Progress) => void): void
-     * @relation on(event: 'resume', callback: (progress: Progress) => void): void
-     * @relation on(event: 'remove', callback: (progress: Progress) => void): void
      */
     @!APILevel[
         22,
@@ -1885,12 +1678,6 @@ public class Task {
      *
      * @param { String } event - event types.
      * @param { CallbackObject } callback - callback function.
-     * @relation off(event: 'progress', callback?: (progress: Progress) => void): void
-     * @relation off(event: 'completed', callback?: (progress: Progress) => void): void
-     * @relation off(event: 'failed', callback?: (progress: Progress) => void): void
-     * @relation off(event: 'pause', callback?: (progress: Progress) => void): void
-     * @relation off(event: 'resume', callback?: (progress: Progress) => void): void
-     * @relation off(event: 'remove', callback?: (progress: Progress) => void): void
      */
     @!APILevel[
         22,
@@ -1934,7 +1721,6 @@ public class Task {
      * @throws { BusinessException } 201 - Permission denied.
      * @throws { BusinessException } 13400003 - Task service ability error.
      * @throws { BusinessException } 21900007 - Operation with wrong task state.
-     * @relation start(): Promise<void>
      */
     @!APILevel[
         22,
@@ -1958,7 +1744,6 @@ public class Task {
      * @throws { BusinessException } 13400003 - Task service ability error.
      * @throws { BusinessException } 21900005 - Operation with wrong task mode.
      * @throws { BusinessException } 21900007 - Operation with wrong task state.
-     * @relation pause(): Promise<void>
      */
     @!APILevel[
         22,
@@ -1982,7 +1767,6 @@ public class Task {
      * @throws { BusinessException } 13400003 - Task service ability error.
      * @throws { BusinessException } 21900005 - Operation with wrong task mode.
      * @throws { BusinessException } 21900007 - Operation with wrong task state.
-     * @relation resume(): Promise<void>
      */
     @!APILevel[
         22,
@@ -2005,7 +1789,6 @@ public class Task {
      *
      * @throws { BusinessException } 13400003 - Task service ability error.
      * @throws { BusinessException } 21900007 - Operation with wrong task state.
-     * @relation stop(): Promise<void>
      */
     @!APILevel[
         22,
@@ -2056,8 +1839,6 @@ func checkPara(config: Config): Unit {
  * @throws { BusinessException } 21900004 - the application task queue is full.
  * @throws { BusinessException } 21900005 - Operation with wrong task mode.
  * @throws { IllegalArgumentException } - The context is invalid.
- *
- * @relation function create(context: BaseContext, config: Config): Promise<Task>
  */
 @!APILevel[
     22,
@@ -2090,7 +1871,6 @@ public func create(context: UIAbilityContext, config: Config): Task {
  * 2. Incorrect parameter type.
  * @throws { BusinessException } 13400003 - Task service ability error.
  * @throws { BusinessException } 21900006 - Task removed or not found.
- * @relation function remove(id: string): Promise<void>
  */
 @!APILevel[
     22,
@@ -2119,8 +1899,6 @@ public func remove(id: String): Unit {
  * @throws { BusinessException } 13400003 - Task service ability error.
  * @throws { BusinessException } 21900006 - Task removed or not found.
  * @throws { IllegalArgumentException } - The context is invalid.
- *
- * @relation function getTask(context: BaseContext, id: string, token?: string): Promise<Task>
  */
 @!APILevel[
     22,
@@ -2156,7 +1934,6 @@ public func getTask(context: UIAbilityContext, id: String, token!: ?String = Non
  * 2. Incorrect parameter type.
  * @throws { BusinessException } 13400003 - Task service ability error.
  * @throws { BusinessException } 21900006 - Task removed or not found.
- * @relation function show(id: string): Promise<TaskInfo>
  */
 @!APILevel[
     22,
@@ -2185,7 +1962,6 @@ public func show(id: String): TaskInfo {
  * 2. Incorrect parameter type.
  * @throws { BusinessException } 13400003 - Task service ability error.
  * @throws { BusinessException } 21900006 - Task removed or not found.
- * @relation function touch(id: string, token: string): Promise<TaskInfo>
  */
 @!APILevel[
     22,
@@ -2217,8 +1993,6 @@ public func touch(id: String, token: String): TaskInfo {
  * @throws { BusinessException } 401 - Parameter error. Possible causes: 1. Missing mandatory parameters.
  * 2. Incorrect parameter type.
  * @throws { BusinessException } 13400003 - Task service ability error.
- *
- * @relation function search(filter?: Filter): Promise<Array<string>>
  */
 @!APILevel[
     22,
