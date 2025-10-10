@@ -326,8 +326,10 @@ public class FileSpec {
      * Currently support:
      * 1: relative path, like "./xxx/yyy/zzz.html", "xxx/yyy/zzz.html", under caller's cache folder.
      * 2: internal protocol path, starting with "internal://", like "internal://cache/path/to/file.txt".
-     * 3: application storage path, only the base directory and its subdirectories are supported, like "/data/storage/el1/base/path/to/file.txt".
-     * 4: file protocol path with self bundle name, only the base directory and its subdirectories are supported, like "file://com.example.test/data/storage/el2/base/file.txt".
+     * 3: application storage path, only the base directory and its subdirectories are supported, like
+     * "/data/storage/el1/base/path/to/file.txt".
+     * 4: file protocol path with self bundle name, only the base directory and its subdirectories are supported,
+     * like "file://com.example.test/data/storage/el2/base/file.txt".
      * 5: user file url, like "file://media/Photo/path/to/file.png".
      */
     @!APILevel[
@@ -642,8 +644,10 @@ public class Config {
      * Currently support:
      * 1: relative path, like "./xxx/yyy/zzz.html", "xxx/yyy/zzz.html", under caller's cache folder.
      * 2: internal protocol path, starting with "internal://", like "internal://cache/path/to/file.txt".
-     * 3: application storage path, only the base directory and its subdirectories are supported, like "/data/storage/el1/base/path/to/file.txt".
-     * 4: file protocol path with self bundle name, only the base directory and its subdirectories are supported, like "file://com.example.test/data/storage/el2/base/file.txt".
+     * 3: application storage path, only the base directory and its subdirectories are supported, like
+     * "/data/storage/el1/base/path/to/file.txt".
+     * 4: file protocol path with self bundle name, only the base directory and its subdirectories are supported,
+     * like "file://com.example.test/data/storage/el2/base/file.txt".
      */
     @!APILevel[
         22,
@@ -1032,7 +1036,8 @@ public class Progress {
     /**
      * The extras for an interaction.
      * Such as headers and body of response from server.
-     * But when the Content-Disposition header responded, the body will be into the uri of its attachment only, the body here is empty.
+     * But when the Content-Disposition header responded, the body will be into the uri of its attachment only, the
+     * body here is empty.
      * {"headers": {"key": v}, "body": "contents"}.
      * The "body" field is not supported in cross-platform scenarios.
      */
@@ -1629,7 +1634,8 @@ public class Task {
 
     /**
      * Enables the specified callback.
-     * Subscribes to task progress changes, completion events, failure events, pause events, resume events or removal events.
+     * Subscribes to task progress changes, completion events, failure events, pause events, resume events or removal
+     * events.
      *
      * @param { String } event - event types.
      * @param { Callback1Argument<Progress> } callback - callback function with a `Progress` argument.
@@ -1674,7 +1680,8 @@ public class Task {
 
     /**
      * Disables the specified callback.
-     * Unsubscribes task progress changes, completion events, failure events, pause events, resume events or removal events.
+     * Unsubscribes task progress changes, completion events, failure events, pause events, resume events or removal
+     * events.
      *
      * @param { String } event - event types.
      * @param { CallbackObject } callback - callback function.
