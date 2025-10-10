@@ -1,4 +1,4 @@
-# Upload/Download Cangjie Wrapper
+# Upload/Download Cangjie Wrapper(beta feature)
 
 ## Introduction
 
