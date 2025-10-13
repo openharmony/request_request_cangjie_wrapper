@@ -116,7 +116,7 @@ public enum EventCallbackType {
                 case Resume => "resume"
                 case Remove => "remove"
                 case Response => "response"
-                case _ => throw IllegalArgumentException("The type is not supported.")
+                case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
             }
         }
     }
@@ -154,7 +154,7 @@ public enum Action {
             match (this) {
                 case Download => 0
                 case Upload => 1
-                case _ => throw IllegalArgumentException("The type is not supported.")
+                case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
             }
         }
     }
@@ -163,7 +163,7 @@ public enum Action {
         match (v) {
             case 0 => Download
             case 1 => Upload
-            case _ => throw Exception("Never reach here!")
+            case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
         }
     }
 }
@@ -201,7 +201,7 @@ public enum Mode {
             match (this) {
                 case Background => 0
                 case Foreground => 1
-                case _ => throw IllegalArgumentException("The type is not supported.")
+                case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
             }
         }
     }
@@ -210,7 +210,7 @@ public enum Mode {
         match (v) {
             case 0 => Background
             case 1 => Foreground
-            case _ => throw Exception("Never reach here!")
+            case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
         }
     }
 
@@ -266,7 +266,7 @@ public enum Network {
                 case AnyType => 0
                 case Wifi => 1
                 case Cellular => 2
-                case _ => throw IllegalArgumentException("The type is not supported.")
+                case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
             }
         }
     }
@@ -276,7 +276,7 @@ public enum Network {
             case 0 => AnyType
             case 1 => Wifi
             case 2 => Cellular
-            case _ => throw Exception("Invalid Network type!")
+            case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
         }
     }
 }
@@ -309,7 +309,7 @@ public enum BroadcastEvent <: ToString {
     public func toString(): String {
         match (this) {
             case Complete => "ohos.request.event.COMPLETE"
-            case _ => throw IllegalArgumentException("The type is not supported.")
+            case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
         }
     }
 }
@@ -368,6 +368,10 @@ public class FileSpec {
 
     /**
      * FileSpec constructor.
+     * @param { String } path - The path to save the uploaded file.
+     * @param { ?String } mimeType - The MIME type of the file. The default is obtained by the suffix of the filename.
+     * @param { ?String } filename - The filename, the default is obtained by path.
+     * @param { HashMap<String, String> } extras - The extras for the file information.
      */
     @!APILevel[
         22,
@@ -444,7 +448,7 @@ public enum FormItemValue {
                 case StringItem(_) => 0
                 case FileItem(_) => 1
                 case FileItemArray(_) => 2
-                case _ => throw IllegalArgumentException("The type is not supported.")
+                case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
             }
         }
     }
@@ -478,6 +482,8 @@ public class FormItem {
 
     /**
      * FormItem constructor.
+     * @param { String } name - The item's name.
+     * @param { FormItemValue } value - The item's value.
      */
     @!APILevel[
         22,
@@ -526,7 +532,7 @@ public enum ConfigData {
             match (this) {
                 case StringValue(_) => 0
                 case FormItems(_) => 1
-                case _ => throw IllegalArgumentException("The type is not supported.")
+                case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
             }
         }
     }
@@ -790,6 +796,29 @@ public class Config {
 
     /**
      * Config constructor.
+     * @param { Action } action - The task action, upload or download.
+     * @param { String } url - The Universal Resource Locator for a task.
+     * @param { ?String } title - The title for a task, give a meaningful title please.
+     * @param { String } description - The details for a task.
+     * @param { Mode } mode - Indicates task's mode.
+     * @param { Bool } overwrite - The solution choice when path already exists during download.
+     * @param { ?String } method - The HTTP standard method for upload or download: GET/POST/PUT.
+     * @param { HashMap<String, String> } headers - The HTTP headers.
+     * @param { ?ConfigData } data - The arguments, it can be any text, uses json usually.
+     * @param { String } saveas - The path to save the downloaded file.
+     * @param { Network } network - Network used for the task.
+     * @param { Bool } metered - Allows download under metered connections.
+     * @param { Bool } roaming - Allows download under roaming connections.
+     * @param { Bool } retry - Retry task when transfer got a recoverable error.
+     * @param { Bool } redirect - Allows redirect.
+     * @param { UInt32 } index - The start index of the range.
+     * @param { Int64 } begins - The start position of the range.
+     * @param { Int64 } ends - The end position of the range.
+     * @param { Bool } gauge - Whether to show progress gauge in notification bar.
+     * @param { Bool } precise - Whether requires precise processing.
+     * @param { ?String } token - The token of the file.
+     * @param { UInt32 } priority - The priority of the task.
+     * @param { HashMap<String, String> } extras - The extras for the file information.
      */
     @!APILevel[
         22,
@@ -964,7 +993,7 @@ public enum State {
                 case Completed => 0x40
                 case Failed => 0x41
                 case Removed => 0x50
-                case _ => throw IllegalArgumentException("The type is not supported.")
+                case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
             }
         }
     }
@@ -1176,7 +1205,7 @@ public enum Faults {
                 case Timeout => 0x10
                 case Protocol => 0x20
                 case Fsio => 0x40
-                case _ => throw IllegalArgumentException("The type is not supported.")
+                case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
             }
         }
     }
@@ -1188,7 +1217,7 @@ public enum Faults {
             case 0x10 => Timeout
             case 0x20 => Protocol
             case 0x40 => Fsio
-            case _ => throw Exception("Never reach here!")
+            case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
         }
     }
 }
@@ -1251,6 +1280,11 @@ public class Filter {
 
     /**
      * Filter constructor.
+     * @param { ?Int64 } before - Specify the end Unix timestamp.
+     * @param { ?Int64 } after - Specify the start Unix timestamp.
+     * @param { ?State } state - Specify the state of tasks.
+     * @param { ?Action } action - Specify the action of tasks, "upload" or "download", case insensitive.
+     * @param { ?Mode } mode - Specify task's mode.
      */
     @!APILevel[
         22,
@@ -1572,6 +1606,8 @@ public class Task {
 
     /**
      * Task constructor.
+     * @param { String } tid - The task id, unique on system.
+     * @param { Config } config - The configurations for the task.
      */
     @!APILevel[
         22,
@@ -1843,6 +1879,7 @@ func checkPara(config: Config): Unit {
  * 2. Incorrect parameter type. 3. Parameter verification failed.
  * @throws { BusinessException } 13400001 - Invalid file or file system error.
  * @throws { BusinessException } 13400003 - Task service ability error.
+ * @throws { BusinessException } 13499999 - Other error.
  * @throws { BusinessException } 21900004 - the application task queue is full.
  * @throws { BusinessException } 21900005 - Operation with wrong task mode.
  * @throws { IllegalArgumentException } - The context is invalid.
@@ -1855,7 +1892,7 @@ func checkPara(config: Config): Unit {
 public func create(context: UIAbilityContext, config: Config): Task {
     let stageContext = getStageContext(context)
     if (stageContext.isNull()) {
-        throw IllegalArgumentException("The context is invalid.")
+        throw BusinessException(EXCEPTION_OTHERS, "Other error.")
     }
     checkPara(config)
     try (ffiConfig = CConfig(config).asResource()) {
@@ -1904,8 +1941,8 @@ public func remove(id: String): Unit {
  * @throws { BusinessException } 401 - Parameter error. Possible causes: 1. Missing mandatory parameters.
  * 2. Incorrect parameter type. 3. Parameter verification failed.
  * @throws { BusinessException } 13400003 - Task service ability error.
+ * @throws { BusinessException } 13499999 - Other error.
  * @throws { BusinessException } 21900006 - Task removed or not found.
- * @throws { IllegalArgumentException } - The context is invalid.
  */
 @!APILevel[
     22,
@@ -1914,7 +1951,7 @@ public func remove(id: String): Unit {
 public func getTask(context: UIAbilityContext, id: String, token!: ?String = None): Task {
     let stageContext = getStageContext(context)
     if (stageContext.isNull()) {
-        throw IllegalArgumentException("The context is invalid.")
+        throw BusinessException(EXCEPTION_OTHERS, "Other error.")
     }
     try (
         cToken = RequestNativeOptionCString(token).asResource(),
