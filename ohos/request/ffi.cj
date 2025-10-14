@@ -231,7 +231,7 @@ struct CFormItemValueUion {
                     this.str = CString(CPointer())
                     this.file = CFileSpec()
                     this.files = CFileSpecArr(fs)
-                case _ => throw IllegalArgumentException("The type is not supported.")
+                case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
             }
         } catch (e: Exception) {
             unsafe {
@@ -358,7 +358,7 @@ struct CConfigDataUion {
                 case FormItems(a) =>
                     formItems = CFormItemArr(a)
                     this.str = CString(CPointer())
-                case _ => throw IllegalArgumentException("The type is not supported.")
+                case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
             }
         } catch (e: Exception) {
             unsafe {
@@ -375,7 +375,7 @@ struct CConfigDataUion {
                 ConfigData.StringValue(str.toString())
             case Upload =>
                 ConfigData.FormItems(formItems.toCJValue())
-            case _ => throw IllegalArgumentException("The type is not supported.")
+            case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
         }
     }
 
