@@ -40,9 +40,9 @@ class EntryView {
     func build() {
         Row {
             Column {
-                Button(message).onClick {
+                Button(message).onClick ({
                     evt =>
-                }.fontSize(40).height(80)
+                }).fontSize(40).height(80)
             }.width(100.percent)
         }.height(100.percent)
     }
