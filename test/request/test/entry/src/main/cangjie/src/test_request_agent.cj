@@ -451,7 +451,7 @@ class TestRequestAgent {
     }
 
     @TestCase
-    @Tag[APILevel12, TestLevel0]
+    @Tag[APILevel22, TestLevel0]
     func TaskStartthenPausethenStop_TestSizeTwice_SizeEqual_TaskFinished_ThrowExcption(): Unit {
         let config = Config(
             RAction.Download,
