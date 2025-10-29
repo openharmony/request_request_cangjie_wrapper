@@ -17,11 +17,11 @@
 
 package ohos.request
 
-import std.collection.*
-import ohos.base
-import ohos.base.{NativeOptionCString, NativeOptionInt64, NativeOptionUInt32}
-import ohos.business_exception.BusinessException
-import ohos.ffi.*
+import std.collection.HashMap
+import ohos.base.{NativeOptionCString, NativeOptionInt64, NativeOptionUInt32, CStringExtend}
+import ohos.business_exception.{BusinessException, ERR_PARAMETER_ERROR}
+import ohos.ffi.{safeMalloc, CTypeResource, CArrString, cArr2cjArr, Callback1Param,
+    SUCCESS_CODE}
 
 @C
 struct CHashStrPair {
