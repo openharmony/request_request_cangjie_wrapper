@@ -38,7 +38,7 @@ const EXCEPTION_OTHERS: Int32 = 13499999
  */
 @Derive[ToString, Hashable, Equatable]
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public enum EventCallbackType {
@@ -46,7 +46,7 @@ public enum EventCallbackType {
      * Progress
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Progress
@@ -55,7 +55,7 @@ public enum EventCallbackType {
      * Completed
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Completed
@@ -64,7 +64,7 @@ public enum EventCallbackType {
      * Failed
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Failed
@@ -73,7 +73,7 @@ public enum EventCallbackType {
      * Pause
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Pause
@@ -82,7 +82,7 @@ public enum EventCallbackType {
      * Resume
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Resume
@@ -91,7 +91,7 @@ public enum EventCallbackType {
      * Remove
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Remove
@@ -100,7 +100,7 @@ public enum EventCallbackType {
      * Response
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Response
@@ -126,7 +126,7 @@ public enum EventCallbackType {
  */
 @Derive[ToString, Equatable]
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public enum Action {
@@ -134,7 +134,7 @@ public enum Action {
      * Indicates download task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Download
@@ -143,7 +143,7 @@ public enum Action {
      * Indicates upload task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Upload
@@ -173,7 +173,7 @@ public enum Action {
  */
 @Derive[ToString, Equatable]
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public enum Mode {
@@ -181,7 +181,7 @@ public enum Mode {
      * Indicates background task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Background
@@ -190,7 +190,7 @@ public enum Mode {
      * Indicates foreground task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Foreground
@@ -228,7 +228,7 @@ public enum Mode {
  */
 @Derive[ToString, Equatable]
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public enum Network {
@@ -236,7 +236,7 @@ public enum Network {
      * Indicates no restriction on network type.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     AnyType
@@ -245,7 +245,7 @@ public enum Network {
      * Indicates Wi-Fi only.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Wifi
@@ -254,7 +254,7 @@ public enum Network {
      * Indicates cellular only.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Cellular
@@ -285,7 +285,7 @@ public enum Network {
  * Broadcast events for the request.
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public enum BroadcastEvent <: ToString {
@@ -293,7 +293,7 @@ public enum BroadcastEvent <: ToString {
      * Completion event for the task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Complete 
@@ -303,7 +303,7 @@ public enum BroadcastEvent <: ToString {
      * Gets the corresponding mapping value.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public func toString(): String {
@@ -317,7 +317,7 @@ public enum BroadcastEvent <: ToString {
  * The file information for a form item.
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class FileSpec {
@@ -333,7 +333,7 @@ public class FileSpec {
      * 5: user file url, like "file://media/Photo/path/to/file.png".
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var path: String
@@ -343,7 +343,7 @@ public class FileSpec {
      * The default is obtained by the suffix of the filename.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var mimeType: ?String
@@ -352,7 +352,7 @@ public class FileSpec {
      * The filename, the default is obtained by path.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var filename: ?String
@@ -361,7 +361,7 @@ public class FileSpec {
      * The extras for the file information.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var extras: HashMap<String, String>
@@ -374,7 +374,7 @@ public class FileSpec {
      * @param { HashMap<String, String> } extras - The extras for the file information.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public init(
@@ -412,7 +412,7 @@ public class FileSpec {
  * FormItem value
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public enum FormItemValue {
@@ -420,7 +420,7 @@ public enum FormItemValue {
      * String type FormItem value
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     StringItem(String)
@@ -428,7 +428,7 @@ public enum FormItemValue {
      * FileSpec type FormItem value
      */
     | @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     FileItem(FileSpec)
@@ -436,7 +436,7 @@ public enum FormItemValue {
      * Array<FileSpec> type FormItem value
      */
     | @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     FileItemArray(Array<FileSpec>)
@@ -458,7 +458,7 @@ public enum FormItemValue {
  * The form item information for a task.
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class FormItem {
@@ -466,7 +466,7 @@ public class FormItem {
      * The item's name.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var name: String
@@ -475,7 +475,7 @@ public class FormItem {
      * The item's value.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var value: FormItemValue
@@ -486,7 +486,7 @@ public class FormItem {
      * @param { FormItemValue } value - The item's value.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public init(name: String, value: FormItemValue) {
@@ -504,7 +504,7 @@ public class FormItem {
  * Config data
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public enum ConfigData {
@@ -512,7 +512,7 @@ public enum ConfigData {
      * String type Config data
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     StringValue(String)
@@ -521,7 +521,7 @@ public enum ConfigData {
      * Array<FormItem> type Config data
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     FormItems(Array<FormItem>)
@@ -545,7 +545,7 @@ public enum ConfigData {
  * If without emphasis, an option is for any task.
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class Config {
@@ -555,7 +555,7 @@ public class Config {
      * Using raw `url` option, even url parameters in it.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var action: Action
@@ -565,7 +565,7 @@ public class Config {
      * Using raw `url` option, even url parameters in it.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var url: String
@@ -575,7 +575,7 @@ public class Config {
      * The default is upload or download, consistent with its action.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var title: ?String
@@ -585,7 +585,7 @@ public class Config {
      * The default is empty string.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var description: String
@@ -597,7 +597,7 @@ public class Config {
      * The cross-platform default is Foreground.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var mode: Mode
@@ -609,7 +609,7 @@ public class Config {
      * false, go to fail.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var overwrite: Bool
@@ -620,7 +620,7 @@ public class Config {
      * For download, use GET/POST, the default is GET.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var method: ?String
@@ -630,7 +630,7 @@ public class Config {
      * For download request, the default `Content-Type` is `application/json`.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var headers: HashMap<String, String>
@@ -641,7 +641,7 @@ public class Config {
      * There must be one `FileSpec` item at least or will be a parameter error.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var data: ?ConfigData
@@ -656,7 +656,7 @@ public class Config {
      * like "file://com.example.test/data/storage/el2/base/file.txt".
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var saveas: String
@@ -665,7 +665,7 @@ public class Config {
      * The default value is Any (Wi-Fi or cellular).
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var network: Network
@@ -674,7 +674,7 @@ public class Config {
      * The default is false
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var metered: Bool
@@ -683,7 +683,7 @@ public class Config {
      * The default is true.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var roaming: Bool
@@ -692,7 +692,7 @@ public class Config {
      * The frontend task is always fast-fail.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var retry: Bool
@@ -701,7 +701,7 @@ public class Config {
      * The default is true.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var redirect: Bool
@@ -711,7 +711,7 @@ public class Config {
      * The default is 0.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var index: UInt32
@@ -723,7 +723,7 @@ public class Config {
      * The default is 0.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var begins: Int64
@@ -735,7 +735,7 @@ public class Config {
      * The default is -1 indicating the end of the data for upload or download.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var ends: Int64
@@ -745,7 +745,7 @@ public class Config {
      * If true, emits every progress, completed or failed notifications.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var gauge: Bool
@@ -755,7 +755,7 @@ public class Config {
      * The default is false, set size as -1 indicating the case.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var precise: Bool
@@ -769,7 +769,7 @@ public class Config {
      * Or leave it empty.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var token: ?String
@@ -780,7 +780,7 @@ public class Config {
      * The default is 0.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var priority: UInt32
@@ -789,7 +789,7 @@ public class Config {
      * This parameter is left empty by default.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var extras: HashMap<String, String>
@@ -821,7 +821,7 @@ public class Config {
      * @param { HashMap<String, String> } extras - The extras for the file information.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public init(action: Action, url: String, title!: ?String = None, description!: String = "",
@@ -895,7 +895,7 @@ public class Config {
  */
 @Derive[ToString]
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public enum State {
@@ -903,7 +903,7 @@ public enum State {
      * Indicates a task created by `new Task(Config)`.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Initialized
@@ -912,7 +912,7 @@ public enum State {
      * Indicates a task lack of resources or conditions to run or retry.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Waiting
@@ -921,7 +921,7 @@ public enum State {
      * Indicates a task in processing now.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Running
@@ -930,7 +930,7 @@ public enum State {
      * Indicates a task failed once at least and in processing again now.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Retrying
@@ -939,7 +939,7 @@ public enum State {
      * Indicates a paused task which tends to be resumed for continuous work.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Paused
@@ -948,7 +948,7 @@ public enum State {
      * Indicates a stopped task which must be started again.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Stopped
@@ -957,7 +957,7 @@ public enum State {
      * Indicates a completed task which finish its data transfer.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Completed
@@ -966,7 +966,7 @@ public enum State {
      * Indicates a failed task which interrupted by some error.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Failed
@@ -975,7 +975,7 @@ public enum State {
      * Indicates a removed task which can not be processed again.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Removed
@@ -1026,7 +1026,7 @@ public enum State {
  * If fetch file size in failure, the size of the file in sizes will be set as -1.
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class Progress {
@@ -1034,7 +1034,7 @@ public class Progress {
      * The current state of the task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let state: State
@@ -1042,7 +1042,7 @@ public class Progress {
      * The current processing file index in a task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let index: UInt32
@@ -1050,7 +1050,7 @@ public class Progress {
      * The processed data size for the current file in a task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let processed: Int64
@@ -1058,7 +1058,7 @@ public class Progress {
      * The sizes of files in a task, in bytes.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let sizes: Array<Int64>
@@ -1071,7 +1071,7 @@ public class Progress {
      * The "body" field is not supported in cross-platform scenarios.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let extras: HashMap<String, String>
@@ -1090,7 +1090,7 @@ public class Progress {
  * Describes the data structure of the task response header.
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class HttpResponse {
@@ -1098,7 +1098,7 @@ public class HttpResponse {
      * The version of the HTTP response.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let version: String
@@ -1106,7 +1106,7 @@ public class HttpResponse {
      * The status code of the HTTP response.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let statusCode: Int32
@@ -1114,7 +1114,7 @@ public class HttpResponse {
      * The reason of the HTTP response.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let reason: String
@@ -1122,7 +1122,7 @@ public class HttpResponse {
      * The headers of the HTTP response.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let headers: HashMap<String, Array<String>>
@@ -1147,7 +1147,7 @@ public class HttpResponse {
  */
 @Derive[ToString]
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public enum Faults {
@@ -1155,7 +1155,7 @@ public enum Faults {
      * Indicates others failure.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Others
@@ -1164,7 +1164,7 @@ public enum Faults {
      * Indicates network disconnection.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Disconnected
@@ -1173,7 +1173,7 @@ public enum Faults {
      * Indicates task timeout.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Timeout
@@ -1182,7 +1182,7 @@ public enum Faults {
      * Indicates protocol error, such as 5xx response from server.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Protocol
@@ -1191,7 +1191,7 @@ public enum Faults {
      * Indicates filesystem io error, such as open/seek/read/write/close.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Fsio
@@ -1228,7 +1228,7 @@ public enum Faults {
  * Invalid value may cause a parameter error.
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class Filter {
@@ -1237,7 +1237,7 @@ public class Filter {
      * The default is the moment of calling.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var before: ?Int64
@@ -1246,7 +1246,7 @@ public class Filter {
      * The default is "`before` - 24 hours".
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var after: ?Int64
@@ -1255,7 +1255,7 @@ public class Filter {
      * The default is any state.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var state: ?State
@@ -1264,7 +1264,7 @@ public class Filter {
      * The default is upload and download.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var action: ?Action
@@ -1273,7 +1273,7 @@ public class Filter {
      * The default is Foreground and Background.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var mode: ?Mode
@@ -1287,7 +1287,7 @@ public class Filter {
      * @param { ?Mode } mode - Specify task's mode.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public init(before!: ?Int64 = None, after!: ?Int64 = None, state!: ?State = None,
@@ -1306,7 +1306,7 @@ public class Filter {
  * Provides common query and advanced query, visible range of fields is different.
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class TaskInfo {
@@ -1314,7 +1314,7 @@ public class TaskInfo {
      * The path to save the downloaded file.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let saveas: String
@@ -1323,7 +1323,7 @@ public class TaskInfo {
      * For `${ show }` and `${ touch }`.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let url: String
@@ -1332,7 +1332,7 @@ public class TaskInfo {
      * For `${ show }` and `${ touch }`.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let data: ConfigData
@@ -1340,7 +1340,7 @@ public class TaskInfo {
      * The task id.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let tid: String
@@ -1348,7 +1348,7 @@ public class TaskInfo {
      * The task title.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let title: String
@@ -1356,7 +1356,7 @@ public class TaskInfo {
      * The task details.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let description: String
@@ -1364,7 +1364,7 @@ public class TaskInfo {
      * The task action.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let action: Action
@@ -1373,7 +1373,7 @@ public class TaskInfo {
      * The default is frontend
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let mode: Mode
@@ -1384,7 +1384,7 @@ public class TaskInfo {
      * The default is 0.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let priority: UInt32
@@ -1392,7 +1392,7 @@ public class TaskInfo {
      * The MIME type in the configuration of the task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let mimeType: String
@@ -1400,7 +1400,7 @@ public class TaskInfo {
      * An instance of `Progress` for a task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let progress: Progress
@@ -1408,7 +1408,7 @@ public class TaskInfo {
      * The progress notification policy of a background task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let gauge: Bool
@@ -1417,7 +1417,7 @@ public class TaskInfo {
      * It is generated by system of current device.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let ctime: UInt64
@@ -1426,7 +1426,7 @@ public class TaskInfo {
      * It is generated by system of current device.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let mtime: UInt64
@@ -1435,7 +1435,7 @@ public class TaskInfo {
      * Just for background, frontend always disable
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let retry: Bool
@@ -1443,7 +1443,7 @@ public class TaskInfo {
      * The tried times of a task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let tries: UInt32
@@ -1451,7 +1451,7 @@ public class TaskInfo {
      * The faults case of a task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let faults: Faults
@@ -1459,7 +1459,7 @@ public class TaskInfo {
      * The reason of a waiting/failed/stopped/paused task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let reason: String
@@ -1468,7 +1468,7 @@ public class TaskInfo {
      * For frontend, nothing now.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let extras: HashMap<String, String>
@@ -1582,7 +1582,7 @@ class EventManage {
  * Can `stop` a running/waiting/retrying task and dequeue it.
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class Task {
@@ -1591,7 +1591,7 @@ public class Task {
      * Generated automatically by system.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public let tid: String
@@ -1599,7 +1599,7 @@ public class Task {
      * The configurations for the task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var config: Config
@@ -1610,7 +1610,7 @@ public class Task {
      * @param { Config } config - The configurations for the task.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public init(tid: String, config: Config) {
@@ -1636,7 +1636,7 @@ public class Task {
      * @throws { BusinessException } 401 - Parameter verification failed.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public func on(event: EventCallbackType, callback: Callback1Argument<HttpResponse>): Unit {
@@ -1678,7 +1678,7 @@ public class Task {
      * @throws { BusinessException } 401 - Parameter verification failed.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public func on(event: EventCallbackType, callback: Callback1Argument<Progress>): Unit {
@@ -1723,7 +1723,7 @@ public class Task {
      * @param { CallbackObject } callback - callback function.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public func off(event: EventCallbackType, callback!: ?CallbackObject = None): Unit {
@@ -1766,7 +1766,7 @@ public class Task {
      * @throws { BusinessException } 21900007 - Operation with wrong task state.
      */
     @!APILevel[
-        22,
+        since: "22",
         permission: "ohos.permission.INTERNET",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
@@ -1789,7 +1789,7 @@ public class Task {
      * @throws { BusinessException } 21900007 - Operation with wrong task state.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public func pause(): Unit {
@@ -1812,7 +1812,7 @@ public class Task {
      * @throws { BusinessException } 21900007 - Operation with wrong task state.
      */
     @!APILevel[
-        22,
+        since: "22",
         permission: "ohos.permission.INTERNET",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
@@ -1834,7 +1834,7 @@ public class Task {
      * @throws { BusinessException } 21900007 - Operation with wrong task state.
      */
     @!APILevel[
-        22,
+        since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public func stop(): Unit {
@@ -1885,7 +1885,7 @@ func checkPara(config: Config): Unit {
  * @throws { IllegalArgumentException } - The context is invalid.
  */
 @!APILevel[
-    22,
+    since: "22",
     permission: "ohos.permission.INTERNET",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
@@ -1917,7 +1917,7 @@ public func create(context: UIAbilityContext, config: Config): Task {
  * @throws { BusinessException } 21900006 - Task removed or not found.
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public func remove(id: String): Unit {
@@ -1945,7 +1945,7 @@ public func remove(id: String): Unit {
  * @throws { BusinessException } 21900006 - Task removed or not found.
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public func getTask(context: UIAbilityContext, id: String, token!: ?String = None): Task {
@@ -1980,7 +1980,7 @@ public func getTask(context: UIAbilityContext, id: String, token!: ?String = Non
  * @throws { BusinessException } 21900006 - Task removed or not found.
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public func show(id: String): TaskInfo {
@@ -2008,7 +2008,7 @@ public func show(id: String): TaskInfo {
  * @throws { BusinessException } 21900006 - Task removed or not found.
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public func touch(id: String, token: String): TaskInfo {
@@ -2039,7 +2039,7 @@ public func touch(id: String, token: String): TaskInfo {
  * @throws { BusinessException } 13400003 - Task service ability error.
  */
 @!APILevel[
-    22,
+    since: "22",
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public func search(filter!: Filter = Filter()): Array<String> {
