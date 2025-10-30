@@ -17,8 +17,8 @@
 
 package ohos.request
 
-import std.collection.*
-import ohos.business_exception.*
+import std.collection.HashMap
+import ohos.business_exception.{BusinessException, getUniversalErrorMsg}
 
 let ERROR_CODE_MAP = HashMap<Int32, String>(
     [
