@@ -159,6 +159,9 @@ public enum Action {
         }
     }
 
+    /**
+     * @throws { BusinessException } 13499999 - Other error.
+     */
     static func parse(v: UInt32): Action {
         match (v) {
             case 0 => Download
@@ -206,6 +209,9 @@ public enum Mode {
         }
     }
 
+    /**
+     * @throws { BusinessException } 13499999 - Other error.
+     */
     static func toMode(v: UInt32): Mode {
         match (v) {
             case 0 => Background
@@ -271,6 +277,9 @@ public enum Network {
         }
     }
 
+    /**
+     * @throws { BusinessException } 13499999 - Other error.
+     */
     static func parse(v: UInt32): Network {
         match (v) {
             case 0 => AnyType
@@ -998,6 +1007,9 @@ public enum State {
         }
     }
 
+    /**
+     * @throws { BusinessException } 13499999 - Other error.
+     */
     static func parse(v: UInt32) {
         match (v) {
             case 0x0 => Initialized
@@ -1210,6 +1222,9 @@ public enum Faults {
         }
     }
 
+    /**
+     * @throws { BusinessException } 13499999 - Other error.
+     */
     static func parse(v: UInt32): Faults {
         match (v) {
             case 0xFF => Others
@@ -1851,11 +1866,10 @@ public class Task {
 
 type StageContext = CPointer<Unit>
 
-const TOKEN_MAX_BYTES = 2048
-const TOKEN_MIN_BYTES = 8
-
 func checkPara(config: Config): Unit {
     if (let Some(v) <- config.token) {
+        const TOKEN_MAX_BYTES = 2048
+        const TOKEN_MIN_BYTES = 8
         if (v.size < TOKEN_MIN_BYTES || v.size > TOKEN_MAX_BYTES) {
             throw BusinessException(ERR_PARAMETER_ERROR,
                 "Parameter verification failed, the length of token should between 8 and 2048 bytes")

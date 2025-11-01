@@ -244,6 +244,9 @@ struct CFormItemValueUion {
         this.valueType = data.valueType
     }
 
+    /**
+     * @throws { BusinessException } 13499999 - Error FormItemValue
+     */
     func toCJValue(): FormItemValue {
         match (valueType) {
             case 0 => FormItemValue.StringItem(str.toString())
@@ -369,6 +372,9 @@ struct CConfigDataUion {
         }
     }
 
+    /**
+     * @throws { BusinessException } 13499999 - Error FormItemValue
+     */
     func toCJValue(action: Action): ConfigData {
         match (action) {
             case Download =>
