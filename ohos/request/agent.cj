@@ -33,6 +33,15 @@ const EXCEPTION_FILEPATH: Int32 = 13400002
 const EXCEPTION_SERVICE: Int32 = 13400003
 const EXCEPTION_OTHERS: Int32 = 13499999
 
+@!Hide
+internal class Notification {}
+
+@!Hide
+internal class MinSpeed {}
+
+@!Hide
+internal class Timeout {}
+
 /**
  * Event CallbackType.
  */
@@ -356,6 +365,9 @@ public class FileSpec {
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var mimeType: ?String
+
+    @!Hide
+    internal var contentType: ?String = Option<String>.None
 
     /*
      * The filename, the default is obtained by path.
@@ -714,6 +726,10 @@ public class Config {
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var redirect: Bool
+
+    @!Hide
+    internal var proxy: ?String = Option<String>.None
+
     /**
      * The index of paths for a task.
      * Usually used for a continuous job.
@@ -802,6 +818,18 @@ public class Config {
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     public var extras: HashMap<String, String>
+
+    @!Hide
+    internal var multipart: ?Bool = Option<Bool>.None
+
+    @!Hide
+    internal var notification: ?Notification = Option<Notification>.None
+
+    @!Hide
+    internal var minSpeed: ?MinSpeed = Option<MinSpeed>.None
+
+    @!Hide
+    internal var timeout: ?Timeout = Option<Timeout>.None
 
     /**
      * Config constructor.
@@ -1199,6 +1227,9 @@ public enum Faults {
     ]
     Protocol
     |
+    @!Hide
+    Param
+    |
     /**
      * Indicates filesystem io error, such as open/seek/read/write/close.
      */
@@ -1207,6 +1238,21 @@ public enum Faults {
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     Fsio
+    |
+    @!Hide
+    Dns
+    |
+    @!Hide
+    Tcp
+    |
+    @!Hide
+    Ssl
+    |
+    @!Hide
+    Redirect
+    |
+    @!Hide
+    LowSpeed
     | ...
 
     prop value: Int32 {
@@ -1247,6 +1293,8 @@ public enum Faults {
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class Filter {
+    @!Hide
+    internal var bundle: ?String = Option<String>.None
     /**
      * Specify the end Unix timestamp.
      * The default is the moment of calling.
@@ -1325,6 +1373,12 @@ public class Filter {
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class TaskInfo {
+    @!Hide
+    internal let uid: ?String = Option<String>.None
+
+    @!Hide
+    internal let bundle: ?String = Option<String>.None
+
     /**
      * The path to save the downloaded file.
      */
