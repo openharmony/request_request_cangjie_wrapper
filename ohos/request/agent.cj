@@ -23,7 +23,7 @@ import ohos.base.CStringExtend
 import ohos.business_exception.{BusinessException, ERR_PARAMETER_ERROR}
 import ohos.callback_invoke.{CallbackObject, Callback1Argument}
 import ohos.ffi.{cArr2cjArr, Callback1Param, SUCCESS_CODE}
-import ohos.labels.APILevel
+import ohos.labels.{APILevel, Hide}
 import std.deriving.Derive
 import ohos.app.ability.ui_ability.{UIAbilityContext, getStageContext}
 
