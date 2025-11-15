@@ -43,7 +43,7 @@ internal class MinSpeed {}
 internal class Timeout {}
 
 /**
- * Event CallbackType.
+ * Events to subscribe to or unsubscribe to.
  */
 @Derive[ToString, Hashable, Equatable]
 @!APILevel[
@@ -52,7 +52,7 @@ internal class Timeout {}
 ]
 public enum EventCallbackType {
     /**
-     * Progress
+     * Download progress events.
      */
     @!APILevel[
         since: "22",
@@ -61,7 +61,7 @@ public enum EventCallbackType {
     Progress
     |
     /**
-     * Completed
+     * Indicates a completed task which finish its data transfer.
      */
     @!APILevel[
         since: "22",
@@ -70,7 +70,7 @@ public enum EventCallbackType {
     Completed
     |
     /**
-     * Failed
+     * Indicates a failed task which interrupted by some error.
      */
     @!APILevel[
         since: "22",
@@ -79,7 +79,7 @@ public enum EventCallbackType {
     Failed
     |
     /**
-     * Pause
+     * Indicates a paused task which tends to be resumed for continuous work.
      */
     @!APILevel[
         since: "22",
@@ -88,7 +88,7 @@ public enum EventCallbackType {
     Pause
     |
     /**
-     * Resume
+     * Task resume events.
      */
     @!APILevel[
         since: "22",
@@ -97,7 +97,7 @@ public enum EventCallbackType {
     Resume
     |
     /**
-     * Remove
+     * Indicates a removed task which can not be processed again.
      */
     @!APILevel[
         since: "22",
@@ -106,7 +106,7 @@ public enum EventCallbackType {
     Remove
     |
     /**
-     * Response
+     * Task response headers.
      */
     @!APILevel[
         since: "22",
@@ -319,6 +319,7 @@ public enum BroadcastEvent <: ToString {
 
     /**
      * Gets the corresponding mapping value.
+     * @returns A string representation of the BroadcastEvent.
      */
     @!APILevel[
         since: "22",
@@ -380,6 +381,7 @@ public class FileSpec {
 
     /*
      * The extras for the file information.
+     * This parameter is not included in HTTP requests.
      */
     @!APILevel[
         since: "22",
@@ -389,10 +391,11 @@ public class FileSpec {
 
     /**
      * FileSpec constructor.
+     *
      * @param { String } path - The path to save the uploaded file.
-     * @param { ?String } mimeType - The MIME type of the file. The default is obtained by the suffix of the filename.
-     * @param { ?String } filename - The filename, the default is obtained by path.
-     * @param { HashMap<String, String> } extras - The extras for the file information.
+     * @param { ?String } [mimeType] - The MIME type of the file. The default is obtained by the suffix of the filename.
+     * @param { ?String } [filename] - The filename, the default is obtained by path.
+     * @param { HashMap<String, String> } [extras] - The extras for the file information.
      */
     @!APILevel[
         since: "22",
@@ -430,7 +433,7 @@ public class FileSpec {
 }
 
 /**
- * FormItem value
+ * Form item value.
  */
 @!APILevel[
     since: "22",
@@ -438,25 +441,27 @@ public class FileSpec {
 ]
 public enum FormItemValue {
     /**
-     * String type FormItem value
+     * String type form item value.
      */
     @!APILevel[
         since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     StringItem(String)
+    |
     /**
-     * FileSpec type FormItem value
+     * FileSpec type form item value.
      */
-    | @!APILevel[
+    @!APILevel[
         since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
     FileItem(FileSpec)
+    |
     /**
-     * Array<FileSpec> type FormItem value
+     * Array<FileSpec> type form item value.
      */
-    | @!APILevel[
+    @!APILevel[
         since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
@@ -503,6 +508,7 @@ public class FormItem {
 
     /**
      * FormItem constructor.
+     *
      * @param { String } name - The item's name.
      * @param { FormItemValue } value - The item's value.
      */
@@ -522,7 +528,7 @@ public class FormItem {
 }
 
 /**
- * Config data
+ * Config data.
  */
 @!APILevel[
     since: "22",
@@ -530,7 +536,7 @@ public class FormItem {
 ]
 public enum ConfigData {
     /**
-     * String type Config data
+     * String type config data.
      */
     @!APILevel[
         since: "22",
@@ -539,7 +545,7 @@ public enum ConfigData {
     StringValue(String)
     |
     /**
-     * Array<FormItem> type Config data
+     * Array<FormItem> type config data.
      */
     @!APILevel[
         since: "22",
@@ -571,9 +577,7 @@ public enum ConfigData {
 ]
 public class Config {
     /**
-     * The Universal Resource Locator for a task.
-     * The maximum length is 2048 characters.
-     * Using raw `url` option, even url parameters in it.
+     * The task action, upload or download.
      */
     @!APILevel[
         since: "22",
@@ -582,7 +586,7 @@ public class Config {
     public var action: Action
     /**
      * The Universal Resource Locator for a task.
-     * The maximum length is 2048 characters.
+     * The maximum length is 8192 characters.
      * Using raw `url` option, even url parameters in it.
      */
     @!APILevel[
@@ -613,7 +617,7 @@ public class Config {
     /**
      * Indicates task's mode.
      * The default is Background.
-     * For frontend task, it has callbacks.
+     * For front-end task, it has callbacks.
      * For background task, it has notifications and fallback.
      * The cross-platform default is Foreground.
      */
@@ -683,7 +687,7 @@ public class Config {
     public var saveas: String
     /**
      * Network used for the task.
-     * The default value is Any (Wi-Fi or cellular).
+     * The default value is AnyType (Wi-Fi or cellular).
      */
     @!APILevel[
         since: "22",
@@ -692,7 +696,7 @@ public class Config {
     public var network: Network
     /**
      * Allows work in metered network or not.
-     * The default is false
+     * The default is false.
      */
     @!APILevel[
         since: "22",
@@ -710,7 +714,7 @@ public class Config {
     public var roaming: Bool
     /**
      * Enable automatic retry or not for the background task.
-     * The frontend task is always fast-fail.
+     * The front-end task is always fast-fail.
      */
     @!APILevel[
         since: "22",
@@ -835,27 +839,27 @@ public class Config {
      * Config constructor.
      * @param { Action } action - The task action, upload or download.
      * @param { String } url - The Universal Resource Locator for a task.
-     * @param { ?String } title - The title for a task, give a meaningful title please.
-     * @param { String } description - The details for a task.
-     * @param { Mode } mode - Indicates task's mode.
-     * @param { Bool } overwrite - The solution choice when path already exists during download.
-     * @param { ?String } method - The HTTP standard method for upload or download: GET/POST/PUT.
-     * @param { HashMap<String, String> } headers - The HTTP headers.
-     * @param { ?ConfigData } data - The arguments, it can be any text, uses json usually.
-     * @param { String } saveas - The path to save the downloaded file.
-     * @param { Network } network - Network used for the task.
-     * @param { Bool } metered - Allows download under metered connections.
-     * @param { Bool } roaming - Allows download under roaming connections.
-     * @param { Bool } retry - Retry task when transfer got a recoverable error.
-     * @param { Bool } redirect - Allows redirect.
-     * @param { UInt32 } index - The start index of the range.
-     * @param { Int64 } begins - The start position of the range.
-     * @param { Int64 } ends - The end position of the range.
-     * @param { Bool } gauge - Whether to show progress gauge in notification bar.
-     * @param { Bool } precise - Whether requires precise processing.
-     * @param { ?String } token - The token of the file.
-     * @param { UInt32 } priority - The priority of the task.
-     * @param { HashMap<String, String> } extras - The extras for the file information.
+     * @param { ?String } [title] - The title for a task, give a meaningful title please.
+     * @param { String } [description] - The details for a task.
+     * @param { Mode } [mode] - Indicates task's mode.
+     * @param { Bool } [overwrite] - The solution choice when path already exists during download.
+     * @param { ?String } [method] - The HTTP standard method for upload or download: GET/POST/PUT.
+     * @param { HashMap<String, String> } [headers] - The HTTP headers.
+     * @param { ?ConfigData } [data] - The arguments, it can be any text, uses json usually.
+     * @param { String } [saveas] - The path to save the downloaded file.
+     * @param { Network } [network] - Network used for the task.
+     * @param { Bool } [metered] - Allows download under metered connections.
+     * @param { Bool } [roaming] - Allows download under roaming connections.
+     * @param { Bool } [retry] - Retry task when transfer got a recoverable error.
+     * @param { Bool } [redirect] - Allows redirect.
+     * @param { UInt32 } [index] - The start index of the range.
+     * @param { Int64 } [begins] - The start position of the range.
+     * @param { Int64 } [ends] - The end position of the range.
+     * @param { Bool } [gauge] - Whether to show progress gauge in notification bar.
+     * @param { Bool } [precise] - Whether requires precise processing.
+     * @param { ?String } [token] - The token of the file.
+     * @param { UInt32 } [priority] - The priority of the task.
+     * @param { HashMap<String, String> } [extras] - The extras for the file information.
      */
     @!APILevel[
         since: "22",
@@ -1343,11 +1347,11 @@ public class Filter {
 
     /**
      * Filter constructor.
-     * @param { ?Int64 } before - Specify the end Unix timestamp.
-     * @param { ?Int64 } after - Specify the start Unix timestamp.
-     * @param { ?State } state - Specify the state of tasks.
-     * @param { ?Action } action - Specify the action of tasks, "upload" or "download", case insensitive.
-     * @param { ?Mode } mode - Specify task's mode.
+     * @param { ?Int64 } [before] - Specify the end Unix timestamp.
+     * @param { ?Int64 } [after] - Specify the start Unix timestamp.
+     * @param { ?State } [state] - Specify the state of tasks.
+     * @param { ?Action } [action] - Specify the action of tasks, "upload" or "download", case insensitive.
+     * @param { ?Mode } [mode] - Specify task's mode.
      */
     @!APILevel[
         since: "22",
@@ -1439,7 +1443,7 @@ public class TaskInfo {
     public let action: Action
     /**
      * Specify task mode.
-     * The default is frontend
+     * The default is front-end.
      */
     @!APILevel[
         since: "22",
@@ -1501,7 +1505,7 @@ public class TaskInfo {
     public let mtime: UInt64
     /**
      * The retry switch of a task.
-     * Just for background, frontend always disable
+     * Just for background, front-end always disable.
      */
     @!APILevel[
         since: "22",
@@ -1534,7 +1538,7 @@ public class TaskInfo {
     public let reason: String
     /**
      * The extras of a task.
-     * For frontend, nothing now.
+     * For front-end, nothing now.
      */
     @!APILevel[
         since: "22",
@@ -1675,6 +1679,7 @@ public class Task {
 
     /**
      * Task constructor.
+     *
      * @param { String } tid - The task id, unique on system.
      * @param { Config } config - The configurations for the task.
      */
@@ -1700,9 +1705,8 @@ public class Task {
      * Enables the response callback.
      * Subscribes to task response headers.
      *
-     * @param { String } event - event types.
+     * @param { EventCallbackType } event - event types.
      * @param { Callback1Argument<HttpResponse> } callback - callback function with an `HttpResponse` argument.
-     * @throws { BusinessException } 401 - Parameter verification failed.
      */
     @!APILevel[
         since: "22",
@@ -1742,9 +1746,8 @@ public class Task {
      * Subscribes to task progress changes, completion events, failure events, pause events, resume events or removal
      * events.
      *
-     * @param { String } event - event types.
+     * @param { EventCallbackType } event - event types.
      * @param { Callback1Argument<Progress> } callback - callback function with a `Progress` argument.
-     * @throws { BusinessException } 401 - Parameter verification failed.
      */
     @!APILevel[
         since: "22",
@@ -1788,8 +1791,8 @@ public class Task {
      * Unsubscribes task progress changes, completion events, failure events, pause events, resume events or removal
      * events.
      *
-     * @param { String } event - event types.
-     * @param { CallbackObject } callback - callback function.
+     * @param { EventCallbackType } event - event types.
+     * @param { CallbackObject } [callback] - callback function.
      */
     @!APILevel[
         since: "22",
@@ -1837,7 +1840,9 @@ public class Task {
     @!APILevel[
         since: "22",
         permission: "ohos.permission.INTERNET",
-        syscap: "SystemCapability.Request.FileTransferAgent"
+        syscap: "SystemCapability.Request.FileTransferAgent",
+        throwexception: true,
+        workerthread: true
     ]
     public func start(): Unit {
         unsafe {
@@ -1854,12 +1859,14 @@ public class Task {
      * Pauses the background task.
      *
      * @throws { BusinessException } 13400003 - Task service ability error.
-     * @throws { BusinessException } 21900005 - Operation with wrong task mode.
      * @throws { BusinessException } 21900007 - Operation with wrong task state.
      */
     @!APILevel[
         since: "22",
-        syscap: "SystemCapability.Request.FileTransferAgent"
+        permission: "ohos.permission.INTERNET",
+        syscap: "SystemCapability.Request.FileTransferAgent",
+        throwexception: true,
+        workerthread: true
     ]
     public func pause(): Unit {
         unsafe {
@@ -1873,17 +1880,18 @@ public class Task {
     }
 
     /**
-     * Resumes the background task.
+     * Resumes a paused task.
      *
      * @throws { BusinessException } 201 - Permission denied.
      * @throws { BusinessException } 13400003 - Task service ability error.
-     * @throws { BusinessException } 21900005 - Operation with wrong task mode.
      * @throws { BusinessException } 21900007 - Operation with wrong task state.
      */
     @!APILevel[
         since: "22",
         permission: "ohos.permission.INTERNET",
-        syscap: "SystemCapability.Request.FileTransferAgent"
+        syscap: "SystemCapability.Request.FileTransferAgent",
+        throwexception: true,
+        workerthread: true
     ]
     public func resume(): Unit {
         unsafe {
@@ -1904,7 +1912,9 @@ public class Task {
      */
     @!APILevel[
         since: "22",
-        syscap: "SystemCapability.Request.FileTransferAgent"
+        syscap: "SystemCapability.Request.FileTransferAgent",
+        throwexception: true,
+        workerthread: true
     ]
     public func stop(): Unit {
         unsafe {
@@ -1933,29 +1943,25 @@ func checkPara(config: Config): Unit {
 
 /**
  * Creates a task for upload or download and enqueue it.
- * Only foreground application can create the frontend task.
- * It can deal only one frontend task at a time.
- * A in processing frontend task will be forced to stop when its application had switched to background.
- * A new frontend task will interrupt a existed in processing frontend task.
- * The background task is highly recommended.
+ * When an application enters the background, the frontend tasks associated.
+ * with it will gradually be paused until the application returns to the foreground.
  *
  * @param { UIAbilityContext } context - context of the caller.
  * @param { Config } config - configurations for a task.
  * @returns { Task } the upload or download task.
  * @throws { BusinessException } 201 - Permission denied.
- * @throws { BusinessException } 401 - Parameter error. Possible causes: 1. Missing mandatory parameters.
- * 2. Incorrect parameter type. 3. Parameter verification failed.
  * @throws { BusinessException } 13400001 - Invalid file or file system error.
  * @throws { BusinessException } 13400003 - Task service ability error.
  * @throws { BusinessException } 13499999 - Other error.
  * @throws { BusinessException } 21900004 - the application task queue is full.
  * @throws { BusinessException } 21900005 - Operation with wrong task mode.
- * @throws { IllegalArgumentException } - The context is invalid.
  */
 @!APILevel[
     since: "22",
     permission: "ohos.permission.INTERNET",
-    syscap: "SystemCapability.Request.FileTransferAgent"
+    syscap: "SystemCapability.Request.FileTransferAgent",
+    throwexception: true,
+    workerthread: true
 ]
 public func create(context: UIAbilityContext, config: Config): Task {
     let stageContext = getStageContext(context)
@@ -1979,14 +1985,14 @@ public func create(context: UIAbilityContext, config: Config): Task {
  * The task will be forced to stop if in processing.
  *
  * @param { String } id - the task id.
- * @throws { BusinessException } 401 - Parameter error. Possible causes: 1. Missing mandatory parameters.
- * 2. Incorrect parameter type.
  * @throws { BusinessException } 13400003 - Task service ability error.
  * @throws { BusinessException } 21900006 - Task removed or not found.
  */
 @!APILevel[
     since: "22",
-    syscap: "SystemCapability.Request.FileTransferAgent"
+    syscap: "SystemCapability.Request.FileTransferAgent",
+    throwexception: true,
+    workerthread: true
 ]
 public func remove(id: String): Unit {
     unsafe {
@@ -2005,16 +2011,17 @@ public func remove(id: String): Unit {
  *
  * @param { UIAbilityContext } context - context of the caller.
  * @param { String } id - the id of the task.
- * @param { String } token - the token of the task, length between 8 and 2048 bytes.
- * @throws { BusinessException } 401 - Parameter error. Possible causes: 1. Missing mandatory parameters.
- * 2. Incorrect parameter type. 3. Parameter verification failed.
+ * @param { String } [token] - the token of the task, length between 8 and 2048 bytes.
+ * @returns { Task } a new task returned by the function.
  * @throws { BusinessException } 13400003 - Task service ability error.
  * @throws { BusinessException } 13499999 - Other error.
  * @throws { BusinessException } 21900006 - Task removed or not found.
  */
 @!APILevel[
     since: "22",
-    syscap: "SystemCapability.Request.FileTransferAgent"
+    syscap: "SystemCapability.Request.FileTransferAgent",
+    throwexception: true,
+    workerthread: true
 ]
 public func getTask(context: UIAbilityContext, id: String, token!: ?String = None): Task {
     let stageContext = getStageContext(context)
@@ -2042,14 +2049,14 @@ public func getTask(context: UIAbilityContext, id: String, token!: ?String = Non
  *
  * @param { String } id - the task id.
  * @returns { TaskInfo } a task info base on the task ID
- * @throws { BusinessException } 401 - Parameter error. Possible causes: 1. Missing mandatory parameters.
- * 2. Incorrect parameter type.
  * @throws { BusinessException } 13400003 - Task service ability error.
  * @throws { BusinessException } 21900006 - Task removed or not found.
  */
 @!APILevel[
     since: "22",
-    syscap: "SystemCapability.Request.FileTransferAgent"
+    syscap: "SystemCapability.Request.FileTransferAgent",
+    throwexception: true,
+    workerthread: true
 ]
 public func show(id: String): TaskInfo {
     try (cTid = unsafe { LibC.mallocCString(id).asResource() }) {
@@ -2068,16 +2075,16 @@ public func show(id: String): TaskInfo {
  * Queries the task details based on the task ID and token.
  *
  * @param { String } id - the task id.
- * @param { String } token - the in-application isolation key.
+ * @param { String } token - the in-application isolation key, length between 8 and 2048 bytes.
  * @returns { TaskInfo } a task info base on the task ID and token
- * @throws { BusinessException } 401 - Parameter error. Possible causes: 1. Missing mandatory parameters.
- * 2. Incorrect parameter type.
  * @throws { BusinessException } 13400003 - Task service ability error.
  * @throws { BusinessException } 21900006 - Task removed or not found.
  */
 @!APILevel[
     since: "22",
-    syscap: "SystemCapability.Request.FileTransferAgent"
+    syscap: "SystemCapability.Request.FileTransferAgent",
+    throwexception: true,
+    workerthread: true
 ]
 public func touch(id: String, token: String): TaskInfo {
     var err: RetError = RetError()
@@ -2100,15 +2107,15 @@ public func touch(id: String, token: String): TaskInfo {
  * Searches tasks, for system.
  * Searches for task IDs based on Filter.
  *
- * @param { Filter } filter - an instance of `Filter`.
+ * @param { Filter } [filter] - an instance of `Filter`.
  * @returns { Array<String> } task ids which matches filter
- * @throws { BusinessException } 401 - Parameter error. Possible causes: 1. Missing mandatory parameters.
- * 2. Incorrect parameter type.
  * @throws { BusinessException } 13400003 - Task service ability error.
  */
 @!APILevel[
     since: "22",
-    syscap: "SystemCapability.Request.FileTransferAgent"
+    syscap: "SystemCapability.Request.FileTransferAgent",
+    throwexception: true,
+    workerthread: true
 ]
 public func search(filter!: Filter = Filter()): Array<String> {
     let ret = unsafe { FfiOHOSRequestSearchTask(CFilter(filter)).asCMallocResource() }
