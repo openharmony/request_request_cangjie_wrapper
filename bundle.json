@@ -41,6 +41,9 @@
       "inner_kits": [
         {
           "name": "//base/request/request_cangjie_wrapper/ohos/request:ohos.request"
+        },
+        {
+          "name": "//base/request/request_cangjie_wrapper:copy_sdk_request_cangjie_libs"
         }
       ],
       "test": []
