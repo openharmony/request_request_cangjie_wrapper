@@ -12,9 +12,7 @@
   "component": {
     "name": "request_cangjie_wrapper",
     "subsystem": "request",
-    "syscap": [
-      "SystemCapability.Request.FileTransferAgent"
-    ],
+    "syscap": [],
     "features": [
 
     ],
