@@ -33,13 +33,13 @@ const EXCEPTION_FILEPATH: Int32 = 13400002
 const EXCEPTION_SERVICE: Int32 = 13400003
 const EXCEPTION_OTHERS: Int32 = 13499999
 
-@!Hide
+@!Hide[isChecked: true]
 internal class Notification {}
 
-@!Hide
+@!Hide[isChecked: true]
 internal class MinSpeed {}
 
-@!Hide
+@!Hide[isChecked: true]
 internal class Timeout {}
 
 /**
@@ -367,7 +367,7 @@ public class FileSpec {
     ]
     public var mimeType: ?String
 
-    @!Hide
+    @!Hide[isChecked: true]
     internal var contentType: ?String = Option<String>.None
 
     /*
@@ -731,7 +731,7 @@ public class Config {
     ]
     public var redirect: Bool
 
-    @!Hide
+    @!Hide[isChecked: true]
     internal var proxy: ?String = Option<String>.None
 
     /**
@@ -823,16 +823,16 @@ public class Config {
     ]
     public var extras: HashMap<String, String>
 
-    @!Hide
+    @!Hide[isChecked: true]
     internal var multipart: ?Bool = Option<Bool>.None
 
-    @!Hide
+    @!Hide[isChecked: true]
     internal var notification: ?Notification = Option<Notification>.None
 
-    @!Hide
+    @!Hide[isChecked: true]
     internal var minSpeed: ?MinSpeed = Option<MinSpeed>.None
 
-    @!Hide
+    @!Hide[isChecked: true]
     internal var timeout: ?Timeout = Option<Timeout>.None
 
     /**
@@ -1231,7 +1231,7 @@ public enum Faults {
     ]
     Protocol
     |
-    @!Hide
+    @!Hide[isChecked: true]
     Param
     |
     /**
@@ -1243,19 +1243,19 @@ public enum Faults {
     ]
     Fsio
     |
-    @!Hide
+    @!Hide[isChecked: true]
     Dns
     |
-    @!Hide
+    @!Hide[isChecked: true]
     Tcp
     |
-    @!Hide
+    @!Hide[isChecked: true]
     Ssl
     |
-    @!Hide
+    @!Hide[isChecked: true]
     Redirect
     |
-    @!Hide
+    @!Hide[isChecked: true]
     LowSpeed
     | ...
 
@@ -1297,7 +1297,7 @@ public enum Faults {
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class Filter {
-    @!Hide
+    @!Hide[isChecked: true]
     internal var bundle: ?String = Option<String>.None
     /**
      * Specify the end Unix timestamp.
@@ -1377,10 +1377,10 @@ public class Filter {
     syscap: "SystemCapability.Request.FileTransferAgent"
 ]
 public class TaskInfo {
-    @!Hide
+    @!Hide[isChecked: true]
     internal let uid: ?String = Option<String>.None
 
-    @!Hide
+    @!Hide[isChecked: true]
     internal let bundle: ?String = Option<String>.None
 
     /**
