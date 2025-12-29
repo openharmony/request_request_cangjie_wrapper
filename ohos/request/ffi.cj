@@ -19,9 +19,8 @@ package ohos.request
 
 import std.collection.HashMap
 import ohos.base.{NativeOptionCString, NativeOptionInt64, NativeOptionUInt32, CStringExtend}
-import ohos.business_exception.{BusinessException, ERR_PARAMETER_ERROR}
-import ohos.ffi.{safeMalloc, CTypeResource, CArrString, cArr2cjArr, Callback1Param,
-    SUCCESS_CODE}
+import ohos.business_exception.BusinessException
+import ohos.ffi.{safeMalloc, CTypeResource, CArrString}
 
 @C
 struct CHashStrPair {
