@@ -675,6 +675,30 @@ class TestRequestAgent {
             FileIo.unlink(filePath)
         }
     }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func TaskOff_Response_Success() {
+        let config = Config(
+            RAction.Download,
+            zipURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let responseCallback = HttpResponseCallback(Beused: false)
+        task.on(EventCallbackType.Response, responseCallback)
+        task.off(EventCallbackType.Response)
+        task.start()
+        sleepFor(1.second)
+        rRemove(task.tid)
+        sleepFor(1.second)
+        @Expect(responseCallback.getState(), false)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
     @TestCase
     @Tag[APILevel22, TestLevel0]
     func CreateFaults_toString_Success(): Unit {
@@ -941,8 +965,13 @@ extend HttpResponse {
 }
 
 class HttpResponseCallback <: Callback1Argument<HttpResponse> {
-    public HttpResponseCallback() {}
+    public HttpResponseCallback(public var Beused!: Bool = false) {}
     public open func invoke(err: ?BusinessException, arg: HttpResponse): Unit {
         Hilog.info(0, "CangjieTest", "HttpResponse is ${arg.toString()}")
+        Beused = true
+    }
+
+    public func getState(): Bool {
+        Beused
     }
 }
