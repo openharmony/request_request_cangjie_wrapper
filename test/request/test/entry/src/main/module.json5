@@ -19,9 +19,7 @@
     "type": "entry",
     "description": "$string:module_desc",
     "mainElement": "EntryAbility",
-    "deviceTypes": [
-      "phone"
-    ],
+    "deviceTypes": ["default"],
     "deliveryWithInstall": true,
     "installationFree": false,
     "srcEntry": "ohos_app_cangjie_entry.MyAbilityStage",
