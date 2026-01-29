@@ -336,11 +336,13 @@ public enum FormItemValue {
         since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
+    FileItem(FileSpec)
     |
     @!APILevel[
         since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
+    FileItemArray(Array<FileSpec>)
     | ...
 }
 
