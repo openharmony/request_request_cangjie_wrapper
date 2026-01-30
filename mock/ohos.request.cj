@@ -264,7 +264,8 @@ public enum BroadcastEvent <: ToString {
         since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
-    Complete | ...
+    Complete
+    | ...
 
     @!APILevel[
         since: "22",
@@ -330,7 +331,8 @@ public enum FormItemValue {
     @!APILevel[
         since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
-    ] StringItem(String)
+    ]
+    StringItem(String)
     |
     @!APILevel[
         since: "22",
@@ -382,12 +384,14 @@ public enum ConfigData {
     @!APILevel[
         since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
-    ] StringValue(String)
+    ]
+    StringValue(String)
     |
     @!APILevel[
         since: "22",
         syscap: "SystemCapability.Request.FileTransferAgent"
     ]
+    FormItems(Array<FormItem>)
     | ...
 }
 
