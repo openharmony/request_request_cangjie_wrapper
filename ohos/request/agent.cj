@@ -26,6 +26,9 @@ import ohos.ffi.{cArr2cjArr, Callback1Param, SUCCESS_CODE}
 import ohos.labels.{APILevel, Hide}
 import std.deriving.Derive
 import ohos.app.ability.ui_ability.{UIAbilityContext, getStageContext}
+import ohos.hilog.HilogChannel
+
+let REQUEST_LOG = HilogChannel(0, 0xD001C50, "CJ-Request")
 
 // ERRORCODE
 const EXCEPTION_FILEIO: Int32 = 13400001
@@ -1282,7 +1285,8 @@ public enum Faults {
             case 0x10 => Timeout
             case 0x20 => Protocol
             case 0x40 => Fsio
-            case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
+            case _ => REQUEST_LOG.error("Fault: The native layer returns a value ${v} outside the specified range.")
+                      Others
         }
     }
 }
