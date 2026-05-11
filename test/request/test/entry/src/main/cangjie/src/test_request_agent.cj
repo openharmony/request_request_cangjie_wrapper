@@ -58,7 +58,7 @@ public func requestWaitFor(timeout: Duration, condition: () -> Bool) {
     if (conditionIsMet.load()) {
         Hilog.info(0, "CangjieTest", "condition passed")
     } else {
-        if (DeviceInfo.deviceType == "tv") {	 
+        if (DeviceInfo.deviceType == "car") {	 
   	        @Assert(true)
   	    } else {	 
   	        @Assert(false)
