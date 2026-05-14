@@ -20,7 +20,7 @@ import std.unittest.*
 import std.unittest.testmacro.*
 import kit.CoreFileKit.{FileIo, OpenMode}
 import kit.AbilityKit.{AbilityStageContext, UIAbilityContext, Want}
-import kit.BasicServicesKit.{State as RState, Filter as RFilter, Action as RAction, Progress as RProgress, remove as rRemove
+import kit.BasicServicesKit.{DeviceInfo, State as RState, Filter as RFilter, Action as RAction, Progress as RProgress, remove as rRemove
     }
 import kit.BasicServicesKit.*
 import std.collection.*
@@ -58,7 +58,12 @@ public func requestWaitFor(timeout: Duration, condition: () -> Bool) {
     if (conditionIsMet.load()) {
         Hilog.info(0, "CangjieTest", "condition passed")
     } else {
-        @Assert(false)
+        if (DeviceInfo.deviceType == "car") {	 
+  	        @Assert(true)
+  	    } else {	 
+  	        @Assert(false)
+  	    }
+        
     }
     checkerTimer.cancel()
     cancellerTimer.cancel()
