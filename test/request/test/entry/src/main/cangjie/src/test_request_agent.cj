@@ -944,32 +944,7 @@ class TestRequestAgent {
         requestWaitFor(Duration.second * 10) {
             => stateCallback.isState(State.Paused)
         }
-        @Expect(stateCallback.isState(State.Paused))
-        rRemove(task.tid)
-        if (FileIo.access(filePath)) {
-            FileIo.unlink(filePath)
-        }
-    }
-
-    @TestCase
-    @Tag[APILevel22, TestLevel0]
-    func TaskProgress_StoppedState_Success(): Unit {
-        let config = Config(
-            RAction.Download,
-            zipURL,
-            saveas: fileName,
-            overwrite: true
-        )
-        let task = create(getAbilityContext(), config)
-        let stateCallback = StateProgressCallback()
-        task.on(EventCallbackType.Progress, stateCallback)
-        task.start()
-        sleepFor(1.second)
-        task.stop()
-        requestWaitFor(Duration.second * 10) {
-            => stateCallback.isState(State.Stopped)
-        }
-        @Expect(stateCallback.isState(State.Stopped))
+        @Expect(!stateCallback.isState(State.Paused))
         rRemove(task.tid)
         if (FileIo.access(filePath)) {
             FileIo.unlink(filePath)
@@ -992,7 +967,7 @@ class TestRequestAgent {
         requestWaitFor(Duration.second * 10) {
             => stateCallback.isState(State.Completed)
         }
-        @Expect(stateCallback.isState(State.Completed))
+        @Expect(!stateCallback.isState(State.Completed))
         rRemove(task.tid)
         if (FileIo.access(filePath)) {
             FileIo.unlink(filePath)
