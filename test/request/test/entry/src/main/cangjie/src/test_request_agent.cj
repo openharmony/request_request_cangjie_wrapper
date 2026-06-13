@@ -848,28 +848,28 @@ class TestRequestAgent {
         let task = create(getAbilityContext(), config)
         task.start()
         
-        let waitingTids: Array<String> = search(filter: Filter(state: Waiting))
+        let waitingTids: Array<String> = search(filter: Filter(state: State.Waiting))
         @Expect(waitingTids.size >= 0)
         
-        let runningTids: Array<String> = search(filter: Filter(state: Running))
+        let runningTids: Array<String> = search(filter: Filter(state: State.Running))
         @Expect(runningTids.size >= 0)
         
-        let retryingTids: Array<String> = search(filter: Filter(state: Retrying))
+        let retryingTids: Array<String> = search(filter: Filter(state: State.Retrying))
         @Expect(retryingTids.size >= 0)
         
-        let pausedTids: Array<String> = search(filter: Filter(state: Paused))
+        let pausedTids: Array<String> = search(filter: Filter(state: State.Paused))
         @Expect(pausedTids.size >= 0)
         
-        let stoppedTids: Array<String> = search(filter: Filter(state: Stopped))
+        let stoppedTids: Array<String> = search(filter: Filter(state: State.Stopped))
         @Expect(stoppedTids.size >= 0)
         
-        let completedTids: Array<String> = search(filter: Filter(state: Completed))
+        let completedTids: Array<String> = search(filter: Filter(state: State.Completed))
         @Expect(completedTids.size >= 0)
         
-        let failedTids: Array<String> = search(filter: Filter(state: Failed))
+        let failedTids: Array<String> = search(filter: Filter(state: State.Failed))
         @Expect(failedTids.size >= 0)
         
-        let removedTids: Array<String> = search(filter: Filter(state: Removed))
+        let removedTids: Array<String> = search(filter: Filter(state: State.Removed))
         @Expect(removedTids.size >= 0)
         
         rRemove(task.tid)
