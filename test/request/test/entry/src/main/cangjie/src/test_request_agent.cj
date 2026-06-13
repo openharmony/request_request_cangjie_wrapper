@@ -995,7 +995,6 @@ class TestRequestAgent {
         @Expect(BroadcastEvent.Complete.toString(), "ohos.request.event.COMPLETE")
     }
 
-  
     @TestCase
     @Tag[APILevel22, TestLevel0]
     func TaskCreate_CreateUpload_ExpectSuccess(): Unit {
