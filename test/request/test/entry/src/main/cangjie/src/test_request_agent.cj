@@ -835,6 +835,49 @@ class TestRequestAgent {
         let state9: State = Removed
         @Expect(state9.toString(),"State.Removed")
     }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func SearchTask_AllStates_Success(): Unit {
+        let config = Config(
+            RAction.Download,
+            fileURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        task.start()
+        
+        let waitingTids: Array<String> = search(filter: Filter(state: Waiting))
+        @Expect(waitingTids.size >= 0)
+        
+        let runningTids: Array<String> = search(filter: Filter(state: Running))
+        @Expect(runningTids.size >= 0)
+        
+        let retryingTids: Array<String> = search(filter: Filter(state: Retrying))
+        @Expect(retryingTids.size >= 0)
+        
+        let pausedTids: Array<String> = search(filter: Filter(state: Paused))
+        @Expect(pausedTids.size >= 0)
+        
+        let stoppedTids: Array<String> = search(filter: Filter(state: Stopped))
+        @Expect(stoppedTids.size >= 0)
+        
+        let completedTids: Array<String> = search(filter: Filter(state: Completed))
+        @Expect(completedTids.size >= 0)
+        
+        let failedTids: Array<String> = search(filter: Filter(state: Failed))
+        @Expect(failedTids.size >= 0)
+        
+        let removedTids: Array<String> = search(filter: Filter(state: Removed))
+        @Expect(removedTids.size >= 0)
+        
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
     @TestCase
     @Tag[APILevel22, TestLevel0]
     func CreateNetwork_toString_Success(): Unit {
