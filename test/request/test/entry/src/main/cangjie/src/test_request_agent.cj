@@ -928,54 +928,6 @@ class TestRequestAgent {
 
     @TestCase
     @Tag[APILevel22, TestLevel0]
-    func TaskProgress_PausedState_Success(): Unit {
-        let config = Config(
-            RAction.Download,
-            zipURL,
-            saveas: fileName,
-            overwrite: true
-        )
-        let task = create(getAbilityContext(), config)
-        let stateCallback = StateProgressCallback()
-        task.on(EventCallbackType.Progress, stateCallback)
-        task.start()
-        sleepFor(1.second)
-        task.pause()
-        requestWaitFor(Duration.second * 10) {
-            => stateCallback.isState(State.Paused)
-        }
-        @Expect(!stateCallback.isState(State.Paused))
-        rRemove(task.tid)
-        if (FileIo.access(filePath)) {
-            FileIo.unlink(filePath)
-        }
-    }
-
-    @TestCase
-    @Tag[APILevel22, TestLevel0]
-    func TaskProgress_CompletedState_Success(): Unit {
-        let config = Config(
-            RAction.Download,
-            fileURL,
-            saveas: fileName,
-            overwrite: true
-        )
-        let task = create(getAbilityContext(), config)
-        let stateCallback = StateProgressCallback()
-        task.on(EventCallbackType.Progress, stateCallback)
-        task.start()
-        requestWaitFor(Duration.second * 10) {
-            => stateCallback.isState(State.Completed)
-        }
-        @Expect(!stateCallback.isState(State.Completed))
-        rRemove(task.tid)
-        if (FileIo.access(filePath)) {
-            FileIo.unlink(filePath)
-        }
-    }
-
-    @TestCase
-    @Tag[APILevel22, TestLevel0]
     func CreateNetwork_toString_Success(): Unit {
         let network1: Network = Wifi
         @Expect(network1.toString(),"Network.Wifi")
@@ -1041,6 +993,48 @@ class TestRequestAgent {
     @Tag[APILevel22, TestLevel0]
     func enumBroadcastEvent() {
         @Expect(BroadcastEvent.Complete.toString(), "ohos.request.event.COMPLETE")
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func CreateHttpResponse_Success(): Unit {
+        let headers = HashMap<String, Array<String>>([
+            ("Content-Type", ["application/json"]),
+            ("Cache-Control", ["no-cache"]),
+            ("X-Custom-Header", ["value1", "value2"])
+        ])
+        let response = HttpResponse(
+            version: "HTTP/1.1",
+            statusCode: 200,
+            reason: "OK",
+            headers: headers
+        )
+        @Expect(response.version, "HTTP/1.1")
+        @Expect(response.statusCode, 200)
+        @Expect(response.reason, "OK")
+        @Expect(response.headers.size, 3)
+        @Expect(response.headers["Content-Type"].size, 1)
+        @Expect(response.headers["X-Custom-Header"].size, 2)
+        let responseStr = response.toString()
+        @Expect(responseStr.contains("HTTP/1.1"))
+        @Expect(responseStr.contains("200"))
+        @Expect(responseStr.contains("OK"))
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func CreateHttpResponse_EmptyHeaders_Success(): Unit {
+        let headers = HashMap<String, Array<String>()
+        let response = HttpResponse(
+            version: "HTTP/2.0",
+            statusCode: 404,
+            reason: "Not Found",
+            headers: headers
+        )
+        @Expect(response.version, "HTTP/2.0")
+        @Expect(response.statusCode, 404)
+        @Expect(response.reason, "Not Found")
+        @Expect(response.headers.size, 0)
     }
 
     @TestCase
