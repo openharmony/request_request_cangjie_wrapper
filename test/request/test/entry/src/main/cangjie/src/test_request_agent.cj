@@ -891,7 +891,12 @@ class TestRequestAgent {
         let stateCallback = StateProgressCallback()
         task.on(EventCallbackType.Progress, stateCallback)
         sleepFor(Duration.millisecond * 500)
-        @Expect(stateCallback.isState(State.Initialized) || stateCallback.getLastState() == None)
+        let lastState = stateCallback.getLastState()
+        let hasState = match (lastState) {
+            case Option<State>.Some(s) => true
+            case Option<State>.None => false
+        }
+        @Expect(stateCallback.isState(State.Initialized) || !hasState)
         rRemove(task.tid)
         if (FileIo.access(filePath)) {
             FileIo.unlink(filePath)
@@ -1213,17 +1218,17 @@ class MyCallback <: Callback1Argument<RProgress> {
 }
 
 class StateProgressCallback <: Callback1Argument<RProgress> {
-    public StateProgressCallback(public var lastState!: ?State = None) {}
+    public StateProgressCallback(public var lastState!: ?State = Option<State>.None) {}
     public open func invoke(err: ?BusinessException, arg: RProgress): Unit {
-        lastState = Some(arg.state)
+        lastState = Option<State>.Some(arg.state)
     }
     public func getLastState(): ?State {
         lastState
     }
     public func isState(state: State): Bool {
         match (lastState) {
-            case Some(s) => s == state
-            case None => false
+            case Option<State>.Some(s) => s.toString() == state.toString()
+            case Option<State>.None => false
         }
     }
 }
