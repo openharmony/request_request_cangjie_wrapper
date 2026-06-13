@@ -890,8 +890,8 @@ class TestRequestAgent {
         let task = create(getAbilityContext(), config)
         let stateCallback = StateProgressCallback()
         task.on(EventCallbackType.Progress, stateCallback)
-        sleepFor(500.millisecond)
-        @Expect(stateCallback.containsState(State.Initialized) || stateCallback.getStates().size == 0)
+        sleepFor(Duration.millisecond * 500)
+        @Expect(stateCallback.isState(State.Initialized) || stateCallback.getLastState() == None)
         rRemove(task.tid)
         if (FileIo.access(filePath)) {
             FileIo.unlink(filePath)
@@ -912,9 +912,9 @@ class TestRequestAgent {
         task.on(EventCallbackType.Progress, stateCallback)
         task.start()
         requestWaitFor(Duration.second * 10) {
-            => stateCallback.containsState(State.Running)
+            => stateCallback.isState(State.Running)
         }
-        @Expect(stateCallback.containsState(State.Running))
+        @Expect(stateCallback.isState(State.Running))
         rRemove(task.tid)
         if (FileIo.access(filePath)) {
             FileIo.unlink(filePath)
@@ -937,9 +937,9 @@ class TestRequestAgent {
         sleepFor(1.second)
         task.pause()
         requestWaitFor(Duration.second * 10) {
-            => stateCallback.containsState(State.Paused)
+            => stateCallback.isState(State.Paused)
         }
-        @Expect(stateCallback.containsState(State.Paused))
+        @Expect(stateCallback.isState(State.Paused))
         rRemove(task.tid)
         if (FileIo.access(filePath)) {
             FileIo.unlink(filePath)
@@ -962,9 +962,9 @@ class TestRequestAgent {
         sleepFor(1.second)
         task.stop()
         requestWaitFor(Duration.second * 10) {
-            => stateCallback.containsState(State.Stopped)
+            => stateCallback.isState(State.Stopped)
         }
-        @Expect(stateCallback.containsState(State.Stopped))
+        @Expect(stateCallback.isState(State.Stopped))
         rRemove(task.tid)
         if (FileIo.access(filePath)) {
             FileIo.unlink(filePath)
@@ -985,9 +985,9 @@ class TestRequestAgent {
         task.on(EventCallbackType.Progress, stateCallback)
         task.start()
         requestWaitFor(Duration.second * 10) {
-            => stateCallback.containsState(State.Completed)
+            => stateCallback.isState(State.Completed)
         }
-        @Expect(stateCallback.containsState(State.Completed))
+        @Expect(stateCallback.isState(State.Completed))
         rRemove(task.tid)
         if (FileIo.access(filePath)) {
             FileIo.unlink(filePath)
@@ -1213,15 +1213,18 @@ class MyCallback <: Callback1Argument<RProgress> {
 }
 
 class StateProgressCallback <: Callback1Argument<RProgress> {
-    public StateProgressCallback(public var capturedStates!: ArrayList<State> = ArrayList<State>()) {}
+    public StateProgressCallback(public var lastState!: ?State = None) {}
     public open func invoke(err: ?BusinessException, arg: RProgress): Unit {
-        capturedStates.append(arg.state)
+        lastState = Some(arg.state)
     }
-    public func getStates(): ArrayList<State> {
-        capturedStates
+    public func getLastState(): ?State {
+        lastState
     }
-    public func containsState(state: State): Bool {
-        capturedStates.contains(state)
+    public func isState(state: State): Bool {
+        match (lastState) {
+            case Some(s) => s == state
+            case None => false
+        }
     }
 }
 
