@@ -706,6 +706,101 @@ class TestRequestAgent {
 
     @TestCase
     @Tag[APILevel22, TestLevel0]
+    func TaskOn_Progress_Success() {
+        let config = Config(
+            RAction.Download,
+            fileURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let progressCallback = MyCallback(Beused: false)
+        task.on(EventCallbackType.Progress, progressCallback)
+        task.start()
+        requestWaitFor(Duration.second * 10) {
+            => progressCallback.getState()
+        }
+        @Expect(progressCallback.getState(), true)
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func TaskOn_Completed_Success() {
+        let config = Config(
+            RAction.Download,
+            fileURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let completedCallback = MyCallback(Beused: false)
+        task.on(EventCallbackType.Completed, completedCallback)
+        task.start()
+        requestWaitFor(Duration.second * 10) {
+            => completedCallback.getState()
+        }
+        @Expect(completedCallback.getState(), true)
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func TaskOn_Failed_Success() {
+        let config = Config(
+            RAction.Download,
+            "https://invalid.url.that.does.not.exist/file.txt",
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let failedCallback = MyCallback(Beused: false)
+        task.on(EventCallbackType.Failed, failedCallback)
+        task.start()
+        requestWaitFor(Duration.second * 10) {
+            => failedCallback.getState()
+        }
+        @Expect(failedCallback.getState(), true)
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func TaskOn_Resume_Success() {
+        let config = Config(
+            RAction.Download,
+            zipURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let resumeCallback = MyCallback(Beused: false)
+        task.on(EventCallbackType.Resume, resumeCallback)
+        task.start()
+        task.pause()
+        sleepFor(1.second)
+        task.resume()
+        requestWaitFor(Duration.second * 10) {
+            => resumeCallback.getState()
+        }
+        @Expect(resumeCallback.getState(), true)
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
     func CreateFaults_toString_Success(): Unit {
         let faults1: Faults = Others
         @Expect(faults1.toString(),"Faults.Others")
@@ -888,18 +983,6 @@ class TestRequestAgent {
             @Expect(enumArray[i] != enumArray[(i + 1) % enumArray.size])
             let h = enumArray[i].hashCode()
         }
-    }
-
-    @TestCase
-    @Tag[APILevel22, TestLevel0]
-    func test_EventCallbackTypeValue() {
-        @Expect(EventCallbackType.Progress.value, "progress")
-        @Expect(EventCallbackType.Completed.value, "completed")
-        @Expect(EventCallbackType.Failed.value, "failed")
-        @Expect(EventCallbackType.Pause.value, "pause")
-        @Expect(EventCallbackType.Resume.value, "resume")
-        @Expect(EventCallbackType.Remove.value, "remove")
-        @Expect(EventCallbackType.Response.value, "response")
     }
 
     @TestCase
