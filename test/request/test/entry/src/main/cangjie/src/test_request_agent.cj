@@ -880,6 +880,122 @@ class TestRequestAgent {
 
     @TestCase
     @Tag[APILevel22, TestLevel0]
+    func TaskProgress_InitializedState_Success(): Unit {
+        let config = Config(
+            RAction.Download,
+            fileURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let stateCallback = StateProgressCallback()
+        task.on(EventCallbackType.Progress, stateCallback)
+        sleepFor(500.millisecond)
+        @Expect(stateCallback.containsState(State.Initialized) || stateCallback.getStates().size == 0)
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func TaskProgress_RunningState_Success(): Unit {
+        let config = Config(
+            RAction.Download,
+            fileURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let stateCallback = StateProgressCallback()
+        task.on(EventCallbackType.Progress, stateCallback)
+        task.start()
+        requestWaitFor(Duration.second * 10) {
+            => stateCallback.containsState(State.Running)
+        }
+        @Expect(stateCallback.containsState(State.Running))
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func TaskProgress_PausedState_Success(): Unit {
+        let config = Config(
+            RAction.Download,
+            zipURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let stateCallback = StateProgressCallback()
+        task.on(EventCallbackType.Progress, stateCallback)
+        task.start()
+        sleepFor(1.second)
+        task.pause()
+        requestWaitFor(Duration.second * 10) {
+            => stateCallback.containsState(State.Paused)
+        }
+        @Expect(stateCallback.containsState(State.Paused))
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func TaskProgress_StoppedState_Success(): Unit {
+        let config = Config(
+            RAction.Download,
+            zipURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let stateCallback = StateProgressCallback()
+        task.on(EventCallbackType.Progress, stateCallback)
+        task.start()
+        sleepFor(1.second)
+        task.stop()
+        requestWaitFor(Duration.second * 10) {
+            => stateCallback.containsState(State.Stopped)
+        }
+        @Expect(stateCallback.containsState(State.Stopped))
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func TaskProgress_CompletedState_Success(): Unit {
+        let config = Config(
+            RAction.Download,
+            fileURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let stateCallback = StateProgressCallback()
+        task.on(EventCallbackType.Progress, stateCallback)
+        task.start()
+        requestWaitFor(Duration.second * 10) {
+            => stateCallback.containsState(State.Completed)
+        }
+        @Expect(stateCallback.containsState(State.Completed))
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
     func CreateNetwork_toString_Success(): Unit {
         let network1: Network = Wifi
         @Expect(network1.toString(),"Network.Wifi")
@@ -1093,6 +1209,19 @@ class MyCallback <: Callback1Argument<RProgress> {
     }
     public func getState(): Bool {
         Beused
+    }
+}
+
+class StateProgressCallback <: Callback1Argument<RProgress> {
+    public StateProgressCallback(public var capturedStates!: ArrayList<State> = ArrayList<State>()) {}
+    public open func invoke(err: ?BusinessException, arg: RProgress): Unit {
+        capturedStates.append(arg.state)
+    }
+    public func getStates(): ArrayList<State> {
+        capturedStates
+    }
+    public func containsState(state: State): Bool {
+        capturedStates.contains(state)
     }
 }
 
