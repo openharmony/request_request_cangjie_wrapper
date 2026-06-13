@@ -892,6 +892,18 @@ class TestRequestAgent {
 
     @TestCase
     @Tag[APILevel22, TestLevel0]
+    func test_EventCallbackTypeValue() {
+        @Expect(EventCallbackType.Progress.value, "progress")
+        @Expect(EventCallbackType.Completed.value, "completed")
+        @Expect(EventCallbackType.Failed.value, "failed")
+        @Expect(EventCallbackType.Pause.value, "pause")
+        @Expect(EventCallbackType.Resume.value, "resume")
+        @Expect(EventCallbackType.Remove.value, "remove")
+        @Expect(EventCallbackType.Response.value, "response")
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
     func test_EnumAction() {
         let enumArray: Array<Action> = [Download, Upload]
         let enumArray2: Array<Action> = [Download, Upload]
