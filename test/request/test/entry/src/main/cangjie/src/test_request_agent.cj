@@ -743,7 +743,7 @@ class TestRequestAgent {
         requestWaitFor(Duration.second * 10) {
             => completedCallback.getState()
         }
-        @Expect(completedCallback.getState(), false)
+        @Expect(completedCallback.getState(), true)
         rRemove(task.tid)
         if (FileIo.access(filePath)) {
             FileIo.unlink(filePath)
@@ -766,7 +766,7 @@ class TestRequestAgent {
         requestWaitFor(Duration.second * 10) {
             => failedCallback.getState()
         }
-        @Expect(failedCallback.getState(), false)
+        @Expect(failedCallback.getState(), true)
         rRemove(task.tid)
         if (FileIo.access(filePath)) {
             FileIo.unlink(filePath)
@@ -792,7 +792,7 @@ class TestRequestAgent {
         requestWaitFor(Duration.second * 10) {
             => resumeCallback.getState()
         }
-        @Expect(resumeCallback.getState(), false)
+        @Expect(resumeCallback.getState(), true)
         rRemove(task.tid)
         if (FileIo.access(filePath)) {
             FileIo.unlink(filePath)
