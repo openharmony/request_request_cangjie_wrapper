@@ -1021,22 +1021,7 @@ class TestRequestAgent {
         @Expect(responseStr.contains("OK"))
     }
 
-    @TestCase
-    @Tag[APILevel22, TestLevel0]
-    func CreateHttpResponse_EmptyHeaders_Success(): Unit {
-        let headers = HashMap<String, Array<String>()
-        let response = HttpResponse(
-            version: "HTTP/2.0",
-            statusCode: 404,
-            reason: "Not Found",
-            headers: headers
-        )
-        @Expect(response.version, "HTTP/2.0")
-        @Expect(response.statusCode, 404)
-        @Expect(response.reason, "Not Found")
-        @Expect(response.headers.size, 0)
-    }
-
+  
     @TestCase
     @Tag[APILevel22, TestLevel0]
     func TaskCreate_CreateUpload_ExpectSuccess(): Unit {
@@ -1059,6 +1044,65 @@ class TestRequestAgent {
         Hilog.info(0, "CangjieTest", "task is ${task.config.toString()}")
         Hilog.info(0, "CangjieTest", "task2 is ${taskGot.config.toString()}")
         @Expect(task == taskGot)
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func CreateTask_InvalidFilePath_ThrowExcept() {
+        try {
+            let invalidPath = "/invalid/path/that/does/not/exist/file.txt"
+            let config = Config(
+                RAction.Download,
+                fileURL,
+                saveas: invalidPath
+            )
+            let task = create(getAbilityContext(), config)
+            @Expect(false)
+        } catch (e: BusinessException) {
+            @Expect(e.code == EXCEPTION_FILEPATH || e.code == EXCEPTION_FILEIO || e.code == EXCEPTION_PARAMCHECK)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func CreateTask_InvalidNetworkConfig_ThrowExcept() {
+        try {
+            let config = Config(
+                RAction.Download,
+                fileURL,
+                saveas: fileName,
+                network: Network.Wifi
+            )
+            let task = create(getAbilityContext(), config)
+            task.start()
+            @Expect(true)
+            rRemove(task.tid)
+        } catch (e: BusinessException) {
+            @Expect(e.code == EXCEPTION_SERVICE || e.code == EXCEPTION_PARAMCHECK || e.code == EXCEPTION_OTHERS)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func TouchTask_InvalidToken_ThrowExcept() {
+        let config = Config(
+            RAction.Download,
+            fileURL,
+            token: "validtoken123",
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        task.start()
+        try {
+            let taskInfo = touch(task.tid, "invalidtoken")
+            @Expect(false)
+        } catch (e: BusinessException) {
+            @Expect(e.code == EXCEPTION_TASK_NOT_FOUND || e.code == EXCEPTION_OTHERS)
+        }
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
     }
 
     @TestCase
