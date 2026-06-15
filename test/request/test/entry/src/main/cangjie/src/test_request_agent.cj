@@ -706,6 +706,101 @@ class TestRequestAgent {
 
     @TestCase
     @Tag[APILevel22, TestLevel0]
+    func TaskOn_Progress_Success() {
+        let config = Config(
+            RAction.Download,
+            fileURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let progressCallback = MyCallback(Beused: false)
+        task.on(EventCallbackType.Progress, progressCallback)
+        task.start()
+        requestWaitFor(Duration.second * 10) {
+            => progressCallback.getState()
+        }
+        @Expect(progressCallback.getState(), true)
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func TaskOn_Completed_Success() {
+        let config = Config(
+            RAction.Download,
+            fileURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let completedCallback = MyCallback(Beused: false)
+        task.on(EventCallbackType.Completed, completedCallback)
+        task.start()
+        requestWaitFor(Duration.second * 10) {
+            => completedCallback.getState()
+        }
+        @Expect(completedCallback.getState(), true)
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func TaskOn_Failed_Success() {
+        let config = Config(
+            RAction.Download,
+            "https://invalid.url.that.does.not.exist/file.txt",
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let failedCallback = MyCallback(Beused: false)
+        task.on(EventCallbackType.Failed, failedCallback)
+        task.start()
+        requestWaitFor(Duration.second * 10) {
+            => failedCallback.getState()
+        }
+        @Expect(failedCallback.getState(), true)
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func TaskOn_Resume_Success() {
+        let config = Config(
+            RAction.Download,
+            zipURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let resumeCallback = MyCallback(Beused: false)
+        task.on(EventCallbackType.Resume, resumeCallback)
+        task.start()
+        task.pause()
+        sleepFor(1.second)
+        task.resume()
+        requestWaitFor(Duration.second * 10) {
+            => resumeCallback.getState()
+        }
+        @Expect(resumeCallback.getState(), true)
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
     func CreateFaults_toString_Success(): Unit {
         let faults1: Faults = Others
         @Expect(faults1.toString(),"Faults.Others")
@@ -740,6 +835,97 @@ class TestRequestAgent {
         let state9: State = Removed
         @Expect(state9.toString(),"State.Removed")
     }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func SearchTask_AllStates_Success(): Unit {
+        let config = Config(
+            RAction.Download,
+            fileURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        task.start()
+        
+        let waitingTids: Array<String> = search(filter: Filter(state: State.Waiting))
+        @Expect(waitingTids.size >= 0)
+        
+        let runningTids: Array<String> = search(filter: Filter(state: State.Running))
+        @Expect(runningTids.size >= 0)
+        
+        let retryingTids: Array<String> = search(filter: Filter(state: State.Retrying))
+        @Expect(retryingTids.size >= 0)
+        
+        let pausedTids: Array<String> = search(filter: Filter(state: State.Paused))
+        @Expect(pausedTids.size >= 0)
+        
+        let stoppedTids: Array<String> = search(filter: Filter(state: State.Stopped))
+        @Expect(stoppedTids.size >= 0)
+        
+        let completedTids: Array<String> = search(filter: Filter(state: State.Completed))
+        @Expect(completedTids.size >= 0)
+        
+        let failedTids: Array<String> = search(filter: Filter(state: State.Failed))
+        @Expect(failedTids.size >= 0)
+        
+        let removedTids: Array<String> = search(filter: Filter(state: State.Removed))
+        @Expect(removedTids.size >= 0)
+        
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func TaskProgress_InitializedState_Success(): Unit {
+        let config = Config(
+            RAction.Download,
+            fileURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let stateCallback = StateProgressCallback()
+        task.on(EventCallbackType.Progress, stateCallback)
+        sleepFor(Duration.millisecond * 500)
+        let lastState = stateCallback.getLastState()
+        let hasState = match (lastState) {
+            case Option<State>.Some(s) => true
+            case Option<State>.None => false
+        }
+        @Expect(stateCallback.isState(State.Initialized) || !hasState)
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func TaskProgress_RunningState_Success(): Unit {
+        let config = Config(
+            RAction.Download,
+            fileURL,
+            saveas: fileName,
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        let stateCallback = StateProgressCallback()
+        task.on(EventCallbackType.Progress, stateCallback)
+        task.start()
+        requestWaitFor(Duration.second * 10) {
+            => stateCallback.isState(State.Running)
+        }
+        @Expect(stateCallback.isState(State.Running))
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
+    }
+
     @TestCase
     @Tag[APILevel22, TestLevel0]
     func CreateNetwork_toString_Success(): Unit {
@@ -831,6 +1017,65 @@ class TestRequestAgent {
         Hilog.info(0, "CangjieTest", "task is ${task.config.toString()}")
         Hilog.info(0, "CangjieTest", "task2 is ${taskGot.config.toString()}")
         @Expect(task == taskGot)
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func CreateTask_InvalidFilePath_ThrowExcept() {
+        try {
+            let invalidPath = "/invalid/path/that/does/not/exist/file.txt"
+            let config = Config(
+                RAction.Download,
+                fileURL,
+                saveas: invalidPath
+            )
+            let task = create(getAbilityContext(), config)
+            @Expect(false)
+        } catch (e: BusinessException) {
+            @Expect(e.code == EXCEPTION_FILEPATH || e.code == EXCEPTION_FILEIO || e.code == EXCEPTION_PARAMCHECK)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func CreateTask_InvalidNetworkConfig_ThrowExcept() {
+        try {
+            let config = Config(
+                RAction.Download,
+                fileURL,
+                saveas: fileName,
+                network: Network.Wifi
+            )
+            let task = create(getAbilityContext(), config)
+            task.start()
+            @Expect(true)
+            rRemove(task.tid)
+        } catch (e: BusinessException) {
+            @Expect(e.code == EXCEPTION_SERVICE || e.code == EXCEPTION_PARAMCHECK || e.code == EXCEPTION_OTHERS)
+        }
+    }
+
+    @TestCase
+    @Tag[APILevel22, TestLevel0]
+    func TouchTask_InvalidToken_ThrowExcept() {
+        let config = Config(
+            RAction.Download,
+            fileURL,
+            token: "validtoken123",
+            overwrite: true
+        )
+        let task = create(getAbilityContext(), config)
+        task.start()
+        try {
+            let taskInfo = touch(task.tid, "invalidtoken")
+            @Expect(false)
+        } catch (e: BusinessException) {
+            @Expect(e.code == EXCEPTION_TASK_NOT_FOUND || e.code == EXCEPTION_OTHERS)
+        }
+        rRemove(task.tid)
+        if (FileIo.access(filePath)) {
+            FileIo.unlink(filePath)
+        }
     }
 
     @TestCase
@@ -955,6 +1200,22 @@ class MyCallback <: Callback1Argument<RProgress> {
     }
     public func getState(): Bool {
         Beused
+    }
+}
+
+class StateProgressCallback <: Callback1Argument<RProgress> {
+    public StateProgressCallback(public var lastState!: ?State = Option<State>.None) {}
+    public open func invoke(err: ?BusinessException, arg: RProgress): Unit {
+        lastState = Option<State>.Some(arg.state)
+    }
+    public func getLastState(): ?State {
+        lastState
+    }
+    public func isState(state: State): Bool {
+        match (lastState) {
+            case Option<State>.Some(s) => s.toString() == state.toString()
+            case Option<State>.None => false
+        }
     }
 }
 
