@@ -99,13 +99,6 @@ struct CHashStrArr {
             (elem.key.toString(), elem.value.toString())
         }
     }
-
-    func toHashMapOption(): ?HashMap<String, String> {
-        if (headers.isNull()) {
-            return None
-        }
-        toHashMap()
-    }
 }
 
 @C
@@ -699,10 +692,6 @@ struct CFilter {
             case Some(v) => NativeOptionUInt32(true, v.value)
             case None => NativeOptionUInt32(false, 0)
         }
-    }
-
-    func free() {
-        this.bundle.free()
     }
 }
 

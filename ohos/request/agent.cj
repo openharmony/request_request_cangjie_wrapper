@@ -231,14 +231,6 @@ public enum Mode {
             case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
         }
     }
-
-    static func toModeOption(v: UInt32): ?Mode {
-        try {
-            toMode(v)
-        } catch (e: Exception) {
-            None
-        }
-    }
 }
 
 /**
@@ -556,16 +548,6 @@ public enum ConfigData {
     ]
     FormItems(Array<FormItem>)
     | ...
-
-    prop valueType: UInt32 {
-        get() {
-            match (this) {
-                case StringValue(_) => 0
-                case FormItems(_) => 1
-                case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
-            }
-        }
-    }
 }
 
 /**
@@ -1174,13 +1156,6 @@ public class HttpResponse {
     ]
     public let headers: HashMap<String, Array<String>>
 
-    init(version: String, statusCode: Int32, reason: String, headers: HashMap<String, Array<String>>) {
-        this.version = version
-        this.statusCode = statusCode
-        this.reason = reason
-        this.headers = headers
-    }
-
     init(v: CHttpResponse) {
         this.version = v.version.toString()
         this.statusCode = v.statusCode
@@ -1261,19 +1236,6 @@ public enum Faults {
     @!Hide[isChecked: true]
     LowSpeed
     | ...
-
-    prop value: Int32 {
-        get() {
-            match (this) {
-                case Others => 0xFF
-                case Disconnected => 0x00
-                case Timeout => 0x10
-                case Protocol => 0x20
-                case Fsio => 0x40
-                case _ => throw BusinessException(EXCEPTION_OTHERS, "Other error.")
-            }
-        }
-    }
 
     /**
      * @throws { BusinessException } 13499999 - Other error.
@@ -1591,12 +1553,6 @@ class RequestEvent {
     func on(callback: CallbackObject, id: Int64): Unit {
         synchronized(callBackMutex) {
             callbackList.add((callback, id))
-        }
-    }
-
-    func clear(): Unit {
-        synchronized(callBackMutex) {
-            callbackList.clear()
         }
     }
 
